@@ -30,7 +30,7 @@ import GridView from 'react-native-super-grid';
 <GridView
   itemWidth={130}
   items={[1,2,3,4,5,6]}
-  renderRow={item => (<Text>{item}</Text>)}
+  renderItem={item => (<Text>{item}</Text>)}
 />
 ```
 
