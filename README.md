@@ -129,6 +129,14 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 
+## Changelog
+
+### [1.0.3] - 2017-06-06
+#### Added
+- Pass row index to renderItem @heaversm.
+
+
+
 ## Acknowledgments
 
 Colors in the example from https://flatuicolors.com/.
