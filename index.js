@@ -50,7 +50,7 @@ class SuperGrid extends Component {
       width: containerWidth,
       paddingRight: spacing,
     };
-    let itemStyle = { };
+    let itemStyle = {};
     if (fixed) {
       itemStyle = {
         width: itemWidth,
@@ -63,7 +63,7 @@ class SuperGrid extends Component {
         {(data || []).map((item, i) => (
           <View key={`${rowId}_${i}`} style={columnStyle}>
             <View style={itemStyle}>
-              {this.props.renderItem(item)}
+              {this.props.renderItem(item, i)}
             </View>
           </View>
         ))}
