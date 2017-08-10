@@ -10,6 +10,14 @@ class SuperGrid extends Component {
     this.getDimensions = this.getDimensions.bind(this);
     this.state = this.getDimensions();
   }
+  
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.items !== nextProps.items) {
+      return true;
+    }else{
+      return false;
+    }
+  }
 
   onLayout(e) {
     const { width } = e.nativeEvent.layout || {};

@@ -135,6 +135,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 #### Added
 - Pass row index to renderItem @heaversm.
 
+### [1.0.4] - 2017-08-11
+#### Added
+- Add shouldComponentUpdate() to prevent unnecessary render() @VJaye.
 
 
 ## Acknowledgments
