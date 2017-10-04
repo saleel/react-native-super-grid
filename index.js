@@ -110,6 +110,7 @@ SuperGrid.defaultProps = {
   itemWidth: 120,
   spacing: 10,
   style: {},
+  staticWidth: undefined
 };
 
 export default SuperGrid;
