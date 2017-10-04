@@ -10,7 +10,7 @@ This component renders a Grid View that adapts itself to various screen resoluti
 
 Instead of passing an itemPerRow argument, you pass ```itemWidth``` and each item will be rendered with a width equal to or more than (to fill the screen) the given width.
 
-Internally, this component use the native [ListView](https://facebook.github.io/react-native/docs/listview.html).
+Internally, this component uses the native [ListView](https://facebook.github.io/react-native/docs/listview.html).
 
 
 ### Installing
@@ -44,6 +44,7 @@ import GridView from 'react-native-super-grid';
 | fixed | Boolean | false  | If true, the exact ```itemWidth``` will be used and won't be adjusted to fit the screen. |
 | spacing | Number | 10 | Spacing between each item. |
 | style | [ListView](https://facebook.github.io/react-native/docs/listview.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
+| staticWidth | Number | undefined | Specifies a static width for the GridView container. If your container width is known or can be calculated at runtime (via ```Dimensions.get('window')```, for example), passing this prop will force the grid container to that width and avoid the reflow associated with dynamically calculating the container's width |
 
 
 
