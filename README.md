@@ -136,6 +136,11 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 #### Added
 - Pass row index to renderItem @heaversm.
 
+### [1.0.4] - 2017-10-09
+#### Added
+- Optional staticWidth prop @thejettdurham.
+- Use prop-types package instead of deprecated react's PropTypes.
+
 
 
 ## Acknowledgments
