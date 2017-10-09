@@ -12,15 +12,20 @@ class SuperGrid extends Component {
   }
 
   onLayout(e) {
-    const { width } = e.nativeEvent.layout || {};
-    this.setState({
-      ...this.getDimensions(width),
-    });
+    if (!this.props.staticWidth) {
+      const { width } = e.nativeEvent.layout || {};
+
+      this.setState({
+        ...this.getDimensions(width),
+      });
+    }
+    
   }
 
   getDimensions(lvWidth) {
-    const { itemWidth, spacing, fixed } = this.props;
-    const totalWidth = lvWidth || Dimensions.get('window').width;
+    const { itemWidth, spacing, fixed, staticWidth } = this.props;
+    const totalWidth = 
+      lvWidth || staticWidth || Dimensions.get('window').width;
 
     const itemTotalWidth = itemWidth + spacing;
     const availableWidth = totalWidth - spacing; // One spacing extra
@@ -97,6 +102,7 @@ SuperGrid.propTypes = {
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: View.propTypes.style,
+  staticWidth: PropTypes.number
 };
 
 SuperGrid.defaultProps = {
@@ -104,6 +110,7 @@ SuperGrid.defaultProps = {
   itemWidth: 120,
   spacing: 10,
   style: {},
+  staticWidth: undefined
 };
 
 export default SuperGrid;
