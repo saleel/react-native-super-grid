@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, ListView, Dimensions } from 'react-native';
 import { chunkArray } from './utils';
 
@@ -19,14 +20,12 @@ class SuperGrid extends Component {
         ...this.getDimensions(width),
       });
     }
-    
+
   }
 
   getDimensions(lvWidth) {
     const { itemWidth, spacing, fixed, staticWidth } = this.props;
-    const totalWidth = 
-      lvWidth || staticWidth || Dimensions.get('window').width;
-
+    const totalWidth = lvWidth || staticWidth || Dimensions.get('window').width;
     const itemTotalWidth = itemWidth + spacing;
     const availableWidth = totalWidth - spacing; // One spacing extra
     const itemsPerRow = Math.floor(availableWidth / itemTotalWidth);
