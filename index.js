@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, ListView, Dimensions } from 'react-native';
+import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
 import { chunkArray } from './utils';
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  column: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-around'
+  },
+  item: {
+    alignSelf: 'stretch'
+  }
+})
 
 class SuperGrid extends Component {
   constructor(props) {
@@ -9,22 +24,38 @@ class SuperGrid extends Component {
     this.renderRow = this.renderRow.bind(this);
     this.onLayout = this.onLayout.bind(this);
     this.getDimensions = this.getDimensions.bind(this);
-    this.state = this.getDimensions();
+
+    const dimensions = this.getDimensions();
+    this.state = {
+      dimensions,
+      rows: chunkArray(props.items, dimensions.itemsPerRow)
+    };
   }
 
-  onLayout(e) {
+  componentWillReceiveProps (nextProps) {
+    if (this.props.items !== nextProps.items) {
+      const itemsPerRow = this.state.dimensions.itemsPerRow;
+
+      this.setState({
+        rows: chunkArray(nextProps.items, itemsPerRow)
+      });
+    }
+  }
+
+  onLayout (e) {
     if (!this.props.staticWidth) {
       const { width } = e.nativeEvent.layout || {};
 
+      const dimensions = this.getDimensions(width)
       this.setState({
-        ...this.getDimensions(width),
+        dimensions,
+        rows: chunkArray(this.props.items, dimensions.itemsPerRow)
       });
     }
-
   }
 
-  getDimensions(lvWidth) {
-    const { itemWidth, spacing, fixed, staticWidth } = this.props;
+  getDimensions (lvWidth) {
+    const { items, itemWidth, spacing, fixed, staticWidth } = this.props;
     const totalWidth = lvWidth || staticWidth || Dimensions.get('window').width;
     const itemTotalWidth = itemWidth + spacing;
     const availableWidth = totalWidth - spacing; // One spacing extra
@@ -36,21 +67,20 @@ class SuperGrid extends Component {
       spacing,
       itemsPerRow,
       containerWidth,
-      fixed,
+      fixed
     };
   }
 
   renderRow(data, sectionId, rowId) {
-    const { itemWidth, spacing, containerWidth, fixed } = this.state;
+    const { spacing } = this.props;
+    const { itemWidth, containerWidth, fixed } = this.state;
 
     const rowStyle = {
-      flexDirection: 'row',
       paddingLeft: spacing,
       paddingBottom: spacing,
+      marginBottom: spacing,
     };
     const columnStyle = {
-      flexDirection: 'column',
-      justifyContent: 'center',
       width: containerWidth,
       paddingRight: spacing,
     };
@@ -58,15 +88,14 @@ class SuperGrid extends Component {
     if (fixed) {
       itemStyle = {
         width: itemWidth,
-        alignSelf: 'center',
       };
     }
 
     return (
-      <View style={rowStyle}>
-        {(data || []).map((item, i) => (
-          <View key={`${rowId}_${i}`} style={columnStyle}>
-            <View style={itemStyle}>
+      <View style={[styles.row, rowStyle]}>
+        {(data.item || []).map((item, i) => (
+          <View key={`${rowId}_${i}`} style={[styles.column, columnStyle]}>
+            <View style={[styles.item, itemStyle]}>
               {this.props.renderItem(item, i)}
             </View>
           </View>
@@ -76,21 +105,17 @@ class SuperGrid extends Component {
   }
 
   render() {
-    const { items, style, renderItem, spacing, fixed, itemWidth, ...props } = this.props;
-    const { itemsPerRow } = this.state;
-
-    const rows = chunkArray(items, itemsPerRow);
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    const { props, state } = this
 
     return (
-      <ListView
-        style={[{ paddingTop: spacing }, style]}
-        onLayout={this.onLayout}
-        dataSource={ds.cloneWithRows(rows)}
-        renderRow={this.renderRow}
+      <FlatList
         {...props}
+        style={[{ paddingTop: props.spacing }, props.style]}
+        onLayout={this.onLayout}
+        data={state.rows}
+        renderItem={this.renderRow}
       />
-    );
+    )
   }
 }
 
