@@ -6,9 +6,7 @@ import { chunkArray } from './utils';
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    paddingBottom: 10,
-    marginBottom: 10
+    justifyContent: 'center'
   },
   column: {
     flex: 1,
@@ -16,7 +14,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   item: {
-    alignSelf: 'center'
+    alignSelf: 'stretch'
   }
 })
 
