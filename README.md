@@ -21,6 +21,8 @@ You can install the package via npm.
 npm install react-native-super-grid
 ```
 
+If your react native is below v0.49, install version 1.0.4 - npm install react-native-super-grid@1.0.4
+
 
 ### Usage
 ```
@@ -132,14 +134,20 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
-### [1.0.3] - 2017-06-06
+### [1.1.0] - 2017-11-03 (Target React Native 0.49+)
 #### Added
-- Pass row index to renderItem @heaversm.
+- Replace view.propTypes to ViewPropTypes for 0.49+. @caudaganesh
+
 
 ### [1.0.4] - 2017-10-09
 #### Added
 - Optional staticWidth prop @thejettdurham.
 - Use prop-types package instead of deprecated react's PropTypes.
+
+
+### [1.0.3] - 2017-06-06
+#### Added
+- Pass row index to renderItem @heaversm.
 
 
 
