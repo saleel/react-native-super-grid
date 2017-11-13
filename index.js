@@ -13,36 +13,64 @@ class SuperGrid extends Component {
   }
 
   onLayout(e) {
-    if (!this.props.staticWidth) {
-      const { width } = e.nativeEvent.layout || {};
+    const {staticDimension, horizontal} = this.props;
+    if (!staticDimension) {
+      const { width, height } = e.nativeEvent.layout || {};
 
       this.setState({
-        ...this.getDimensions(width),
+        ...this.getDimensions(horizontal ? height : width),
       });
     }
 
   }
 
-  getDimensions(lvWidth) {
-    const { itemWidth, spacing, fixed, staticWidth } = this.props;
-    const totalWidth = lvWidth || staticWidth || Dimensions.get('window').width;
-    const itemTotalWidth = itemWidth + spacing;
-    const availableWidth = totalWidth - spacing; // One spacing extra
-    const itemsPerRow = Math.floor(availableWidth / itemTotalWidth);
-    const containerWidth = availableWidth / itemsPerRow;
+  getDimensions(lvDimension) {
+    const { itemDimension, spacing, fixed, staticDimension, horizontal } = this.props;
+    const dimension = horizontal ? 'height' : 'width';
+    const totalDimension = lvDimension || staticDimension || Dimensions.get('window')[dimension];
+    const itemTotalDimension = itemDimension + spacing;
+    const availableDimension = totalDimension - spacing; // One spacing extra
+    const itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
+    const containerDimension = availableDimension / itemsPerRow;
 
     return {
-      itemWidth,
+      itemDimension,
       spacing,
       itemsPerRow,
-      containerWidth,
+      containerDimension,
       fixed,
     };
   }
 
-  renderRow(data, sectionId, rowId) {
-    const { itemWidth, spacing, containerWidth, fixed } = this.state;
+  renderVerticalRow(data, sectionId, rowId) {
+    const { itemDimension, spacing, containerDimension, fixed } = this.state;
+    const columnStyle = {
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      paddingRight: spacing,
+      height: containerDimension,
+    };
+    let itemStyle = {};
+    if (fixed) {
+      itemStyle = {
+        height: itemDimension,
+        alignSelf: 'center',
+      };
+    }
 
+    return (
+      <View style={columnStyle}>
+        {(data || []).map((item, i) => (
+          <View key={`${rowId}_${i}`} style={itemStyle}>
+            {this.props.renderItem(item, i)}
+          </View>
+        ))}
+      </View>
+    );
+  }
+
+  renderHorizontalRow(data, sectionId, rowId) {
+    const { itemDimension, containerDimension, spacing, fixed } = this.state;
     const rowStyle = {
       flexDirection: 'row',
       paddingLeft: spacing,
@@ -51,13 +79,13 @@ class SuperGrid extends Component {
     const columnStyle = {
       flexDirection: 'column',
       justifyContent: 'center',
-      width: containerWidth,
+      width: containerDimension,
       paddingRight: spacing,
     };
     let itemStyle = {};
     if (fixed) {
       itemStyle = {
-        width: itemWidth,
+        width: itemDimension,
         alignSelf: 'center',
       };
     }
@@ -75,8 +103,16 @@ class SuperGrid extends Component {
     );
   }
 
+  renderRow(data, sectionId, rowId) {
+    const { horizontal } = this.state;
+    if (horizontal) {
+      return renderVerticalRow(data, sectionId, rowId);
+    }
+    return renderHorizontalRow(data, sectionId, rowId);
+  }
+
   render() {
-    const { items, style, renderItem, spacing, fixed, itemWidth, ...props } = this.props;
+    const { items, style, renderItem, spacing, fixed, itemDimension, horizontal, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
     const rows = chunkArray(items, itemsPerRow);
@@ -89,6 +125,7 @@ class SuperGrid extends Component {
         dataSource={ds.cloneWithRows(rows)}
         renderRow={this.renderRow}
         {...props}
+        horizontal={horizontal}
       />
     );
   }
@@ -97,19 +134,21 @@ class SuperGrid extends Component {
 SuperGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.any).isRequired,
-  itemWidth: PropTypes.number,
+  itemDimension: PropTypes.number,
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: ViewPropTypes.style,
-  staticWidth: PropTypes.number
+  staticDimension: PropTypes.number,
+  horizontal: PropTypes.bool
 };
 
 SuperGrid.defaultProps = {
   fixed: false,
-  itemWidth: 120,
+  itemDimension: 120,
   spacing: 10,
   style: {},
-  staticWidth: undefined
+  staticDimension: undefined,
+  horizontal: false
 };
 
 export default SuperGrid;
