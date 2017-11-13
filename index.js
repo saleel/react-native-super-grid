@@ -106,9 +106,9 @@ class SuperGrid extends Component {
   renderRow(data, sectionId, rowId) {
     const { horizontal } = this.props;
     if (horizontal) {
-      return renderVerticalRow(data, sectionId, rowId);
+      return this.renderVerticalRow(data, sectionId, rowId);
     }
-    return renderHorizontalRow(data, sectionId, rowId);
+    return this.renderHorizontalRow(data, sectionId, rowId);
   }
 
   render() {
