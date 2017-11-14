@@ -49,6 +49,7 @@ import GridView from 'react-native-super-grid';
 | staticDimension | Number | undefined | Specifies a static width or height for the GridView container. If your container dimension is known or can be calculated at runtime (via ```Dimensions.get('window')```, for example), passing this prop will force the grid container to that dimension size and avoid the reflow associated with dynamically calculating it|
 | horizontal | boolean | false | If true, the grid will be scrolling horizontally|
 
+Note: If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'
 
 
 ## Example
@@ -125,7 +126,13 @@ const styles = StyleSheet.create({
 |:---:|:---:|
 | Android Portrait | Android Landscape  |
 
+| ![Android Horizontal Portrait](/screenshots/android_horizontal_portrait.png?raw=true "Android Horizontal Portrait") | ![Android Horizontal Landscape](/screenshots/android_horizontal_landscape.png?raw=true "Android Horizontal Landscape") |
+|:---:|:---:|
+| Android Horizontal Portrait | Android Horizontal Landscape  |
 
+| ![iPhone Horizontal Portrait](/screenshots/iphone_horizontal_portrait.png?raw=true "iPhone Horizontal Portrait")| ![iPhone Horizontal Landscape](/screenshots/iphone_horizontal_landscape.png?raw=true "iPhone Horizontal Landscape") |
+|:---:|:---:|
+| iPhone Horizontal Portrait | iPhone Horizontal Landscape  |
 
 ## License
 
