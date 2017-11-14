@@ -46,23 +46,28 @@ class SuperGrid extends Component {
     const { itemDimension, spacing, containerDimension, fixed } = this.state;
     const columnStyle = {
       flexDirection: 'column',
-      justifyContent: 'flex-start',
-      paddingRight: spacing,
+      paddingLeft: spacing,
+    };
+    const rowStyle = {
       height: containerDimension,
+      paddingBottom: spacing,
     };
     let itemStyle = {};
     if (fixed) {
       itemStyle = {
         height: itemDimension,
         alignSelf: 'center',
+        paddingBottom: spacing,
       };
     }
 
     return (
       <View style={columnStyle}>
         {(data || []).map((item, i) => (
-          <View key={`${rowId}_${i}`} style={itemStyle}>
-            {this.props.renderItem(item, i)}
+          <View key={`${rowId}_${i}`} style={rowStyle}>
+            <View style={itemStyle}>
+              {this.props.renderItem(item, i)}
+            </View>
           </View>
         ))}
       </View>
