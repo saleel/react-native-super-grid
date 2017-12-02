@@ -8,7 +8,7 @@ Responsive Grid View for React Native.
 
 This component renders a Grid View that adapts itself to various screen resolutions.
 
-Instead of passing an itemPerRow argument, you pass ```itemWidth``` and each item will be rendered with a width equal to or more than (to fill the screen) the given width.
+Instead of passing an itemPerRow argument, you pass ```itemDimension``` and each item will be rendered with a dimension size equal to or more than (to fill the screen) the given dimension.
 
 Internally, this component uses the native [ListView](https://facebook.github.io/react-native/docs/listview.html).
 
@@ -30,7 +30,7 @@ import GridView from 'react-native-super-grid';
 ```
 ```
 <GridView
-  itemWidth={130}
+  itemDimension={130}
   items={[1,2,3,4,5,6]}
   renderItem={item => (<Text>{item}</Text>)}
 />
@@ -42,12 +42,14 @@ import GridView from 'react-native-super-grid';
 |---|---|---|---|
 | renderItem | Function |  | Function to render each object. Should return a react native component.  |
 | items | Array |  | Items to be rendered. renderItem will be called with each item in this array.  |  |
-| itemWidth | Number | 120  | Minimum width for each item in pixels (virtual). |
-| fixed | Boolean | false  | If true, the exact ```itemWidth``` will be used and won't be adjusted to fit the screen. |
+| itemDimension | Number | 120  | Minimum width or height for each item in pixels (virtual). |
+| fixed | Boolean | false  | If true, the exact ```itemDimension``` will be used and won't be adjusted to fit the screen. |
 | spacing | Number | 10 | Spacing between each item. |
 | style | [ListView](https://facebook.github.io/react-native/docs/listview.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
-| staticWidth | Number | undefined | Specifies a static width for the GridView container. If your container width is known or can be calculated at runtime (via ```Dimensions.get('window')```, for example), passing this prop will force the grid container to that width and avoid the reflow associated with dynamically calculating the container's width |
+| staticDimension | Number | undefined | Specifies a static width or height for the GridView container. If your container dimension is known or can be calculated at runtime (via ```Dimensions.get('window')```, for example), passing this prop will force the grid container to that dimension size and avoid the reflow associated with dynamically calculating it|
+| horizontal | boolean | false | If true, the grid will be scrolling horizontally|
 
+Note: If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'
 
 
 ## Example
@@ -74,7 +76,7 @@ export default class Example extends Component {
 
     return (
       <GridView
-        itemWidth={130}
+        itemDimension={130}
         items={items}
         style={styles.gridView}
         renderItem={item => (
@@ -124,7 +126,13 @@ const styles = StyleSheet.create({
 |:---:|:---:|
 | Android Portrait | Android Landscape  |
 
+| ![Android Horizontal Portrait](/screenshots/android_horizontal_portrait.png?raw=true "Android Horizontal Portrait") | ![Android Horizontal Landscape](/screenshots/android_horizontal_landscape.png?raw=true "Android Horizontal Landscape") |
+|:---:|:---:|
+| Android Horizontal Portrait | Android Horizontal Landscape  |
 
+| ![iPhone Horizontal Portrait](/screenshots/iphone_horizontal_portrait.png?raw=true "iPhone Horizontal Portrait")| ![iPhone Horizontal Landscape](/screenshots/iphone_horizontal_landscape.png?raw=true "iPhone Horizontal Landscape") |
+|:---:|:---:|
+| iPhone Horizontal Portrait | iPhone Horizontal Landscape  |
 
 ## License
 
