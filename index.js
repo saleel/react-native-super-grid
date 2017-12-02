@@ -24,7 +24,13 @@ class SuperGrid extends Component {
   }
 
   getDimensions(lvDimension) {
-    const { itemDimension, spacing, fixed, staticDimension, horizontal } = this.props;
+    const { itemWidth, spacing, fixed, staticDimension, horizontal } = this.props;
+    let itemDimension = this.props.itemDimension;
+    if (itemWidth) {
+      itemDimension = itemWidth;
+      console.warn('React Native Super Grid - property "itemWidth" is depreciated. Use "itemDimension" instead.');
+    }
+
     const dimension = horizontal ? 'height' : 'width';
     const totalDimension = lvDimension || staticDimension || Dimensions.get('window')[dimension];
     const itemTotalDimension = itemDimension + spacing;
@@ -140,6 +146,7 @@ SuperGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
+  itemWidth: PropTypes.number, // for backward compatibility
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: ViewPropTypes.style,
@@ -150,6 +157,7 @@ SuperGrid.propTypes = {
 SuperGrid.defaultProps = {
   fixed: false,
   itemDimension: 120,
+  itemWidth: null,
   spacing: 10,
   style: {},
   staticDimension: undefined,
