@@ -142,6 +142,11 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [2.0.0] - 2017-12-02
+#### Added
+- Add ability to have a horizontal grid. @Sh3rawi
+
+
 ### [1.1.0] - 2017-11-03 (Target React Native 0.49+)
 #### Added
 - Replace view.propTypes to ViewPropTypes for 0.49+. @caudaganesh
