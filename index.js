@@ -13,7 +13,7 @@ class SuperGrid extends Component {
   }
 
   onLayout(e) {
-    const {staticDimension, horizontal} = this.props;
+    const { staticDimension, horizontal } = this.props;
     if (!staticDimension) {
       const { width, height } = e.nativeEvent.layout || {};
 
@@ -21,7 +21,6 @@ class SuperGrid extends Component {
         ...this.getDimensions(horizontal ? height : width),
       });
     }
-
   }
 
   getDimensions(lvDimension) {
@@ -117,7 +116,8 @@ class SuperGrid extends Component {
   }
 
   render() {
-    const { items, style, renderItem, spacing, fixed, itemDimension, horizontal, ...props } = this.props;
+    const { items, style, renderItem, spacing, fixed,
+      itemDimension, horizontal, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
     const rows = chunkArray(items, itemsPerRow);
@@ -144,7 +144,7 @@ SuperGrid.propTypes = {
   spacing: PropTypes.number,
   style: ViewPropTypes.style,
   staticDimension: PropTypes.number,
-  horizontal: PropTypes.bool
+  horizontal: PropTypes.bool,
 };
 
 SuperGrid.defaultProps = {
@@ -153,7 +153,7 @@ SuperGrid.defaultProps = {
   spacing: 10,
   style: {},
   staticDimension: undefined,
-  horizontal: false
+  horizontal: false,
 };
 
 export default SuperGrid;
