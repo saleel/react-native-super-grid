@@ -131,6 +131,7 @@ class SuperGrid extends Component {
 
     return (
       <ListView
+        enableEmptySections
         style={[{ paddingTop: spacing }, style]}
         onLayout={this.onLayout}
         dataSource={ds.cloneWithRows(rows)}
