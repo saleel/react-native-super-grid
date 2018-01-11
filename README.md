@@ -142,6 +142,14 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [2.0.2] - 2018-01-11
+#### Added
+- Allow dynamic update of itemDimension
+
+### [2.0.1] - 2017-12-13
+#### Added
+- Fixed render empty section headers Warning. @mannycolon
+
 ### [2.0.0] - 2017-12-02
 #### Added
 - Add ability to have a horizontal grid. @Sh3rawi
