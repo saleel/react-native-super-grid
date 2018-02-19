@@ -42,7 +42,7 @@ import GridView from 'react-native-super-grid';
 |---|---|---|---|
 | renderItem | Function |  | Function to render each object. Should return a react native component.  |
 | items | Array |  | Items to be rendered. renderItem will be called with each item in this array.  |  |
-| itemDimension | Number | 120  | Minimum width or height for each item in pixels (virtual). |
+| itemDimension (itemWidth if version 1.x.x) | Number | 120  | Minimum width or height for each item in pixels (virtual). |
 | fixed | Boolean | false  | If true, the exact ```itemDimension``` will be used and won't be adjusted to fit the screen. |
 | spacing | Number | 10 | Spacing between each item. |
 | style | [ListView](https://facebook.github.io/react-native/docs/listview.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
