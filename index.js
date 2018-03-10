@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, ListView, Dimensions, ViewPropTypes } from 'react-native';
+import { View, ListView, Dimensions, ViewPropTypes, FlatList } from 'react-native';
 import { chunkArray } from './utils';
 
 class SuperGrid extends Component {
@@ -57,7 +57,7 @@ class SuperGrid extends Component {
     };
   }
 
-  renderVerticalRow(data, sectionId, rowId) {
+  renderVerticalRow(data) {
     const { itemDimension, spacing, containerDimension, fixed } = this.state;
     const columnStyle = {
       flexDirection: 'column',
@@ -79,7 +79,7 @@ class SuperGrid extends Component {
     return (
       <View style={columnStyle}>
         {(data || []).map((item, i) => (
-          <View key={`${rowId}_${i}`} style={rowStyle}>
+          <View key={`${data.key}_${i}`} style={rowStyle}>
             <View style={itemStyle}>
               {this.props.renderItem(item, i)}
             </View>
@@ -89,7 +89,7 @@ class SuperGrid extends Component {
     );
   }
 
-  renderHorizontalRow(data, sectionId, rowId) {
+  renderHorizontalRow(data) {
     const { itemDimension, containerDimension, spacing, fixed } = this.state;
     const rowStyle = {
       flexDirection: 'row',
@@ -113,7 +113,7 @@ class SuperGrid extends Component {
     return (
       <View style={rowStyle}>
         {(data || []).map((item, i) => (
-          <View key={`${rowId}_${i}`} style={columnStyle}>
+          <View key={`${data.key}_${i}`} style={columnStyle}>
             <View style={itemStyle}>
               {this.props.renderItem(item, i)}
             </View>
@@ -123,29 +123,31 @@ class SuperGrid extends Component {
     );
   }
 
-  renderRow(data, sectionId, rowId) {
+  renderRow({ item }) { // item is array of items which go in one row
     const { horizontal } = this.props;
     if (horizontal) {
-      return this.renderVerticalRow(data, sectionId, rowId);
+      return this.renderVerticalRow(item);
     }
-    return this.renderHorizontalRow(data, sectionId, rowId);
+    return this.renderHorizontalRow(item);
   }
 
   render() {
-    const { items, style, renderItem, spacing, fixed,
-      itemDimension, horizontal, ...props } = this.props;
+    const { items, style, spacing, fixed, itemDimension, renderItem,
+      horizontal, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
-    const rows = chunkArray(items, itemsPerRow);
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    const rows = chunkArray(items, itemsPerRow).map((r, i) => {
+      const keydRow = [...r];
+      keydRow.key = `row_${i}`;
+      return keydRow;
+    });
 
     return (
-      <ListView
-        enableEmptySections
+      <FlatList
+        data={rows}
+        renderItem={this.renderRow}
         style={[{ paddingTop: spacing }, style]}
         onLayout={this.onLayout}
-        dataSource={ds.cloneWithRows(rows)}
-        renderRow={this.renderRow}
         {...props}
         horizontal={horizontal}
       />
