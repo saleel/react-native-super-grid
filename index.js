@@ -1,6 +1,7 @@
+/* eslint react/no-array-index-key: 0 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, ListView, Dimensions, ViewPropTypes, FlatList } from 'react-native';
+import { View, Dimensions, ViewPropTypes, FlatList } from 'react-native';
 import { chunkArray } from './utils';
 
 class SuperGrid extends Component {
@@ -46,7 +47,6 @@ class SuperGrid extends Component {
     const itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
     const containerDimension = availableDimension / itemsPerRow;
 
-
     return {
       totalDimension,
       itemDimension,
@@ -59,27 +59,32 @@ class SuperGrid extends Component {
 
   renderVerticalRow(data) {
     const { itemDimension, spacing, containerDimension, fixed } = this.state;
-    const columnStyle = {
-      flexDirection: 'column',
-      paddingLeft: spacing,
-    };
     const rowStyle = {
+      flexDirection: 'column',
+      paddingTop: spacing,
+      paddingRight: spacing,
+    };
+    if (data.isLast) {
+      rowStyle.marginRight = spacing;
+    }
+    const itemContainerStyle = {
+      justifyContent: 'center',
       height: containerDimension,
       paddingBottom: spacing,
     };
-    let itemStyle = {};
+    let itemStyle = { };
     if (fixed) {
       itemStyle = {
         height: itemDimension,
-        alignSelf: 'center',
-        paddingBottom: spacing,
+        justifyContent: 'center',
       };
+      delete itemContainerStyle.paddingBottom;
     }
 
     return (
-      <View style={columnStyle}>
+      <View style={rowStyle}>
         {(data || []).map((item, i) => (
-          <View key={`${data.key}_${i}`} style={rowStyle}>
+          <View key={`${data.key}_${i}`} style={itemContainerStyle}>
             <View style={itemStyle}>
               {this.props.renderItem(item, i)}
             </View>
@@ -96,7 +101,10 @@ class SuperGrid extends Component {
       paddingLeft: spacing,
       paddingBottom: spacing,
     };
-    const columnStyle = {
+    if (data.isLast) {
+      rowStyle.marginBottom = spacing;
+    }
+    const itemContainerStyle = {
       flexDirection: 'column',
       justifyContent: 'center',
       width: containerDimension,
@@ -113,7 +121,7 @@ class SuperGrid extends Component {
     return (
       <View style={rowStyle}>
         {(data || []).map((item, i) => (
-          <View key={`${data.key}_${i}`} style={columnStyle}>
+          <View key={`${data.key}_${i}`} style={itemContainerStyle}>
             <View style={itemStyle}>
               {this.props.renderItem(item, i)}
             </View>
@@ -136,9 +144,11 @@ class SuperGrid extends Component {
       horizontal, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
-    const rows = chunkArray(items, itemsPerRow).map((r, i) => {
+    const chunked = chunkArray(items, itemsPerRow);
+    const rows = chunked.map((r, i) => {
       const keydRow = [...r];
       keydRow.key = `row_${i}`;
+      keydRow.isLast = (chunked.length - 1 === i);
       return keydRow;
     });
 
@@ -146,7 +156,10 @@ class SuperGrid extends Component {
       <FlatList
         data={rows}
         renderItem={this.renderRow}
-        style={[{ paddingTop: spacing }, style]}
+        style={[
+          { ...horizontal ? { paddingLeft: spacing } : { paddingTop: spacing } },
+          style,
+        ]}
         onLayout={this.onLayout}
         {...props}
         horizontal={horizontal}
