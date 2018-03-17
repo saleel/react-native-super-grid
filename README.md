@@ -10,7 +10,7 @@ This component renders a Grid View that adapts itself to various screen resoluti
 
 Instead of passing an itemPerRow argument, you pass ```itemDimension``` and each item will be rendered with a dimension size equal to or more than (to fill the screen) the given dimension.
 
-Internally, this component uses the native [ListView](https://facebook.github.io/react-native/docs/listview.html).
+Internally, this component uses the native [FlatList](https://facebook.github.io/react-native/docs/flatlist.html).
 
 
 ### Installing
@@ -141,6 +141,11 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Changelog
+
+### [2.1.0] - 2018-03-17
+#### Added
+- Use FlastList instead of ListView
+- Fix spacing issues
 
 ### [2.0.2] - 2018-01-11
 #### Added
