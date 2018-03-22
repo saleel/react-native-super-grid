@@ -42,6 +42,7 @@ import GridView from 'react-native-super-grid';
 |---|---|---|---|
 | renderItem | Function |  | Function to render each object. Should return a react native component.  |
 | items | Array |  | Items to be rendered. renderItem will be called with each item in this array.  |  |
+| keyExtractor | Function |  | Used to extract a unique key for a given item at the specified index. Key is used for caching and as the react key to track item re-ordering. The default extractor checks item.key, then falls back to using the index, like React does.  |  |
 | itemDimension (itemWidth if version 1.x.x) | Number | 120  | Minimum width or height for each item in pixels (virtual). |
 | fixed | Boolean | false  | If true, the exact ```itemDimension``` will be used and won't be adjusted to fit the screen. |
 | spacing | Number | 10 | Spacing between each item. |
@@ -79,6 +80,7 @@ export default class Example extends Component {
         itemDimension={130}
         items={items}
         style={styles.gridView}
+        keyExtractor={item => item.code}
         renderItem={item => (
           <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
             <Text style={styles.itemName}>{item.name}</Text>
@@ -141,6 +143,12 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Changelog
+
+### [2.2.0] - 2018-03-22
+#### Added
+- `renderItem` receives object of interface extending `FlatList`'s renderItem argument (`{item, index, separators}`). 
+Additional props are `rowIndex` and `dimensions` reflecting current state measurements.
+- Implemented `keyExtractor` to avoid numeric keys if possible. Will fallback to numeric keys when no `keyExtractor` is provided
 
 ### [2.1.0] - 2018-03-17
 #### Added
