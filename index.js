@@ -57,14 +57,14 @@ class SuperGrid extends Component {
     };
   }
 
-  renderVerticalRow(data) {
+  getHorizontalRowStyles(isLast) {
     const { itemDimension, spacing, containerDimension, fixed } = this.state;
     const rowStyle = {
       flexDirection: 'column',
       paddingTop: spacing,
       paddingRight: spacing,
     };
-    if (data.isLast) {
+    if (isLast) {
       rowStyle.marginRight = spacing;
     }
     const itemContainerStyle = {
@@ -72,7 +72,7 @@ class SuperGrid extends Component {
       height: containerDimension,
       paddingBottom: spacing,
     };
-    let itemStyle = { };
+    let itemStyle = {};
     if (fixed) {
       itemStyle = {
         height: itemDimension,
@@ -81,27 +81,17 @@ class SuperGrid extends Component {
       delete itemContainerStyle.paddingBottom;
     }
 
-    return (
-      <View style={rowStyle}>
-        {(data || []).map((item, i) => (
-          <View key={`${data.key}_${i}`} style={itemContainerStyle}>
-            <View style={itemStyle}>
-              {this.props.renderItem(item, i)}
-            </View>
-          </View>
-        ))}
-      </View>
-    );
+    return { rowStyle, itemContainerStyle, itemStyle };
   }
 
-  renderHorizontalRow(data) {
+  getVerticalRowStyles(isLast) {
     const { itemDimension, containerDimension, spacing, fixed } = this.state;
     const rowStyle = {
       flexDirection: 'row',
       paddingLeft: spacing,
       paddingBottom: spacing,
     };
-    if (data.isLast) {
+    if (isLast) {
       rowStyle.marginBottom = spacing;
     }
     const itemContainerStyle = {
@@ -110,38 +100,42 @@ class SuperGrid extends Component {
       width: containerDimension,
       paddingRight: spacing,
     };
-    let itemStyle = {};
-    if (fixed) {
-      itemStyle = {
-        width: itemDimension,
-        alignSelf: 'center',
-      };
-    }
+    const itemStyle = fixed
+        ? {
+          width: itemDimension,
+          alignSelf: 'center',
+        }
+        : {};
+    return { rowStyle, itemContainerStyle, itemStyle };
+  }
+
+  // item is array of items which go in one row
+  renderRow({ item: chunk, index: rowIndex, separators }) {
+    const { horizontal } = this.props;
+    const { rowStyle, itemContainerStyle, itemStyle } =
+        horizontal
+            ? this.getHorizontalRowStyles(chunk.isLast)
+            : this.getVerticalRowStyles(chunk.isLast);
 
     return (
       <View style={rowStyle}>
-        {(data || []).map((item, i) => (
-          <View key={`${data.key}_${i}`} style={itemContainerStyle}>
+        {(chunk || []).map((item, index) => (
+          <View key={`${chunk.key}_${index}`} style={itemContainerStyle}>
             <View style={itemStyle}>
-              {this.props.renderItem(item, i)}
+              {this.props.renderItem({ item, index, separators, rowIndex, dimensions: this.state })}
             </View>
           </View>
-        ))}
+         ),
+        )}
       </View>
     );
   }
 
-  renderRow({ item }) { // item is array of items which go in one row
-    const { horizontal } = this.props;
-    if (horizontal) {
-      return this.renderVerticalRow(item);
-    }
-    return this.renderHorizontalRow(item);
-  }
-
   render() {
-    const { items, style, spacing, fixed, itemDimension, renderItem,
-      horizontal, ...props } = this.props;
+    const {
+            items, style, spacing, fixed, itemDimension, renderItem,
+            horizontal, ...props
+        } = this.props;
     const { itemsPerRow } = this.state;
 
     const chunked = chunkArray(items, itemsPerRow);
@@ -152,17 +146,16 @@ class SuperGrid extends Component {
       return keydRow;
     });
 
+    const adjustSpacingStyle = horizontal ? { paddingLeft: spacing } : { paddingTop: spacing };
+
     return (
       <FlatList
         data={rows}
         renderItem={this.renderRow}
-        style={[
-          { ...horizontal ? { paddingLeft: spacing } : { paddingTop: spacing } },
-          style,
-        ]}
+        style={[adjustSpacingStyle, style]}
         onLayout={this.onLayout}
-        {...props}
         horizontal={horizontal}
+        {...props}
       />
     );
   }
