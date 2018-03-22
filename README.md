@@ -144,6 +144,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [2.2.2] - 2018-03-22
+#### Improved
+- Optimized performance rendering for one-item-in-a-row case 
+
 ### [2.2.1] - 2018-03-22
 #### Fixed
 - `onLayout` is no longer blocking user implementation, instead it calls it after internal use.

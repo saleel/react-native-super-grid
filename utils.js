@@ -11,3 +11,9 @@ export function chunkArray(array, size) {
     return acc;
   }, []);
 }
+
+export function omit(source, ...omitItems) {
+  return Object.keys(source).reduce((acc, key) =>
+            Object.assign({}, acc, omitItems.includes(key) ? null : { [key]: source[key] })
+        , {});
+}
