@@ -109,6 +109,18 @@ class SuperGrid extends Component {
     return { rowStyle, itemContainerStyle, itemStyle };
   }
 
+  getItemKey(chunkKey, item, index) {
+    if (item.key) return item.key;
+    return typeof this.props.keyExtractor === 'function'
+            ? this.props.keyExtractor(item)
+            : `${chunkKey}_${index}`;
+  }
+  getRowKey(chunk, index) {
+    return typeof this.props.keyExtractor === 'function'
+            ? chunk.map(this.props.keyExtractor).join('-')
+            : `row_${index}`;
+  }
+
   // item is array of items which go in one row
   renderRow({ item: chunk, index: rowIndex, separators }) {
     const { horizontal } = this.props;
@@ -119,13 +131,22 @@ class SuperGrid extends Component {
 
     return (
       <View style={rowStyle}>
-        {(chunk || []).map((item, index) => (
-          <View key={`${chunk.key}_${index}`} style={itemContainerStyle}>
-            <View style={itemStyle}>
-              {this.props.renderItem({ item, index, separators, rowIndex, dimensions: this.state })}
+        {(chunk || []).map((item, index) => {
+          const key = this.getItemKey(chunk.key, item, index);
+          return (
+            <View key={key} style={itemContainerStyle}>
+              <View style={itemStyle}>
+                {this.props.renderItem({
+                  item,
+                  index,
+                  separators,
+                  rowIndex,
+                  dimensions: this.state,
+                })}
+              </View>
             </View>
-          </View>
-         ),
+          );
+        },
         )}
       </View>
     );
@@ -133,17 +154,18 @@ class SuperGrid extends Component {
 
   render() {
     const {
-            items, style, spacing, fixed, itemDimension, renderItem,
-            horizontal, ...props
-        } = this.props;
+        fixed, itemDimension, renderItem, keyExtractor, // eslint-disable-line
+        items, style, spacing, horizontal, ...props
+    } = this.props;
+
     const { itemsPerRow } = this.state;
 
     const chunked = chunkArray(items, itemsPerRow);
     const rows = chunked.map((r, i) => {
-      const keydRow = [...r];
-      keydRow.key = `row_${i}`;
-      keydRow.isLast = (chunked.length - 1 === i);
-      return keydRow;
+      const keyedRow = [...r];
+      keyedRow.key = this.getRowKey(keyedRow, i);
+      keyedRow.isLast = (chunked.length - 1 === i);
+      return keyedRow;
     });
 
     const adjustSpacingStyle = horizontal ? { paddingLeft: spacing } : { paddingTop: spacing };
@@ -164,6 +186,7 @@ class SuperGrid extends Component {
 SuperGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.any).isRequired,
+  keyExtractor: PropTypes.func,
   itemDimension: PropTypes.number,
   itemWidth: PropTypes.number, // for backward compatibility
   fixed: PropTypes.bool,
@@ -181,6 +204,7 @@ SuperGrid.defaultProps = {
   style: {},
   staticDimension: undefined,
   horizontal: false,
+  keyExtractor: undefined,
 };
 
 export default SuperGrid;
