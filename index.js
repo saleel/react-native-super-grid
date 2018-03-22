@@ -22,14 +22,17 @@ class SuperGrid extends Component {
   }
 
   onLayout(e) {
-    const { staticDimension, horizontal } = this.props;
-    if (!staticDimension) {
-      const { width, height } = e.nativeEvent.layout || {};
+      const { staticDimension, horizontal, onLayout } = this.props;
+      if (!staticDimension) {
+          const { width, height } = e.nativeEvent.layout || {};
 
-      this.setState({
-        ...this.getDimensions(horizontal ? height : width),
-      });
-    }
+          this.setState({
+              ...this.getDimensions(horizontal ? height : width),
+          });
+      }
+      if(typeof onLayout==='function'){
+          onLayout(e)
+      }
   }
 
   getDimensions(lvDimension, itemDim) {
@@ -154,7 +157,7 @@ class SuperGrid extends Component {
 
   render() {
     const {
-        fixed, itemDimension, renderItem, keyExtractor, // eslint-disable-line
+        fixed, itemDimension, renderItem, keyExtractor, onLayout, // eslint-disable-line
         items, style, spacing, horizontal, ...props
     } = this.props;
 
