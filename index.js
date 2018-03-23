@@ -5,6 +5,10 @@ import {View, Dimensions, ViewPropTypes, FlatList} from 'react-native';
 import {chunkArray, omit} from './utils';
 
 class SuperGrid extends Component {
+    _keyExtractor = (item, index) => {
+        return this.state.itemsPerRow === 1 ? this.getItemKey(item, index) : this.getRowKey(item, index);
+    };
+
     constructor(props) {
         super(props);
         this.renderRow = this.renderRow.bind(this);
@@ -17,7 +21,7 @@ class SuperGrid extends Component {
     componentWillReceiveProps(nextProps) {
         let updates = {};
         if (nextProps.itemDimension !== this.props.itemDimension) {
-            updates = Object.assign({}, updates, this.getDimensions(this.state.totalDimension, nextProps.itemDimension));
+            updates = Object.assign({}, updates, this.getDimensions(this.state.window, nextProps.itemDimension));
         }
         if (nextProps.items !== this.props.items) {
             updates = Object.assign({}, updates, {rows: this.createDataset(nextProps.items)});
@@ -26,10 +30,10 @@ class SuperGrid extends Component {
     }
 
     onLayout(e) {
-        const {staticDimension, horizontal, onLayout} = this.props;
+        const {staticDimension, onLayout} = this.props;
         if (!staticDimension) {
             const {width, height} = e.nativeEvent.layout || {};
-            const dimensions = this.getDimensions(horizontal ? height : width);
+            const dimensions = this.getDimensions({width, height});
             this.setState({
                 ...dimensions,
                 rows: this.createDataset(this.props.items, dimensions.itemsPerRow),
@@ -47,46 +51,82 @@ class SuperGrid extends Component {
             itemDimension = itemWidth;
             console.warn('React Native Super Grid - property "itemWidth" is depreciated. Use "itemDimension" instead.');
         }
+        const dimensionSet = ['Width', 'Height'];
+        if (horizontal) dimensionSet.reverse();
+        let window = lvDimension;
+        if (!window && staticDimension) {
+            window = {[dimensionSet[0].toLowerCase()]: staticDimension, [dimensionSet[1].toLowerCase()]: '100%'};
+        } else {
+            const {width, height} = Dimensions.get('window');
+            window = {width, height};
+        }
+        const availableDimension = window[dimensionSet[0].toLowerCase()] - spacing; // One spacing extra
+        const itemSecondaryDimension = this.getAspectRatioDimension(itemDimension);
+        const item = {
+            [`inner${dimensionSet[0]}`]: itemDimension,
+            [`inner${dimensionSet[1]}`]: itemSecondaryDimension,
+            [`outer${dimensionSet[0]}`]: itemDimension + spacing,
+            [`outer${dimensionSet[1]}`]: itemSecondaryDimension ? itemSecondaryDimension + spacing : undefined,
+        };
 
-        const dimension = horizontal ? 'height' : 'width';
-        const totalDimension = lvDimension || staticDimension || Dimensions.get('window')[dimension];
-        const itemTotalDimension = itemDimension + spacing;
-        const availableDimension = totalDimension - spacing; // One spacing extra
-        const itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
+        const itemsPerRow = Math.floor(availableDimension / item[`outer${dimensionSet[0]}`]);
         const containerDimension = availableDimension / itemsPerRow;
+        const containerSecondaryDimension = this.getAspectRatioDimension(containerDimension);
+        const container = {
+            [`inner${dimensionSet[0]}`]: containerDimension,
+            [`inner${dimensionSet[1]}`]: containerSecondaryDimension,
+            [`outer${dimensionSet[0]}`]: containerDimension,
+            [`outer${dimensionSet[1]}`]: containerSecondaryDimension ? containerSecondaryDimension + spacing : undefined,
+        };
 
         return {
-            totalDimension,
-            itemDimension,
+            window,
+            container,
+            item,
             spacing,
             itemsPerRow,
-            containerDimension,
             fixed,
         };
     }
 
-    getHorizontalRowStyles(isLast) {
-        const {itemDimension, spacing, containerDimension, fixed} = this.state;
+    getAspectRatioDimension(val) {
+        const {aspectRatio, horizontal} = this.props;
+        if (typeof aspectRatio === 'number') {
+            return horizontal ? val * aspectRatio : val / aspectRatio;
+        }
+    }
 
+    getHorizontalRowStyles(isLast) {
+        const {item, container, window, spacing, fixed} = this.state;
+        const {outerWidth, outerHeight} = container;
         const rowStyle = {
             flexDirection: 'column',
             paddingTop: spacing,
             paddingRight: spacing,
+            width: outerWidth,
         };
-        if (isLast) {
-            rowStyle.marginRight = spacing;
-        }
+        if (rowStyle.width == null && !this.props.disableSafetyWidth) rowStyle.width = window.width - spacing; //fallback to some known width when items don't have explicit width
+
+        if (isLast) rowStyle.marginRight = spacing;
+
         const itemContainerStyle = {
             justifyContent: 'center',
-            height: containerDimension,
+            height: outerHeight,
             paddingBottom: spacing,
         };
-        let itemStyle = {};
+
+        let itemStyle = {flex: 1};
+
         if (fixed) {
             itemStyle = {
-                height: itemDimension,
+                height: item.innerHeight,
                 justifyContent: 'center',
             };
+            if (item.innerWidth) {
+                itemStyle.width = item.innerWidth;
+                delete rowStyle.width;
+            }
+
             delete itemContainerStyle.paddingBottom;
         }
 
@@ -94,7 +134,7 @@ class SuperGrid extends Component {
     }
 
     getVerticalRowStyles(isLast) {
-        const {itemDimension, containerDimension, spacing, fixed} = this.state;
+        const {item, container, spacing, fixed} = this.state;
         const rowStyle = {
             flexDirection: 'row',
             paddingLeft: spacing,
@@ -106,15 +146,19 @@ class SuperGrid extends Component {
         const itemContainerStyle = {
             flexDirection: 'column',
             justifyContent: 'center',
-            width: containerDimension,
+            width: container.outerWidth,
             paddingRight: spacing,
         };
-        const itemStyle = fixed
-            ? {
-                width: itemDimension,
-                alignSelf: 'center',
-            }
-            : {};
+        const fixedStyle = {
+            width: item.innerWidth,
+            alignSelf: 'center',
+        };
+        if (item.innerHeight) fixedStyle.height = item.innerHeight;
+        const itemStyle = fixed ? fixedStyle : {};
+        if (container.outerHeight && !fixed) {
+            itemContainerStyle.height = container.outerHeight;
+            itemStyle.flex = 1;
+        }
         return {rowStyle, itemContainerStyle, itemStyle};
     }
 
@@ -131,6 +175,8 @@ class SuperGrid extends Component {
             : `row_${index}`;
     }
 
+    // item: chunk is an array of items which go in one row unless itemsPerRow===1,
+
     createDataset(items = this.props.items, itemsPerRow = this.state.itemsPerRow) {
         if (itemsPerRow === 1) return items;
 
@@ -142,7 +188,6 @@ class SuperGrid extends Component {
         });
     }
 
-    // item: chunk is an array of items which go in one row unless itemsPerRow===1,
     // otherwise it's an object in an original items array, automatically last in its row
     renderRow({item: chunk, index: rowIndex, separators}) {
         const {horizontal} = this.props;
@@ -153,7 +198,6 @@ class SuperGrid extends Component {
             ? this.getHorizontalRowStyles(isLast)
             : this.getVerticalRowStyles(isLast);
         const {rows: _, ...dimensions} = this.state;
-
         return (
             <View style={rowStyle}>
                 {chunkIsArray
@@ -199,17 +243,17 @@ class SuperGrid extends Component {
         );
     }
 
-    _keyExtractor = (item, index) => {
-        return this.state.itemsPerRow === 1 ? this.getItemKey(item, index) : this.getRowKey(item, index);
-    };
-
     render() {
-        const {
-            style,
-            spacing,
-            horizontal,
-            ...props
-        } = omit(this.props, 'fixed', 'itemDimension', 'renderItem', 'keyExtractor', 'onLayout', 'items');
+        const {style, spacing, horizontal, ...props} = omit(
+            this.props,
+            'fixed',
+            'itemDimension',
+            'aspectRatio',
+            'renderItem',
+            'keyExtractor',
+            'onLayout',
+            'items'
+        );
 
         const adjustSpacingStyle = horizontal ? {paddingLeft: spacing} : {paddingTop: spacing};
 
@@ -239,6 +283,8 @@ SuperGrid.propTypes = {
     style: ViewPropTypes.style,
     staticDimension: PropTypes.number,
     horizontal: PropTypes.bool,
+    aspectRatio: PropTypes.number,
+    disableSafetyWidth: PropTypes.bool,
 };
 
 SuperGrid.defaultProps = {
@@ -247,10 +293,12 @@ SuperGrid.defaultProps = {
     itemWidth: null,
     spacing: 10,
     style: {},
+    aspectRatio: undefined,
     staticDimension: undefined,
     horizontal: false,
     keyExtractor: undefined,
     onLayout: undefined,
+    disableSafetyWidth: false,
 };
 
 export default SuperGrid;

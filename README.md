@@ -40,7 +40,7 @@ import GridView from 'react-native-super-grid';
 
 | Property | Type | Default Value | Description |
 |---|---|---|---|
-| renderItem | Function |  | Function to render each object. Should return a react native component.  |
+| renderItem | Function |  | Function to render each object. Should return a react native component. `renderItem` receives object of interface extending `FlatList`'s renderItem argument (`{item, index, separators}`). Additional literals are `rowIndex` and `dimensions` reflecting current measurements for `window`,  `container`, `item`, also has `itemsPerRow`, `spacing`, `fixed` |
 | items | Array |  | Items to be rendered. renderItem will be called with each item in this array.  |  |
 | keyExtractor | Function |  | Used to extract a unique key for a given item at the specified index. Key is used for caching and as the react key to track item re-ordering. The default extractor checks item.key, then falls back to using the index, like React does.  |  |
 | itemDimension (itemWidth if version 1.x.x) | Number | 120  | Minimum width or height for each item in pixels (virtual). |
@@ -48,7 +48,9 @@ import GridView from 'react-native-super-grid';
 | spacing | Number | 10 | Spacing between each item. |
 | style | [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
 | staticDimension | Number | undefined | Specifies a static width or height for the GridView container. If your container dimension is known or can be calculated at runtime (via ```Dimensions.get('window')```, for example), passing this prop will force the grid container to that dimension size and avoid the reflow associated with dynamically calculating it|
-| horizontal | boolean | false | If true, the grid will be scrolling horizontally|
+| aspectRatio| number | undefined | If you want containers wrapping your items maintain aspect ratio automatically and flex content of items fill them, pass a number, e.g if you need aspect ratio of "16:9" pass `aspectRatio={16/9}`. Be aware that this is a canonical aspect ratio (`width:height`) where "16:9" is a landscape orientation of item. if you pass numbers less than zero, you'll get the portrait version of it. Disregarding of `horizontal` or `vertical` scrolling mode for the grid, aspect ratio setting maintains orientation of items in a row (doesn't make "16:9" a "9:16") |
+| horizontal | boolean | false | If true, the grid will be scrolling horizontally. Make sure you specify item width in `renderItem` and pass `disableSafetyWidth` OR leave as-is and fall back to column occupying screen width OR use `aspectRatio` to automatically calculate column width|
+| disableSafetyWidth | boolean | false | Supplementary to `horizontal` mode only. In `horizontal` mode your items must have a known fixed width, otherwise they collapse to 0 width. If your items do not specify width, safety width (screenWidth - spacing) will be applied to your column. If you want to turn this safety measure off (i.e. your items specify width), set this property to `true`. `aspectRatio` ignores this setting |
 
 Note: If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'
 
@@ -143,6 +145,11 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Changelog
+
+### [2.2.3] - 2018-03-23
+#### Added
+- `aspectRatio` maintains aspect ratio of items. This makes item containers of known width and height disregarding of their contents. If you have images of fixed ratio, the content won't 'jump' after they load.
+- `horizontal` layout now has a safety measure of setting items width to screen width minus spacing. If your rendered item has explicit width, use `disableSafetyWidth` to disable this measure. `aspectRatio` ignores it. See properties table for more info.
 
 ### [2.2.2] - 2018-03-22
 #### Improved
