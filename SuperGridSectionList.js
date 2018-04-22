@@ -1,11 +1,10 @@
 /* eslint react/no-array-index-key: 0 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Dimensions, ViewPropTypes, FlatList } from 'react-native';
+import { View, Dimensions, ViewPropTypes, SectionList } from 'react-native';
 import { chunkArray } from './utils';
-import SuperGridSectionList from './GridSectionList'
 
-class SuperGrid extends Component {
+class SuperGridSectionList extends Component {
   constructor(props) {
     super(props);
     this.renderRow = this.renderRow.bind(this);
@@ -23,25 +22,25 @@ class SuperGrid extends Component {
   }
 
   onLayout(e) {
-    const { staticDimension, horizontal } = this.props;
+    const { staticDimension } = this.props;
     if (!staticDimension) {
       const { width, height } = e.nativeEvent.layout || {};
 
       this.setState({
-        ...this.getDimensions(horizontal ? height : width),
+        ...this.getDimensions(width),
       });
     }
   }
 
   getDimensions(lvDimension, itemDim) {
-    const { itemWidth, spacing, fixed, staticDimension, horizontal } = this.props;
+    const { itemWidth, spacing, fixed, staticDimension } = this.props;
     let itemDimension = itemDim || this.props.itemDimension;
     if (itemWidth) {
       itemDimension = itemWidth;
       console.warn('React Native Super Grid - property "itemWidth" is depreciated. Use "itemDimension" instead.');
     }
 
-    const dimension = horizontal ? 'height' : 'width';
+    const dimension = 'width';
     const totalDimension = lvDimension || staticDimension || Dimensions.get('window')[dimension];
     const itemTotalDimension = itemDimension + spacing;
     const availableDimension = totalDimension - spacing; // One spacing extra
@@ -56,43 +55,6 @@ class SuperGrid extends Component {
       containerDimension,
       fixed,
     };
-  }
-
-  renderVerticalRow(data) {
-    const { itemDimension, spacing, containerDimension, fixed } = this.state;
-    const rowStyle = {
-      flexDirection: 'column',
-      paddingTop: spacing,
-      paddingRight: spacing,
-    };
-    if (data.isLast) {
-      rowStyle.marginRight = spacing;
-    }
-    const itemContainerStyle = {
-      justifyContent: 'center',
-      height: containerDimension,
-      paddingBottom: spacing,
-    };
-    let itemStyle = { };
-    if (fixed) {
-      itemStyle = {
-        height: itemDimension,
-        justifyContent: 'center',
-      };
-      delete itemContainerStyle.paddingBottom;
-    }
-
-    return (
-      <View style={rowStyle}>
-        {(data || []).map((item, i) => (
-          <View key={`${data.key}_${i}`} style={itemContainerStyle}>
-            <View style={itemStyle}>
-              {this.props.renderItem(item, i)}
-            </View>
-          </View>
-        ))}
-      </View>
-    );
   }
 
   renderHorizontalRow(data) {
@@ -132,17 +94,12 @@ class SuperGrid extends Component {
     );
   }
 
-  renderRow({ item }) { // item is array of items which go in one row
-    const { horizontal } = this.props;
-    if (horizontal) {
-      return this.renderVerticalRow(item);
-    }
+  renderRow({ item }) { // item is array of items which go in one row  
     return this.renderHorizontalRow(item);
   }
 
   render() {
-    const { items, style, spacing, fixed, itemDimension, renderItem,
-      horizontal, ...props } = this.props;
+    const { items, style, spacing, fixed, itemDimension, renderItem, renderSectionHeader, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
     const chunked = chunkArray(items, itemsPerRow);
@@ -154,16 +111,16 @@ class SuperGrid extends Component {
     });
 
     return (
-      <FlatList
+      <SectionList
         data={rows}
+        renderSectionHeader = {renderSectionHeader}
         renderItem={this.renderRow}
         style={[
-          { ...horizontal ? { paddingLeft: spacing } : { paddingTop: spacing } },
+          {paddingTop: spacing },
           style,
         ]}
         onLayout={this.onLayout}
         {...props}
-        horizontal={horizontal}
       />
     );
   }
@@ -191,5 +148,4 @@ SuperGrid.defaultProps = {
   horizontal: false,
 };
 
-export default SuperGrid;
-export {SuperGridSectionList};
+export default SuperGridSectionList;
