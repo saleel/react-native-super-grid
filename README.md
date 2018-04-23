@@ -1,4 +1,6 @@
 # React Native Super Grid
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 
 Responsive Grid View for React Native.
 
