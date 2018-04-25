@@ -58,6 +58,8 @@ class SuperGridSectionList extends Component {
   }
 
   renderHorizontalRow(data) {
+    console.log("Horizontal Row render input:");
+    console.log(data)
     const { itemDimension, containerDimension, spacing, fixed } = this.state;
     const rowStyle = {
       flexDirection: 'row',
@@ -102,17 +104,29 @@ class SuperGridSectionList extends Component {
     const { items, style, spacing, fixed, itemDimension, renderItem, renderSectionHeader, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
-    const chunked = chunkArray(items, itemsPerRow);
+
+
+    console.log("Items BEFORE CHUNKLISTT");
+    console.log(items);
+  
+  for (sectionsPair of items){
+    const chunked = chunkArray(sectionsPair.data, itemsPerRow);
     const rows = chunked.map((r, i) => {
       const keydRow = [...r];
       keydRow.key = `row_${i}`;
       keydRow.isLast = (chunked.length - 1 === i);
       return keydRow;
     });
+    sectionsPair.data = rows;
+  }
+
+  console.log("Items given to sectionList AFTER CHUNKLISTT");
+  console.log(items);
+
 
     return (
       <SectionList
-        data={rows}
+        sections={items}
         renderSectionHeader = {renderSectionHeader}
         renderItem={this.renderRow}
         style={[
@@ -126,7 +140,7 @@ class SuperGridSectionList extends Component {
   }
 }
 
-SuperGrid.propTypes = {
+SuperGridSectionList.propTypes = {
   renderItem: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
@@ -138,7 +152,7 @@ SuperGrid.propTypes = {
   horizontal: PropTypes.bool,
 };
 
-SuperGrid.defaultProps = {
+SuperGridSectionList.defaultProps = {
   fixed: false,
   itemDimension: 120,
   itemWidth: null,
