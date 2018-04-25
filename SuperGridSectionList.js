@@ -104,12 +104,10 @@ class SuperGridSectionList extends Component {
     const { items, style, spacing, fixed, itemDimension, renderItem, renderSectionHeader, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
+    //Deep copy, so that re-renders and chunkArray functions don't affect the actual items object
+    let itemCopy = JSON.parse(JSON.stringify(items)); 
 
-
-    console.log("Items BEFORE CHUNKLISTT");
-    console.log(items);
-  
-  for (sectionsPair of items){
+  for (sectionsPair of itemCopy){
     const chunked = chunkArray(sectionsPair.data, itemsPerRow);
     const rows = chunked.map((r, i) => {
       const keydRow = [...r];
@@ -121,12 +119,12 @@ class SuperGridSectionList extends Component {
   }
 
   console.log("Items given to sectionList AFTER CHUNKLISTT");
-  console.log(items);
+  console.log(itemCopy);
 
 
     return (
       <SectionList
-        sections={items}
+        sections={itemCopy}
         renderSectionHeader = {renderSectionHeader}
         renderItem={this.renderRow}
         style={[
