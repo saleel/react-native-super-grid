@@ -12,7 +12,7 @@ This component renders a Grid View that adapts itself to various screen resoluti
 
 Instead of passing an itemPerRow argument, you pass ```itemDimension``` and each item will be rendered with a dimension size equal to or more than (to fill the screen) the given dimension.
 
-Internally, this component uses the native [FlatList](https://facebook.github.io/react-native/docs/flatlist.html).
+Internally, these components use the native [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) or [SectionList](https://facebook.github.io/react-native/docs/sectionlist.html).
 
 
 ### Installing
@@ -26,7 +26,8 @@ npm install react-native-super-grid
 If your react native is below v0.49, install version 1.0.4 - npm install react-native-super-grid@1.0.4
 
 
-### Usage
+### Usage (GridView)
+This is a FlatList modified to have a grid layout.
 ```
 import GridView from 'react-native-super-grid';
 ```
@@ -37,6 +38,27 @@ import GridView from 'react-native-super-grid';
   renderItem={item => (<Text>{item}</Text>)}
 />
 ```
+
+### Usage (SuperGridSectionList)
+This is a SectionList modified to have a grid layout.
+```
+import {SuperGridSectionList} from 'react-native-super-grid';
+```
+```
+<SuperGridSectionList
+  itemDimension={130}
+  items={this.state.savedCalculations}
+  style={styles.gridView}
+  renderItem={item => (
+    <View style={[styles.itemContainer]}>
+      <Text style={styles.itemName}>{item.type}</Text>
+      <Text style={styles.itemCode}>{item.pensioneerName}</Text>
+    </View>
+  )}
+  renderSectionHeader={this.renderListHeader}
+/>
+```
+
 
 #### Properties
 
@@ -49,7 +71,7 @@ import GridView from 'react-native-super-grid';
 | spacing | Number | 10 | Spacing between each item. |
 | style | [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
 | staticDimension | Number | undefined | Specifies a static width or height for the GridView container. If your container dimension is known or can be calculated at runtime (via ```Dimensions.get('window')```, for example), passing this prop will force the grid container to that dimension size and avoid the reflow associated with dynamically calculating it|
-| horizontal | boolean | false | If true, the grid will be scrolling horizontally|
+| horizontal | boolean | false | If true, the grid will be scrolling horizontally **(this prop doesn't affect the SuperGridSectionList, which only scrolls horizontally)** |
 
 Note: If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'
 
