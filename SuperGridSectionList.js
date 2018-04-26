@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { View, Dimensions, ViewPropTypes, SectionList } from 'react-native';
 import { chunkArray } from './utils';
 
+/**
+ * This class is a modification on the main super grid class. It renders a vertical scrolling grid SectionList
+ */
 class SuperGridSectionList extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +16,7 @@ class SuperGridSectionList extends Component {
     this.state = this.getDimensions();
   }
 
+  //Resetting the dimensions if the decice has changed orientation
   componentWillReceiveProps(nextProps) {
     if (nextProps.itemDimension !== this.props.itemDimension) {
       this.setState({
@@ -21,6 +25,7 @@ class SuperGridSectionList extends Component {
     }
   }
 
+  
   onLayout(e) {
     const { staticDimension } = this.props;
     if (!staticDimension) {
@@ -58,8 +63,6 @@ class SuperGridSectionList extends Component {
   }
 
   renderHorizontalRow(data) {
-    console.log("Horizontal Row render input:");
-    console.log(data)
     const { itemDimension, containerDimension, spacing, fixed } = this.state;
     const rowStyle = {
       flexDirection: 'row',
@@ -96,7 +99,7 @@ class SuperGridSectionList extends Component {
     );
   }
 
-  renderRow({ item }) { // item is array of items which go in one row  
+  renderRow({ item }) { // item is array of items which make up a single row 
     return this.renderHorizontalRow(item);
   }
 
@@ -107,20 +110,17 @@ class SuperGridSectionList extends Component {
     //Deep copy, so that re-renders and chunkArray functions don't affect the actual items object
     let itemCopy = JSON.parse(JSON.stringify(items)); 
 
-  for (sectionsPair of itemCopy){
-    const chunked = chunkArray(sectionsPair.data, itemsPerRow);
-    const rows = chunked.map((r, i) => {
-      const keydRow = [...r];
-      keydRow.key = `row_${i}`;
-      keydRow.isLast = (chunked.length - 1 === i);
-      return keydRow;
-    });
-    sectionsPair.data = rows;
+    //Going through all the sections in itemCopy, and dividing their 'data' fields into smaller 'chunked' arrays to represent rows
+    for (sectionsPair of itemCopy){
+      const chunked = chunkArray(sectionsPair.data, itemsPerRow);
+      const rows = chunked.map((r, i) => {
+        const keydRow = [...r];
+        keydRow.key = `row_${i}`;
+        keydRow.isLast = (chunked.length - 1 === i);
+        return keydRow;
+      });
+      sectionsPair.data = rows;
   }
-
-  console.log("Items given to sectionList AFTER CHUNKLISTT");
-  console.log(itemCopy);
-
 
     return (
       <SectionList
