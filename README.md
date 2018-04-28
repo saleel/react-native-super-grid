@@ -45,14 +45,15 @@ This is a SectionList modified to have a grid layout.
 import {SuperGridSectionList} from 'react-native-super-grid';
 ```
 ```
+//renderItem prop has the same signature as the actual normal SectionList's renderItem
 <SuperGridSectionList
   itemDimension={130}
-  items={this.state.savedCalculations}
+  sections={this.state.savedCalculations}
   style={styles.gridView}
   renderItem={item => (
     <View style={[styles.itemContainer]}>
-      <Text style={styles.itemName}>{item.type}</Text>
-      <Text style={styles.itemCode}>{item.pensioneerName}</Text>
+      <Text style={styles.itemName}>{item.item}</Text>
+      <Text style={styles.itemCode}>{item.index}</Text>
     </View>
   )}
   renderSectionHeader={this.renderListHeader}
