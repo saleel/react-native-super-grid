@@ -10,8 +10,8 @@ import { chunkArray } from './utils';
 class SuperGridSectionList extends Component {
   constructor(props) {
     super(props);
-    this.renderRow = this.renderRow.bind(this);
     this.onLayout = this.onLayout.bind(this);
+    this.renderHorizontalRow = this.renderHorizontalRow.bind(this);
     this.getDimensions = this.getDimensions.bind(this);
     this.state = this.getDimensions();
   }
@@ -62,14 +62,14 @@ class SuperGridSectionList extends Component {
     };
   }
 
-  renderHorizontalRow(data) {
-    const { itemDimension, containerDimension, spacing, fixed } = this.state;
+  renderHorizontalRow({item, index, section, separators}) {
+    const { itemDimension, containerDimension, spacing, fixed, sections, itemsPerRow } = this.state;
     const rowStyle = {
       flexDirection: 'row',
       paddingLeft: spacing,
       paddingBottom: spacing,
     };
-    if (data.isLast) {
+    if (item.isLast) {
       rowStyle.marginBottom = spacing;
     }
     const itemContainerStyle = {
@@ -88,10 +88,10 @@ class SuperGridSectionList extends Component {
 
     return (
       <View style={rowStyle}>
-        {(data || []).map((item, i) => (
-          <View key={`${data.key}_${i}`} style={itemContainerStyle}>
+        {(item || []).map((itemObject, i) => (
+          <View key={`${item.key}_${i}`} style={itemContainerStyle}>
             <View style={itemStyle}>
-              {this.props.renderItem(item, i)}
+              {this.props.renderItem({item: itemObject, index: i + (item.rowNumber * itemsPerRow), separators: separators, section: section })}
             </View>
           </View>
         ))}
@@ -99,34 +99,32 @@ class SuperGridSectionList extends Component {
     );
   }
 
-  renderRow({ item }) { // item is array of items which make up a single row 
-    return this.renderHorizontalRow(item);
-  }
-
   render() {
-    const { items, style, spacing, fixed, itemDimension, renderItem, renderSectionHeader, ...props } = this.props;
+    const { sections, style, spacing, fixed, itemDimension, renderItem, renderSectionHeader, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
     //Deep copy, so that re-renders and chunkArray functions don't affect the actual items object
-    let itemCopy = JSON.parse(JSON.stringify(items)); 
+    let sectionsCopy = JSON.parse(JSON.stringify(sections)); 
 
-    //Going through all the sections in itemCopy, and dividing their 'data' fields into smaller 'chunked' arrays to represent rows
-    for (sectionsPair of itemCopy){
+    //Going through all the sections in sectionsCopy, and dividing their 'data' fields into smaller 'chunked' arrays to represent rows
+    for (sectionsPair of sectionsCopy){
       const chunked = chunkArray(sectionsPair.data, itemsPerRow);
       const rows = chunked.map((r, i) => {
         const keydRow = [...r];
         keydRow.key = `row_${i}`;
+        keydRow.rowNumber = i;
         keydRow.isLast = (chunked.length - 1 === i);
         return keydRow;
       });
       sectionsPair.data = rows;
-  }
+    }
+    console.log(sectionsCopy);
 
     return (
       <SectionList
-        sections={itemCopy}
+        sections={sectionsCopy}
         renderSectionHeader = {renderSectionHeader}
-        renderItem={this.renderRow}
+        renderItem={this.renderHorizontalRow}
         style={[
           {paddingTop: spacing },
           style,
@@ -140,14 +138,13 @@ class SuperGridSectionList extends Component {
 
 SuperGridSectionList.propTypes = {
   renderItem: PropTypes.func.isRequired,
-  items: PropTypes.arrayOf(PropTypes.any).isRequired,
+  sections: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
   itemWidth: PropTypes.number, // for backward compatibility
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: ViewPropTypes.style,
   staticDimension: PropTypes.number,
-  horizontal: PropTypes.bool,
 };
 
 SuperGridSectionList.defaultProps = {
@@ -157,7 +154,6 @@ SuperGridSectionList.defaultProps = {
   spacing: 10,
   style: {},
   staticDimension: undefined,
-  horizontal: false,
 };
 
 export default SuperGridSectionList;
