@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Dimensions, ViewPropTypes, FlatList } from 'react-native';
 import { chunkArray } from './utils';
-import SuperGridSectionList from './GridSectionList'
+import SuperGridSectionList from './SuperGridSectionList'
 
 class SuperGrid extends Component {
   constructor(props) {
