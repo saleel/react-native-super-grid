@@ -118,7 +118,6 @@ class SuperGridSectionList extends Component {
       });
       sectionsPair.data = rows;
     }
-    console.log(sectionsCopy);
 
     return (
       <SectionList
