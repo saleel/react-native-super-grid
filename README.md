@@ -1,5 +1,8 @@
 # React Native Super Grid
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+![npm](https://img.shields.io/npm/dt/react-native-super-grid.svg?style=flat-square)
+
+
 
 
 Responsive Grid View for React Native.
@@ -45,7 +48,7 @@ This is a SectionList modified to have a grid layout.
 import {SuperGridSectionList} from 'react-native-super-grid';
 ```
 ```
-//renderItem prop has the same signature as the actual normal SectionList's renderItem
+//renderItem prop has the same signature as the normal SectionList's renderItem
 <SuperGridSectionList
   itemDimension={130}
   sections={this.state.savedCalculations}
