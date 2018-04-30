@@ -47,6 +47,9 @@ This is a SectionList modified to have a grid layout.
 `sections` and `renderItem` prop has same signature as of SectionList.
 
 ```
+import { SuperGridSectionList } from 'react-native-super-grid';
+```
+```
 <SuperGridSectionList
   itemDimension={130}
   sections={[
