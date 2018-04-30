@@ -170,6 +170,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [2.3.0] - 2018-03-17
+#### Added
+- Add SuperGridSectionList @andersonaddo
+
 ### [2.1.0] - 2018-03-17
 #### Added
 - Use FlastList instead of ListView
