@@ -9,8 +9,6 @@ export function chunkArray(array, size) {
     } else {
       acc.push([val]);
     }
-    console.log("chunkArrayOutput: ");
-    console.log (acc)
     return acc;
   }, []);
 }
