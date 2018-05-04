@@ -24,14 +24,13 @@ class SuperGrid extends Component {
 
   onLayout(e) {
     const { staticDimension, horizontal, onDimensionsUpdate } = this.props;
-    const { width, height } = e.nativeEvent.layout || {};
-    alert(`height=${height} width=${width}`);
     if (!staticDimension) {
-      /* this.setState({
+      const { width, height } = e.nativeEvent.layout || {};
+      this.setState({
         ...this.getDimensions(horizontal ? height : width),
       }, () => {
         onDimensionsUpdate && onDimensionsUpdate()
-      }); */
+      });
     }
   }
 
