@@ -26,6 +26,7 @@ class SuperGrid extends Component {
     const { staticDimension, horizontal, onDimensionsUpdate } = this.props;
     const { width, height } = e.nativeEvent.layout || {};
     const { totalDimension } = this.state;
+    alert(`height=${height} width=${width} totalDimension${totalDimension}`);
     if (!staticDimension || totalDimension !== (horizontal ? height : width)) {
       this.setState({
         ...this.getDimensions(horizontal ? height : width),
