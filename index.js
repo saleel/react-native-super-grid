@@ -87,7 +87,7 @@ class SuperGrid extends Component {
         {(data || []).map((item, i) => (
           <View key={`${data.key}_${i}`} style={itemContainerStyle}>
             <View style={itemStyle}>
-              {this.props.renderItem(item, i)}
+              {this.props.renderItem(item, i, itemDimension)}
             </View>
           </View>
         ))}
@@ -124,7 +124,7 @@ class SuperGrid extends Component {
         {(data || []).map((item, i) => (
           <View key={`${data.key}_${i}`} style={itemContainerStyle}>
             <View style={itemStyle}>
-              {this.props.renderItem(item, i)}
+              {this.props.renderItem(item, i, itemDimension)}
             </View>
           </View>
         ))}
