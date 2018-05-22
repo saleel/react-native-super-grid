@@ -199,6 +199,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [2.3.2] - 2018-05-23
+- Typescript support for SuperGridSectionList @Anccerson
+
 ### [2.3.0] - 2018-03-17
 #### Added
 - Add SuperGridSectionList @andersonaddo
