@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollViewStyle, StyleProp } from "react-native";
+import { ScrollViewStyle, SectionListData, StyleProp } from "react-native";
 
 /**
  * React Native Super Grid Properties
@@ -54,4 +54,20 @@ export interface SuperGridProps<ItemType = any> {
  */
 export default class SuperGrid<ItemType = any> extends React.Component<
   SuperGridProps<ItemType>
+> {}
+
+export interface SuperGridSectionListProps<ItemType = any> {
+  renderItem: (info: { item: SectionListData<ItemType> }) => JSX.Element;
+  sections: ItemType,
+  itemDimension?: number,
+  itemWidth?: number, // for backward compatibility
+  fixed?: boolean,
+  spacing?: number,
+  style?: StyleProp<ScrollViewStyle>,
+  staticDimension?: number,
+  renderSectionHeader?: (info: { section: SectionListData<ItemType> }) => JSX.Element;
+}
+
+export class SuperGridSectionList<ItemType = any> extends React.Component<
+  SuperGridSectionListProps<ItemType>
 > {}
