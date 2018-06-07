@@ -62,6 +62,7 @@ class SuperGridSectionList extends Component {
     };
   }
 
+  //In this method, item is acutally representing a row of items
   renderHorizontalRow({item, index, section, separators}) {
     const { itemDimension, containerDimension, spacing, fixed, sections, itemsPerRow } = this.state;
     const rowStyle = {
@@ -86,6 +87,7 @@ class SuperGridSectionList extends Component {
       };
     }
 
+    //Going through the row and rendering each item in that row dividually (all wrapped in a single view element)
     return (
       <View style={rowStyle}>
         {(item || []).map((itemObject, i) => (
@@ -106,13 +108,16 @@ class SuperGridSectionList extends Component {
     //Deep copy, so that re-renders and chunkArray functions don't affect the actual items object
     let sectionsCopy = JSON.parse(JSON.stringify(sections)); 
 
-    //Going through all the sections in sectionsCopy, and dividing their 'data' fields into smaller 'chunked' arrays to represent rows
     for (sectionsPair of sectionsCopy){
-      const chunked = chunkArray(sectionsPair.data, itemsPerRow);
+
+      //Going through all the sections in sectionsCopy, and dividing their 'data' fields into smaller 'chunked' arrays to represent rows
+      const chunked = chunkArray(sectionsPair.data, itemsPerRow); 
+
+      //Now adding metadata to these rows
       const rows = chunked.map((r, i) => {
         const keydRow = [...r];
         keydRow.key = `row_${i}`;
-        keydRow.rowNumber = i;
+        keydRow.rowNumber = i; //Assigning a row number to each row to allow proper indexing later (row numbers local to section, not whole list)
         keydRow.isLast = (chunked.length - 1 === i);
         return keydRow;
       });
