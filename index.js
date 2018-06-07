@@ -59,7 +59,7 @@ class SuperGrid extends Component {
   }
 
   renderVerticalRow(data) {
-    const { itemDimension, spacing, containerDimension, fixed } = this.state;
+    const { itemDimension, spacing, containerDimension, fixed, itemsPerRow } = this.state;
     const rowStyle = {
       flexDirection: 'column',
       paddingTop: spacing,
@@ -96,7 +96,7 @@ class SuperGrid extends Component {
   }
 
   renderHorizontalRow(data) {
-    const { itemDimension, containerDimension, spacing, fixed } = this.state;
+    const { itemDimension, containerDimension, spacing, fixe, itemsPerRow } = this.state;
     const rowStyle = {
       flexDirection: 'row',
       paddingLeft: spacing,
@@ -124,7 +124,7 @@ class SuperGrid extends Component {
         {(data || []).map((item, i) => (
           <View key={`${data.key}_${i}`} style={itemContainerStyle}>
             <View style={itemStyle}>
-              {this.props.renderItem(item, i)}
+              {this.props.renderItem(item, i + (data.rowNumber * itemsPerRow))}
             </View>
           </View>
         ))}
