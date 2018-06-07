@@ -96,7 +96,7 @@ class SuperGrid extends Component {
   }
 
   renderHorizontalRow(data) {
-    const { itemDimension, containerDimension, spacing, fixe, itemsPerRow } = this.state;
+    const { itemDimension, containerDimension, spacing, fixed, itemsPerRow } = this.state;
     const rowStyle = {
       flexDirection: 'row',
       paddingLeft: spacing,
