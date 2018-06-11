@@ -199,6 +199,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [2.4] - 2018-05-11
+- renderItem index fix @andersonaddo
+
 ### [2.3.2] - 2018-05-23
 - Typescript support for SuperGridSectionList @Anccerson
 
