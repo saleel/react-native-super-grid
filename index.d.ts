@@ -47,6 +47,12 @@ export interface SuperGridProps<ItemType = any> {
    * If true, the grid will be scrolling horizontally
    */
   horizontal?: boolean;
+
+  /**
+   * Optional callback ran by the internal `FlatList` or `SectionList`'s `onLayout` function,
+   * thus invoked on mount and layout changes.
+   */
+  onLayout?: func;
 }
 
 /**
@@ -66,6 +72,7 @@ export interface SuperGridSectionListProps<ItemType = any> {
   style?: StyleProp<ScrollViewStyle>,
   staticDimension?: number,
   renderSectionHeader?: (info: { section: SectionListData<ItemType> }) => JSX.Element;
+  onLayout?: func,
 }
 
 export class SuperGridSectionList<ItemType = any> extends React.Component<

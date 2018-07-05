@@ -27,13 +27,17 @@ class SuperGridSectionList extends Component {
 
   
   onLayout(e) {
-    const { staticDimension } = this.props;
+    const { staticDimension, onLayout } = this.props;
     if (!staticDimension) {
       const { width, height } = e.nativeEvent.layout || {};
 
       this.setState({
         ...this.getDimensions(width),
       });
+    }
+    // run onLayout callback if provided
+    if (onLayout) {
+      onLayout(e);
     }
   }
 
@@ -102,7 +106,7 @@ class SuperGridSectionList extends Component {
   }
 
   render() {
-    const { sections, style, spacing, fixed, itemDimension, renderItem, renderSectionHeader, ...props } = this.props;
+    const { sections, style, spacing, fixed, itemDimension, renderItem, renderSectionHeader, onLayout, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
     //Deep copy, so that re-renders and chunkArray functions don't affect the actual items object
@@ -149,6 +153,7 @@ SuperGridSectionList.propTypes = {
   spacing: PropTypes.number,
   style: ViewPropTypes.style,
   staticDimension: PropTypes.number,
+  onLayout: PropTypes.func,
 };
 
 SuperGridSectionList.defaultProps = {
