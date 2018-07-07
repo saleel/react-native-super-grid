@@ -105,6 +105,7 @@ import { SuperGridSectionList } from 'react-native-super-grid';
 | style | [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
 | staticDimension | Number | undefined | Specifies a static width or height for the GridView container. If your container dimension is known or can be calculated at runtime (via ```Dimensions.get('window')```, for example), passing this prop will force the grid container to that dimension size and avoid the reflow associated with dynamically calculating it|
 | horizontal | boolean | false | If true, the grid will be scrolling horizontally **(this prop doesn't affect the SuperGridSectionList, which only scrolls vertically)** |
+| onLayout | Function |  | Optional callback ran by the internal `FlatList` or `SectionList`'s `onLayout` function, thus invoked on mount and layout changes. |
 
 Note: If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'
 

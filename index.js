@@ -23,13 +23,17 @@ class SuperGrid extends Component {
   }
 
   onLayout(e) {
-    const { staticDimension, horizontal } = this.props;
+    const { staticDimension, horizontal, onLayout } = this.props;
     if (!staticDimension) {
       const { width, height } = e.nativeEvent.layout || {};
 
       this.setState({
         ...this.getDimensions(horizontal ? height : width),
       });
+    }
+    // run onLayout callback if provided
+    if (onLayout) {
+      onLayout(e);
     }
   }
 
@@ -142,7 +146,7 @@ class SuperGrid extends Component {
 
   render() {
     const { items, style, spacing, fixed, itemDimension, renderItem,
-      horizontal, ...props } = this.props;
+      horizontal, onLayout, ...props } = this.props;
     const { itemsPerRow } = this.state;
 
     const chunked = chunkArray(items, itemsPerRow); //Splitting the data into rows
@@ -182,6 +186,7 @@ SuperGrid.propTypes = {
   style: ViewPropTypes.style,
   staticDimension: PropTypes.number,
   horizontal: PropTypes.bool,
+  onLayout: PropTypes.func,
 };
 
 SuperGrid.defaultProps = {
