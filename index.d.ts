@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollViewStyle, SectionListData, StyleProp } from "react-native";
+import { ScrollViewStyle, ViewStyle, SectionListData, StyleProp } from "react-native";
 
 /**
  * React Native Super Grid Properties
@@ -34,6 +34,11 @@ export interface SuperGridProps<ItemType = any> {
    * Style
    */
   style?: StyleProp<ScrollViewStyle>;
+
+  /**
+   * Specifies the style about content row view
+   */
+  itemContainerStyle?: StyleProp<ViewStyle>;
 
   /**
    * Specifies a static width or height for the GridView container.

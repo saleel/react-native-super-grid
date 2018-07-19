@@ -200,6 +200,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [2.4.2] - 2018-07-19
+- Add itemContainerStyle prop
+
 ### [2.4.1] - 2018-07-07
 - Add onLayout prop @ataillefer
 

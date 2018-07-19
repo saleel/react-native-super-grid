@@ -76,8 +76,9 @@ class SuperGrid extends Component {
       justifyContent: 'center',
       height: containerDimension,
       paddingBottom: spacing,
+      ...this.props.itemContainerStyle
     };
-    let itemStyle = { };
+    let itemStyle = {};
     if (fixed) {
       itemStyle = {
         height: itemDimension,
@@ -91,7 +92,7 @@ class SuperGrid extends Component {
         {(data || []).map((item, i) => (
           <View key={`${data.key}_${i}`} style={itemContainerStyle}>
             <View style={itemStyle}>
-              {this.props.renderItem(item,  i + (data.rowNumber * itemsPerRow))}
+              {this.props.renderItem(item, i + (data.rowNumber * itemsPerRow))}
             </View>
           </View>
         ))}
@@ -114,6 +115,7 @@ class SuperGrid extends Component {
       justifyContent: 'center',
       width: containerDimension,
       paddingRight: spacing,
+      ...this.props.itemContainerStyle
     };
     let itemStyle = {};
     if (fixed) {
@@ -184,6 +186,7 @@ SuperGrid.propTypes = {
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: ViewPropTypes.style,
+  itemContainerStyle: ViewPropTypes.style,
   staticDimension: PropTypes.number,
   horizontal: PropTypes.bool,
   onLayout: PropTypes.func,
@@ -195,9 +198,10 @@ SuperGrid.defaultProps = {
   itemWidth: null,
   spacing: 10,
   style: {},
+  itemContainerStyle: undefined,
   staticDimension: undefined,
   horizontal: false,
 };
 
 export default SuperGrid;
-export {SuperGridSectionList};
+export { SuperGridSectionList };
