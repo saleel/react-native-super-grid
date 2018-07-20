@@ -193,6 +193,92 @@ const styles = StyleSheet.create({
 |:---:|:---:|
 | iPhone Horizontal Portrait | iPhone Horizontal Landscape  |
 
+## Example Nested Grid (itemContainerStyle)
+
+If you try to use nested grid with different number of items, you could use itemContainerStyle to change the style.
+Please take a look on the follow example.
+
+```
+import React, { Component } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import GridView from 'react-native-super-grid';
+
+const styles = StyleSheet.create({
+  gridView: {
+    paddingTop: 25,
+    flex: 1,
+  },
+  itemContainer: {
+    justifyContent: 'flex-end',
+    borderRadius: 5,
+    padding: 10,
+    height: 150,
+  },
+  itemName: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: '600',
+  },
+  itemCode: {
+    fontWeight: '600',
+    fontSize: 12,
+    color: '#fff',
+  },
+});
+
+export default class Example extends Component {
+  render() {
+    // Taken from https://flatuicolors.com/
+    const groupedItems = {
+        'left': [
+            { name: 'TURQUOISE', code: '#1abc9c' },
+            { name: 'EMERALD', code: '#2ecc71' },
+            { name: 'PETER RIVER', code: '#3498db' },
+            { name: 'AMETHYST', code: '#9b59b6' },
+            { name: 'WET ASPHALT', code: '#34495e' }
+        ],
+        'center': [
+            { name: 'TURQUOISE', code: '#1abc9c' }
+        ],
+        'rigth': [
+            { name: 'TURQUOISE', code: '#1abc9c' },
+            { name: 'EMERALD', code: '#2ecc71' },
+            { name: 'PETER RIVER', code: '#3498db' }
+        ]
+    }
+
+    return (
+      <GridView
+          itemContainerStyle={{ justifyContent: 'flex-start' }}
+          itemDimension={300}
+          items={['left', 'middle', 'rigth']}
+          style={styles.gridView}
+          renderItem={title =>
+              (
+                  <GridView
+                      listKey={title}
+                      itemDimension={100}
+                      items={groupedItems[title]}
+                      style={styles.gridView}
+                      renderItem={item => (
+                          <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+                              <Text style={styles.itemName}>{item.name}</Text>
+                              <Text style={styles.itemCode}>{item.code}</Text>
+                          </View>
+                      )}
+                  />
+              )
+          }
+      />
+    );
+  }
+}
+```
+
+| ![iPad Air 2 Landscape - Nested grid](/screenshots/ipadair2_nestedgrid_itemContainerStyle.png?raw=true "iPad Air 2 Landscape - Nested grid (itemContainerStyle customization") | ![iPad Air 2 Landscape](/screenshots/ipadair2_nestedgrid.png?raw=true "iPad Air 2 Landscape - Nested grid") |
+|:---:|:---:|
+| iPad Air 2 Landscape - Nested grid (itemContainerStyle customization) | iPad Air 2 Landscape - Nested grid  |
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
