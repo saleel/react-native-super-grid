@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollViewStyle, ViewStyle, SectionListData, StyleProp } from "react-native";
+import { ViewStyle, SectionListData, StyleProp } from "react-native";
 
 /**
  * React Native Super Grid Properties
@@ -33,7 +33,7 @@ export interface SuperGridProps<ItemType = any> {
   /**
    * Style
    */
-  style?: StyleProp<ScrollViewStyle>;
+  style?: StyleProp<ViewStyle>;
 
   /**
    * Specifies the style about content row view
@@ -74,7 +74,7 @@ export interface SuperGridSectionListProps<ItemType = any> {
   itemWidth?: number, // for backward compatibility
   fixed?: boolean,
   spacing?: number,
-  style?: StyleProp<ScrollViewStyle>,
+  style?: StyleProp<ViewStyle>,
   staticDimension?: number,
   renderSectionHeader?: (info: { section: SectionListData<ItemType> }) => JSX.Element;
   onLayout?: func,
