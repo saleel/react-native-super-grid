@@ -36,6 +36,11 @@ export interface SuperGridProps<ItemType = any> {
   style?: StyleProp<ViewStyle>;
 
   /**
+   * Specifies the style about content row view
+   */
+  itemContainerStyle?: StyleProp<ViewStyle>;
+
+  /**
    * Specifies a static width or height for the GridView container.
    * If your container dimension is known or can be calculated at runtime
    * (via Dimensions.get('window'), for example), passing this prop will force the grid container
