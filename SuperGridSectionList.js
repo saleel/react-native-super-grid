@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Dimensions, ViewPropTypes, SectionList } from 'react-native';
 import { chunkArray } from './utils';
+import cloneDeep from 'lodash/cloneDeep';
 
 /**
  * This class is a modification on the main super grid class. It renders a vertical scrolling grid SectionList
@@ -106,7 +107,7 @@ class SuperGridSectionList extends Component {
     const { itemsPerRow } = this.state;
 
     //Deep copy, so that re-renders and chunkArray functions don't affect the actual items object
-    let sectionsCopy = JSON.parse(JSON.stringify(sections)); 
+    let sectionsCopy = cloneDeep(sections); 
 
     for (sectionsPair of sectionsCopy){
 
