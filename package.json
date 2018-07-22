@@ -35,6 +35,7 @@
     "eslint-plugin-react": "^6.10.3"
   },
   "dependencies": {
+    "lodash": "^4.17.10",
     "prop-types": "^15.6.0"
   }
 }
