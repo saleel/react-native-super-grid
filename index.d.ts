@@ -8,7 +8,7 @@ export interface SuperGridProps<ItemType = any> {
   /**
    * Function to render each object. Should return a react native component.
    */
-  renderItem: (item: ItemType) => JSX.Element;
+  renderItem: (item: ItemType, index: number) => JSX.Element;
 
   /**
    * Items to be rendered. renderItem will be called with each item in this array.
