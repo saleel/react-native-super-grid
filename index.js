@@ -55,7 +55,7 @@ class SuperGrid extends React.Component {
       });
     }
 
-    // execute onLayout prop if passed
+    // call onLayout prop if passed
     if (onLayout) {
       onLayout(e);
     }
@@ -126,7 +126,12 @@ class SuperGrid extends React.Component {
         {(rowItems || []).map((item, i) => (
           <View key={`${rowItems.key}_${i}`} style={containerStyle}>
             <View style={itemStyle}>
-              {renderItem(item, i + (rowItems.rowNumber * itemsPerRow))}
+              {
+                renderItem({
+                  item,
+                  index: i + (rowItems.rowNumber * itemsPerRow),
+                })
+              }
             </View>
           </View>
         ))}
