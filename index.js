@@ -173,7 +173,7 @@ class SuperGrid extends Component {
         onLayout={this.onLayout}
         {...props}
         horizontal={horizontal}
-        ref={(c) => { this.flatlist = c; }}
+        ref={(c) => { this.flatList = c; }}
       />
     );
   }
