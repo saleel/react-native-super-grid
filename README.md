@@ -287,6 +287,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [2.4.4] - 2018-12-15
+- Added reference to the internal flatlist @acollazomayer
+
 ### [2.4.3] - 2018-07-22
 - Fix deep copying issue in SectionGrid @andersonaddo
 
