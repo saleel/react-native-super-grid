@@ -53,6 +53,7 @@ class SuperGrid extends React.Component {
   renderRow({
     rowItems,
     rowIndex,
+    separators,
     isLastRow,
     itemsPerRow,
     rowStyle,
@@ -81,6 +82,7 @@ class SuperGrid extends React.Component {
             {renderItem({
               item,
               index: (rowIndex * itemsPerRow) + i,
+              separators,
             })}
           </View>
         ))}
