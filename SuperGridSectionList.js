@@ -1,105 +1,80 @@
-/* eslint react/no-array-index-key: 0 */
 import React, { Component } from 'react';
+import {
+  View, Dimensions, ViewPropTypes, SectionList,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import { View, Dimensions, ViewPropTypes, SectionList } from 'react-native';
-import { chunkArray } from './utils';
-import cloneDeep from 'lodash/cloneDeep';
+import { generateStyles, chunkArray } from './utils';
 
-/**
- * This class is a modification on the main super grid class. It renders a vertical scrolling grid SectionList
- */
 class SuperGridSectionList extends Component {
   constructor(props) {
     super(props);
     this.onLayout = this.onLayout.bind(this);
-    this.renderHorizontalRow = this.renderHorizontalRow.bind(this);
-    this.getDimensions = this.getDimensions.bind(this);
-    this.state = this.getDimensions();
+    this.renderRow = this.renderRow.bind(this);
+
+    // Calculate total dimensions and set to state
+    const { horizontal } = props;
+    const dimension = horizontal ? 'height' : 'width';
+    const totalDimension = Dimensions.get('window')[dimension];
+
+    this.state = {
+      totalDimension,
+    };
   }
 
-  //Resetting the dimensions if the decice has changed orientation
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.itemDimension !== this.props.itemDimension) {
-      this.setState({
-        ...this.getDimensions(this.state.totalDimension, nextProps.itemDimension),
-      });
-    }
-  }
-
-  
   onLayout(e) {
-    const { staticDimension, onLayout } = this.props;
+    const { staticDimension, horizontal, onLayout } = this.props;
+    const { totalDimension } = this.state;
+
     if (!staticDimension) {
       const { width, height } = e.nativeEvent.layout || {};
+      const newTotalDimension = horizontal ? height : width;
 
-      this.setState({
-        ...this.getDimensions(width),
-      });
+      if (totalDimension !== newTotalDimension) {
+        this.setState({
+          totalDimension: newTotalDimension,
+        });
+      }
     }
-    // run onLayout callback if provided
+
+    // call onLayout prop if passed
     if (onLayout) {
       onLayout(e);
     }
   }
 
-  getDimensions(lvDimension, itemDim) {
-    const { itemWidth, spacing, fixed, staticDimension } = this.props;
-    let itemDimension = itemDim || this.props.itemDimension;
-    if (itemWidth) {
-      itemDimension = itemWidth;
-      console.warn('React Native Super Grid - property "itemWidth" is depreciated. Use "itemDimension" instead.');
-    }
+  renderRow({
+    rowItems,
+    rowIndex,
+    section,
+    itemsPerRow,
+    rowStyle,
+    separators,
+    isFirstRow,
+    containerStyle,
+  }) {
+    const { spacing, itemContainerStyle, renderItem } = this.props;
 
-    const dimension = 'width';
-    const totalDimension = lvDimension || staticDimension || Dimensions.get('window')[dimension];
-    const itemTotalDimension = itemDimension + spacing;
-    const availableDimension = totalDimension - spacing; // One spacing extra
-    const itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
-    const containerDimension = availableDimension / itemsPerRow;
-
-    return {
-      totalDimension,
-      itemDimension,
-      spacing,
-      itemsPerRow,
-      containerDimension,
-      fixed,
-    };
-  }
-
-  //In this method, item is acutally representing a row of items
-  renderHorizontalRow({item, index, section, separators}) {
-    const { itemDimension, containerDimension, spacing, fixed, sections, itemsPerRow } = this.state;
-    const rowStyle = {
-      flexDirection: 'row',
-      paddingLeft: spacing,
-      paddingBottom: spacing,
-    };
-    if (item.isLast) {
-      rowStyle.marginBottom = spacing;
-    }
-    const itemContainerStyle = {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      width: containerDimension,
-      paddingRight: spacing,
-    };
-    let itemStyle = {};
-    if (fixed) {
-      itemStyle = {
-        width: itemDimension,
-        alignSelf: 'center',
+    // Add spacing below section header
+    let additionalRowStyle = {};
+    if (isFirstRow) {
+      additionalRowStyle = {
+        marginTop: spacing,
       };
     }
 
-    //Going through the row and rendering each item in that row dividually (all wrapped in a single view element)
     return (
-      <View style={rowStyle}>
-        {(item || []).map((itemObject, i) => (
-          <View key={`${item.key}_${i}`} style={itemContainerStyle}>
-            <View style={itemStyle}>
-              {this.props.renderItem({item: itemObject, index: i + (item.rowNumber * itemsPerRow), separators: separators, section: section })}
-            </View>
+      <View style={[rowStyle, additionalRowStyle]}>
+        {rowItems.map((item, i) => (
+          <View
+            key={`item _${rowIndex * itemsPerRow + i}`}
+            style={[containerStyle, itemContainerStyle]}
+          >
+            {renderItem({
+              item,
+              index: rowIndex * itemsPerRow + i,
+              section,
+              separators,
+            })}
           </View>
         ))}
       </View>
@@ -107,37 +82,61 @@ class SuperGridSectionList extends Component {
   }
 
   render() {
-    const { sections, style, spacing, fixed, itemDimension, renderItem, renderSectionHeader, onLayout, ...props } = this.props;
-    const { itemsPerRow } = this.state;
+    const {
+      sections,
+      style,
+      spacing,
+      fixed,
+      itemDimension,
+      staticDimension,
+      renderItem,
+      renderSectionHeader,
+      onLayout,
+      ...props
+    } = this.props;
 
-    //Deep copy, so that re-renders and chunkArray functions don't affect the actual items object
-    let sectionsCopy = cloneDeep(sections); 
+    const totalDimension = staticDimension || this.state.totalDimension;
+    const itemTotalDimension = itemDimension + spacing;
+    const availableDimension = totalDimension - spacing; // One spacing extra
+    const itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
+    const containerDimension = availableDimension / itemsPerRow;
 
-    for (sectionsPair of sectionsCopy){
+    const { containerStyle, rowStyle } = generateStyles({
+      totalDimension,
+      itemDimension,
+      itemTotalDimension,
+      availableDimension,
+      containerDimension,
+      spacing,
+      fixed,
+      itemsPerRow,
+    });
 
-      //Going through all the sections in sectionsCopy, and dividing their 'data' fields into smaller 'chunked' arrays to represent rows
-      const chunked = chunkArray(sectionsPair.data, itemsPerRow); 
+    const groupedSections = sections.map(({ title, data }) => {
+      const chunkedData = chunkArray(data, itemsPerRow);
 
-      //Now adding metadata to these rows
-      const rows = chunked.map((r, i) => {
-        const keydRow = [...r];
-        keydRow.key = `row_${i}`;
-        keydRow.rowNumber = i; //Assigning a row number to each row to allow proper indexing later (row numbers local to section, not whole list)
-        keydRow.isLast = (chunked.length - 1 === i);
-        return keydRow;
-      });
-      sectionsPair.data = rows;
-    }
+      return {
+        title,
+        data: chunkedData,
+      };
+    });
 
     return (
       <SectionList
-        sections={sectionsCopy}
-        renderSectionHeader = {renderSectionHeader}
-        renderItem={this.renderHorizontalRow}
-        style={[
-          {paddingTop: spacing },
-          style,
-        ]}
+        sections={groupedSections}
+        renderSectionHeader={renderSectionHeader}
+        renderItem={({ item, index, section }) => this.renderRow({
+          rowItems: item,
+          rowIndex: index,
+          section,
+          isFirstRow: index === 0,
+          itemsPerRow,
+          rowStyle,
+          containerStyle,
+        })
+        }
+        keyExtractor={(_, index) => `row_${index}`}
+        style={style}
         onLayout={this.onLayout}
         {...props}
       />
@@ -149,10 +148,10 @@ SuperGridSectionList.propTypes = {
   renderItem: PropTypes.func.isRequired,
   sections: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
-  itemWidth: PropTypes.number, // for backward compatibility
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: ViewPropTypes.style,
+  itemContainerStyle: ViewPropTypes.style,
   staticDimension: PropTypes.number,
   onLayout: PropTypes.func,
 };
@@ -160,10 +159,11 @@ SuperGridSectionList.propTypes = {
 SuperGridSectionList.defaultProps = {
   fixed: false,
   itemDimension: 120,
-  itemWidth: null,
   spacing: 10,
   style: {},
+  itemContainerStyle: undefined,
   staticDimension: undefined,
+  onLayout: null,
 };
 
 export default SuperGridSectionList;

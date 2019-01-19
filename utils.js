@@ -28,6 +28,7 @@ function generateStyles({
     flexDirection: 'row',
     paddingLeft: fixed ? fixedSpacing : spacing,
     paddingBottom: spacing,
+    // borderWidth: 1,
   };
 
   let containerStyle = {
