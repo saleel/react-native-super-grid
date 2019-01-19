@@ -1,12 +1,9 @@
 {
   "name": "react-native-super-grid",
-  "version": "2.4.4",
+  "version": "3.0.0",
   "description": "Responsive Grid View for React Native",
   "main": "index.js",
   "types": "index.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/saleel97/react-native-super-grid.git"
@@ -23,19 +20,19 @@
     "grid",
     "view",
     "flatlist",
-    "listview"
+    "listview",
+    "sectionlist"
   ],
   "author": "saleel",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.10.3"
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1"
   },
   "dependencies": {
-    "lodash": "^4.17.10",
     "prop-types": "^15.6.0"
   }
 }
