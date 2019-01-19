@@ -1,6 +1,6 @@
-// eslint-disable-next-line import/prefer-default-export
-export function chunkArray(array, size) {
-  if (array == []) return [];
+
+function chunkArray(array = [], size) {
+  if (array === []) return [];
   return array.reduce((acc, val) => {
     if (acc.length === 0) acc.push([]);
     const last = acc[acc.length - 1];
@@ -12,3 +12,50 @@ export function chunkArray(array, size) {
     return acc;
   }, []);
 }
+
+function generateStyles({
+  itemDimension,
+  containerDimension,
+  spacing,
+  fixed,
+  horizontal,
+  totalDimension,
+  itemsPerRow,
+}) {
+  const fixedSpacing = (totalDimension - (itemDimension * itemsPerRow)) / (itemsPerRow + 1);
+
+  let rowStyle = {
+    flexDirection: 'row',
+    paddingLeft: fixed ? fixedSpacing : spacing,
+    paddingBottom: spacing,
+  };
+
+  let containerStyle = {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: fixed ? itemDimension : (containerDimension - spacing),
+    marginRight: fixed ? fixedSpacing : spacing,
+  };
+
+  if (horizontal) {
+    rowStyle = {
+      flexDirection: 'column',
+      paddingTop: fixed ? fixedSpacing : spacing,
+      paddingRight: spacing,
+    };
+
+    containerStyle = {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      height: fixed ? itemDimension : (containerDimension - spacing),
+      marginBottom: fixed ? fixedSpacing : spacing,
+    };
+  }
+
+  return {
+    containerStyle,
+    rowStyle,
+  };
+}
+
+export { chunkArray, generateStyles };
