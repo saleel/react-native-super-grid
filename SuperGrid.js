@@ -76,7 +76,7 @@ class SuperGrid extends React.Component {
       <View style={[rowStyle, additionalRowStyle]}>
         {rowItems.map((item, i) => (
           <View
-            key={`item _${(rowIndex * itemsPerRow) + i}`}
+            key={`item_${(rowIndex * itemsPerRow) + i}`}
             style={[containerStyle, itemContainerStyle]}
           >
             {renderItem({

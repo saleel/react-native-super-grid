@@ -68,12 +68,12 @@ class SuperGridSectionList extends Component {
       <View style={[rowStyle, additionalRowStyle]}>
         {rowItems.map((item, i) => (
           <View
-            key={`item _${rowIndex * itemsPerRow + i}`}
+            key={`item_${(rowIndex * itemsPerRow) + i}`}
             style={[containerStyle, itemContainerStyle]}
           >
             {renderItem({
               item,
-              index: rowIndex * itemsPerRow + i,
+              index: (rowIndex * itemsPerRow) + i,
               section,
               separators,
             })}
@@ -115,14 +115,16 @@ class SuperGridSectionList extends Component {
       fixed,
     });
 
-    const groupedSections = sections.map(({ title, data }) => {
-      const chunkedData = chunkArray(data, itemsPerRow);
+    const groupedSections = sections.map((section) => {
+      const chunkedData = chunkArray(section.data, itemsPerRow);
 
       return {
-        title,
+        title: section.title,
         data: chunkedData,
+        actualSection: section,
       };
     });
+
 
     return (
       <SectionList
@@ -131,7 +133,7 @@ class SuperGridSectionList extends Component {
         renderItem={({ item, index, section }) => this.renderRow({
           rowItems: item,
           rowIndex: index,
-          section,
+          section: section.actualSection,
           isFirstRow: index === 0,
           itemsPerRow,
           rowStyle,
