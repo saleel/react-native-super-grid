@@ -8,15 +8,17 @@
 Responsive Grid View for React Native.
 
 
-
 ## Getting Started
 
-This component renders a Grid View that adapts itself to various screen resolutions.
+This library export two components - FlatGrid (similar to FlatList) and SectionGrid (similart to SecionList). Both components render a Grid layout that adapts itself to various screen resolutions.
 
 Instead of passing an itemPerRow argument, you pass ```itemDimension``` and each item will be rendered with a dimension size equal to or more than (to fill the screen) the given dimension.
 
-Internally, these components use the native [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) or [SectionList](https://facebook.github.io/react-native/docs/sectionlist.html).
+Internally, these components use the native [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) and [SectionList](https://facebook.github.io/react-native/docs/sectionlist.html).
 
+
+**Version 2.x and older, please refer [v2 branch](https://github.com/saleel/react-native-super-grid/tree/v2) for documentation**  
+  
 
 ### Installing
 
@@ -26,100 +28,74 @@ You can install the package via npm.
 npm install react-native-super-grid
 ```
 
-If your react native is below v0.49, install version 1.0.4 - npm install react-native-super-grid@1.0.4
 
 
-### Usage (GridView)
-This is a FlatList modified to have a grid layout.
+### Usage (FlatGrid)
+```javascript
+import { FlatGrid } from 'react-native-super-grid';
 ```
-import GridView from 'react-native-super-grid';
-```
-```
-<GridView
+```javascript
+<FlatGrid
   itemDimension={130}
   items={[1,2,3,4,5,6]}
-  renderItem={item => (<Text>{item}</Text>)}
+  renderItem={({ item }) => (<Text>{item}</Text>)}
 />
 ```
+`renderItem` prop has same signature as of FlatList's renderItem.
 
-### Usage (SuperGridSectionList)
-This is a SectionList modified to have a grid layout.
-`sections` and `renderItem` prop has same signature as of SectionList.
 
+### Usage (SectionGrid)
+
+```javascript
+import { SectionGrid } from 'react-native-super-grid';
 ```
-import { SuperGridSectionList } from 'react-native-super-grid';
-```
-```
-<SuperGridSectionList
+```javascript
+<SectionGrid
   itemDimension={130}
   sections={[
     {
-      title: 'Title1',
-      data: [
-        { name: 'TURQUOISE', code: '#1abc9c' }, { name: 'EMERALD', code: '#2ecc71' },
-        { name: 'PETER RIVER', code: '#3498db' }, { name: 'AMETHYST', code: '#9b59b6' },
-        { name: 'WET ASPHALT', code: '#34495e' }, { name: 'GREEN SEA', code: '#16a085' },
-        { name: 'NEPHRITIS', code: '#27ae60' },
-      ]
+      title: 'Numbers',
+      data: [1,2,3,4,5,6],
     },
     {
-      title: 'Title2',
-      data: [
-        { name: 'WISTERIA', code: '#8e44ad' }, { name: 'MIDNIGHT BLUE', code: '#2c3e50' },
-        { name: 'SUN FLOWER', code: '#f1c40f' }, { name: 'CARROT', code: '#e67e22' },
-        { name: 'ALIZARIN', code: '#e74c3c' }, { name: 'CLOUDS', code: '#ecf0f1' },
-      ]
+      title: 'Albhabets',
+      data: ['A', 'B', 'C', 'D', 'E'],
     },
-    {
-      title: 'Title3',
-      data: [
-        { name: 'BELIZE HOLE', code: '#2980b9' }, { name: 'CONCRETE', code: '#95a5a6' }, { name: 'ORANGE', code: '#f39c12' },
-        { name: 'PUMPKIN', code: '#d35400' }, { name: 'POMEGRANATE', code: '#c0392b' },
-        { name: 'SILVER', code: '#bdc3c7' }, { name: 'ASBESTOS', code: '#7f8c8d' }
-      ]
-    }
   ]}
-  style={styles.gridView}
-  renderItem={({ item }) => (
-    <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-      <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemCode}>{item.code}</Text>
-    </View>
-  )}
+  renderItem={({ item }) => (<Text>{item}</Text>)}
   renderSectionHeader={({ section }) => (
-    <Text style={{ color: 'green' }}>{section.title}</Text>
+    <Text style={{ fontSize: 20 }}>{section.title}</Text>
   )}
 />
 ```
+`sections` and `renderItem` prop has same signature as of SectionList.
 
 
 #### Properties
 
 | Property | Type | Default Value | Description |
 |---|---|---|---|
-| renderItem | Function |  | Function to render each object. Should return a react native component.  |
-| items (or `sections` for SuperGridSectionList)  | Array |  | Items to be rendered. renderItem will be called with each item in this array.  |  |
-| itemDimension (itemWidth if version 1.x.x) | Number | 120  | Minimum width or height for each item in pixels (virtual). |
+| renderItem | Function |  | Function to render each object. Should return a react native component. Same signature as that of FlatList/SectionList's renderItem.  |
+| items (for FlatGrid) sections (for SectionGrid)  | Array |  | Items to be rendered. renderItem will be called with each item in this array. Same signature as that of FlatList/SectionList. |  |
+| itemDimension | Number | 120  | Minimum width or height for each item in pixels (virtual). |
 | fixed | Boolean | false  | If true, the exact ```itemDimension``` will be used and won't be adjusted to fit the screen. |
 | spacing | Number | 10 | Spacing between each item. |
 | style | [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
-| itemContainerStyle | styles (Object) | | Style for the view child of the row
-| staticDimension | Number | undefined | Specifies a static width or height for the GridView container. If your container dimension is known or can be calculated at runtime (via ```Dimensions.get('window')```, for example), passing this prop will force the grid container to that dimension size and avoid the reflow associated with dynamically calculating it|
-| horizontal | boolean | false | If true, the grid will be scrolling horizontally **(this prop doesn't affect the SuperGridSectionList, which only scrolls vertically)** |
+| itemContainerStyle | styles (Object) | | Style for item's container. Not needed for most cases.
+| staticDimension | Number | undefined | Specifies a static width or height for the container. If not passed, full width/height of the screen will be used.|
+| horizontal | boolean | false | If true, the grid will be scrolling horizontally. If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'. This prop doesn't affect the SectionGrid, which only scrolls vertically. |
 | onLayout | Function |  | Optional callback ran by the internal `FlatList` or `SectionList`'s `onLayout` function, thus invoked on mount and layout changes. |
 
-Note: If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'
 
 
-## Example
-```
+## FlatGrid Example
+```javascript
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import GridView from 'react-native-super-grid';
+import { FlatGrid } from 'react-native-super-grid';
 
 export default class Example extends Component {
   render() {
-    // Taken from https://flatuicolors.com/
     const items = [
       { name: 'TURQUOISE', code: '#1abc9c' }, { name: 'EMERALD', code: '#2ecc71' },
       { name: 'PETER RIVER', code: '#3498db' }, { name: 'AMETHYST', code: '#9b59b6' },
@@ -134,11 +110,14 @@ export default class Example extends Component {
     ];
 
     return (
-      <GridView
+      <FlatGrid
         itemDimension={130}
         items={items}
         style={styles.gridView}
-        renderItem={item => (
+        // staticDimension={300}
+        // fixed
+        // spacing={20}
+        renderItem={({ item, index }) => (
           <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemCode}>{item.code}</Text>
@@ -151,7 +130,7 @@ export default class Example extends Component {
 
 const styles = StyleSheet.create({
   gridView: {
-    paddingTop: 25,
+    marginTop: 20,
     flex: 1,
   },
   itemContainer: {
@@ -171,7 +150,10 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
+
 ```
+
+
 
 | ![iPhone6 Portrait](/screenshots/iphone6_portrait.png?raw=true "iPhone6 Portrait")| ![iPhone6 Landscape](/screenshots/iphone6_landscape.png?raw=true "iPhone6 Landscape") |
 |:---:|:---:|
@@ -193,19 +175,46 @@ const styles = StyleSheet.create({
 |:---:|:---:|
 | iPhone Horizontal Portrait | iPhone Horizontal Landscape  |
 
-## Example Nested Grid (itemContainerStyle)
-
-If you try to use nested grid with different number of items, you could use itemContainerStyle to change the style.
-Please take a look on the follow example.
-
-```
+## SectionGrid Example
+```javascript
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import GridView from 'react-native-super-grid';
+import { FlatGrid } from 'react-native-super-grid';
+
+export default class Example extends Component {
+  render() {
+    const items = [
+      { name: 'TURQUOISE', code: '#1abc9c' }, { name: 'EMERALD', code: '#2ecc71' },
+      { name: 'PETER RIVER', code: '#3498db' }, { name: 'AMETHYST', code: '#9b59b6' },
+      { name: 'WET ASPHALT', code: '#34495e' }, { name: 'GREEN SEA', code: '#16a085' },
+      { name: 'NEPHRITIS', code: '#27ae60' }, { name: 'BELIZE HOLE', code: '#2980b9' },
+      { name: 'WISTERIA', code: '#8e44ad' }, { name: 'MIDNIGHT BLUE', code: '#2c3e50' },
+      { name: 'SUN FLOWER', code: '#f1c40f' }, { name: 'CARROT', code: '#e67e22' },
+      { name: 'ALIZARIN', code: '#e74c3c' }, { name: 'CLOUDS', code: '#ecf0f1' },
+      { name: 'CONCRETE', code: '#95a5a6' }, { name: 'ORANGE', code: '#f39c12' },
+      { name: 'PUMPKIN', code: '#d35400' }, { name: 'POMEGRANATE', code: '#c0392b' },
+      { name: 'SILVER', code: '#bdc3c7' }, { name: 'ASBESTOS', code: '#7f8c8d' },
+    ];
+
+    return (
+      <FlatGrid
+        itemDimension={130}
+        items={items}
+        style={styles.gridView}
+        renderItem={({ item }) => (
+          <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemCode}>{item.code}</Text>
+          </View>
+        )}
+      />
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   gridView: {
-    paddingTop: 25,
+    marginTop: 20,
     flex: 1,
   },
   itemContainer: {
@@ -226,58 +235,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Example extends Component {
-  render() {
-    // Taken from https://flatuicolors.com/
-    const groupedItems = {
-        'left': [
-            { name: 'TURQUOISE', code: '#1abc9c' },
-            { name: 'EMERALD', code: '#2ecc71' },
-            { name: 'PETER RIVER', code: '#3498db' },
-            { name: 'AMETHYST', code: '#9b59b6' },
-            { name: 'WET ASPHALT', code: '#34495e' }
-        ],
-        'center': [
-            { name: 'TURQUOISE', code: '#1abc9c' }
-        ],
-        'rigth': [
-            { name: 'TURQUOISE', code: '#1abc9c' },
-            { name: 'EMERALD', code: '#2ecc71' },
-            { name: 'PETER RIVER', code: '#3498db' }
-        ]
-    }
-
-    return (
-      <GridView
-          itemContainerStyle={{ justifyContent: 'flex-start' }}
-          itemDimension={300}
-          items={['left', 'middle', 'rigth']}
-          style={styles.gridView}
-          renderItem={title =>
-              (
-                  <GridView
-                      listKey={title}
-                      itemDimension={100}
-                      items={groupedItems[title]}
-                      style={styles.gridView}
-                      renderItem={item => (
-                          <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-                              <Text style={styles.itemName}>{item.name}</Text>
-                              <Text style={styles.itemCode}>{item.code}</Text>
-                          </View>
-                      )}
-                  />
-              )
-          }
-      />
-    );
-  }
-}
 ```
-
-| ![iPad Air 2 Landscape - Nested grid](/screenshots/ipadair2_nestedgrid_itemContainerStyle.png?raw=true "iPad Air 2 Landscape - Nested grid (itemContainerStyle customization") | ![iPad Air 2 Landscape](/screenshots/ipadair2_nestedgrid.png?raw=true "iPad Air 2 Landscape - Nested grid") |
+| ![iPhone SectionGrid Portrait](/screenshots/iphone_section_grid_portrait.png?raw=true "iPhone SectionGrid Portrait")| ![iPhone6 Landscape](/screenshots/iphone_section_grid_landscape.png?raw=true "iPhone6 Landscape") |
 |:---:|:---:|
-| iPad Air 2 Landscape - Nested grid (itemContainerStyle customization) | iPad Air 2 Landscape - Nested grid  |
+| iPhone SectionGrid Portrait | iPhone6 Landscape  |
 
 ## License
 
@@ -286,6 +247,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Changelog
+
+### [3.0.0] - 2019-01-20
+- Rename components, FlatList renderItem signature, Performance improvements.
 
 ### [2.4.3] - 2018-07-22
 - Fix deep copying issue in SectionGrid @andersonaddo
