@@ -3,7 +3,7 @@ import {
   View, Dimensions, ViewPropTypes, FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { chunkArray, generateStyles } from './utils';
+import { chunkArray, calculateDimensions, generateStyles } from './utils';
 import SuperGridSectionList from './SuperGridSectionList';
 
 
@@ -14,10 +14,15 @@ class SuperGrid extends React.Component {
     this.renderRow = this.renderRow.bind(this);
     this.onLayout = this.onLayout.bind(this);
 
+    const { staticDimension, horizontal } = props;
+
     // Calculate total dimensions and set to state
-    const { horizontal } = props;
-    const dimension = horizontal ? 'height' : 'width';
-    const totalDimension = Dimensions.get('window')[dimension];
+    let totalDimension = staticDimension;
+
+    if (!staticDimension) {
+      const dimension = horizontal ? 'height' : 'width';
+      totalDimension = Dimensions.get('window')[dimension];
+    }
 
     this.state = {
       totalDimension,
@@ -98,22 +103,23 @@ class SuperGrid extends React.Component {
       ...restProps
     } = this.props;
 
-    const totalDimension = staticDimension || this.state.totalDimension;
-    const itemTotalDimension = itemDimension + spacing;
-    const availableDimension = totalDimension - spacing; // One spacing extra
-    const itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
-    const containerDimension = availableDimension / itemsPerRow;
+    const { totalDimension } = this.state;
 
-    const { containerStyle, rowStyle } = generateStyles({
-      totalDimension,
-      horizontal,
+    const { containerDimension, itemsPerRow, fixedSpacing } = calculateDimensions({
       itemDimension,
-      itemTotalDimension,
-      availableDimension,
-      containerDimension,
+      staticDimension,
+      totalDimension,
       spacing,
       fixed,
-      itemsPerRow,
+    });
+
+    const { containerStyle, rowStyle } = generateStyles({
+      horizontal,
+      itemDimension,
+      containerDimension,
+      spacing,
+      fixedSpacing,
+      fixed,
     });
 
     const rows = chunkArray(items, itemsPerRow); // Splitting the data into rows

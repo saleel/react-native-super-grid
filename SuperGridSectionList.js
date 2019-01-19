@@ -3,7 +3,7 @@ import {
   View, Dimensions, ViewPropTypes, SectionList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { generateStyles, chunkArray } from './utils';
+import { generateStyles, calculateDimensions, chunkArray } from './utils';
 
 class SuperGridSectionList extends Component {
   constructor(props) {
@@ -11,10 +11,13 @@ class SuperGridSectionList extends Component {
     this.onLayout = this.onLayout.bind(this);
     this.renderRow = this.renderRow.bind(this);
 
+    const { staticDimension } = props;
+
     // Calculate total dimensions and set to state
-    const { horizontal } = props;
-    const dimension = horizontal ? 'height' : 'width';
-    const totalDimension = Dimensions.get('window')[dimension];
+    let totalDimension = staticDimension;
+    if (!staticDimension) {
+      totalDimension = Dimensions.get('window').width;
+    }
 
     this.state = {
       totalDimension,
@@ -22,12 +25,11 @@ class SuperGridSectionList extends Component {
   }
 
   onLayout(e) {
-    const { staticDimension, horizontal, onLayout } = this.props;
+    const { staticDimension, onLayout } = this.props;
     const { totalDimension } = this.state;
 
     if (!staticDimension) {
-      const { width, height } = e.nativeEvent.layout || {};
-      const newTotalDimension = horizontal ? height : width;
+      const { width: newTotalDimension } = e.nativeEvent.layout || {};
 
       if (totalDimension !== newTotalDimension) {
         this.setState({
@@ -95,21 +97,22 @@ class SuperGridSectionList extends Component {
       ...props
     } = this.props;
 
-    const totalDimension = staticDimension || this.state.totalDimension;
-    const itemTotalDimension = itemDimension + spacing;
-    const availableDimension = totalDimension - spacing; // One spacing extra
-    const itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
-    const containerDimension = availableDimension / itemsPerRow;
+    const { totalDimension } = this.state;
 
-    const { containerStyle, rowStyle } = generateStyles({
-      totalDimension,
+    const { containerDimension, itemsPerRow, fixedSpacing } = calculateDimensions({
       itemDimension,
-      itemTotalDimension,
-      availableDimension,
-      containerDimension,
+      staticDimension,
+      totalDimension,
       spacing,
       fixed,
-      itemsPerRow,
+    });
+
+    const { containerStyle, rowStyle } = generateStyles({
+      itemDimension,
+      containerDimension,
+      spacing,
+      fixedSpacing,
+      fixed,
     });
 
     const groupedSections = sections.map(({ title, data }) => {

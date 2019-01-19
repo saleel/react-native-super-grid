@@ -13,22 +13,45 @@ function chunkArray(array = [], size) {
   }, []);
 }
 
+function calculateDimensions({
+  itemDimension,
+  staticDimension,
+  totalDimension,
+  fixed,
+  spacing,
+}) {
+  const usableTotalDimension = staticDimension || totalDimension;
+  const itemTotalDimension = itemDimension + spacing;
+  const availableDimension = usableTotalDimension - spacing; // One spacing extra
+  const itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
+  const containerDimension = availableDimension / itemsPerRow;
+
+  let fixedSpacing;
+  if (fixed) {
+    fixedSpacing = (totalDimension - (itemDimension * itemsPerRow)) / (itemsPerRow + 1);
+  }
+
+  return {
+    itemTotalDimension,
+    availableDimension,
+    itemsPerRow,
+    containerDimension,
+    fixedSpacing,
+  };
+}
+
 function generateStyles({
   itemDimension,
   containerDimension,
   spacing,
   fixed,
   horizontal,
-  totalDimension,
-  itemsPerRow,
+  fixedSpacing,
 }) {
-  const fixedSpacing = (totalDimension - (itemDimension * itemsPerRow)) / (itemsPerRow + 1);
-
   let rowStyle = {
     flexDirection: 'row',
     paddingLeft: fixed ? fixedSpacing : spacing,
     paddingBottom: spacing,
-    // borderWidth: 1,
   };
 
   let containerStyle = {
@@ -59,4 +82,4 @@ function generateStyles({
   };
 }
 
-export { chunkArray, generateStyles };
+export { chunkArray, calculateDimensions, generateStyles };
