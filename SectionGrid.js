@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { generateStyles, calculateDimensions, chunkArray } from './utils';
 
-class SuperGridSectionList extends Component {
+class SectionGrid extends Component {
   constructor(props) {
     super(props);
     this.onLayout = this.onLayout.bind(this);
@@ -149,7 +149,7 @@ class SuperGridSectionList extends Component {
   }
 }
 
-SuperGridSectionList.propTypes = {
+SectionGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
   sections: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
@@ -161,7 +161,7 @@ SuperGridSectionList.propTypes = {
   onLayout: PropTypes.func,
 };
 
-SuperGridSectionList.defaultProps = {
+SectionGrid.defaultProps = {
   fixed: false,
   itemDimension: 120,
   spacing: 10,
@@ -171,4 +171,4 @@ SuperGridSectionList.defaultProps = {
   onLayout: null,
 };
 
-export default SuperGridSectionList;
+export default SectionGrid;

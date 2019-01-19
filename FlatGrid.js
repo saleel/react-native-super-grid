@@ -4,10 +4,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { chunkArray, calculateDimensions, generateStyles } from './utils';
-import SuperGridSectionList from './SuperGridSectionList';
 
 
-class SuperGrid extends React.Component {
+class FlatGrid extends React.Component {
   constructor(props) {
     super(props);
 
@@ -153,7 +152,7 @@ class SuperGrid extends React.Component {
   }
 }
 
-SuperGrid.propTypes = {
+FlatGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
@@ -166,7 +165,7 @@ SuperGrid.propTypes = {
   onLayout: PropTypes.func,
 };
 
-SuperGrid.defaultProps = {
+FlatGrid.defaultProps = {
   fixed: false,
   itemDimension: 120,
   spacing: 10,
@@ -177,5 +176,4 @@ SuperGrid.defaultProps = {
   onLayout: null,
 };
 
-export default SuperGrid;
-export { SuperGridSectionList };
+export default FlatGrid;

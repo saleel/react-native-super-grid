@@ -1,5 +1,8 @@
-import SuperGrid from './SuperGrid';
-import SuperGridSectionList from './SuperGridSectionList';
+import FlatGrid from './FlatGrid';
+import SectionGrid from './SectionGrid';
 
-export default SuperGrid;
-export { SuperGrid, SuperGridSectionList };
+export { FlatGrid, SectionGrid };
+
+// Backward Compatibility
+export default FlatGrid;
+export { SectionGrid as SuperGridSectionList };
