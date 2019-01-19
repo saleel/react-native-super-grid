@@ -147,6 +147,7 @@ class FlatGrid extends React.Component {
         keyExtractor={(_, index) => `row_${index}`}
         {...restProps}
         horizontal={horizontal}
+        ref={(flatList) => { this.flatList = flatList; }}
       />
     );
   }

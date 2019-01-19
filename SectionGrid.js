@@ -94,7 +94,7 @@ class SectionGrid extends Component {
       renderItem,
       renderSectionHeader,
       onLayout,
-      ...props
+      ...restProps
     } = this.props;
 
     const { totalDimension } = this.state;
@@ -138,12 +138,12 @@ class SectionGrid extends Component {
           itemsPerRow,
           rowStyle,
           containerStyle,
-        })
-        }
+        })}
         keyExtractor={(_, index) => `row_${index}`}
         style={style}
         onLayout={this.onLayout}
-        {...props}
+        ref={(sectionList) => { this.sectionList = sectionList; }}
+        {...restProps}
       />
     );
   }
