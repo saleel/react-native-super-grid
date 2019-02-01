@@ -82,6 +82,7 @@ class FlatGrid extends React.Component {
               item,
               index: (rowIndex * itemsPerRow) + i,
               separators,
+              rowIndex,
             })}
           </View>
         ))}

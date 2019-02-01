@@ -41,7 +41,6 @@ import { FlatGrid } from 'react-native-super-grid';
   renderItem={({ item }) => (<Text>{item}</Text>)}
 />
 ```
-`renderItem` prop has same signature as of FlatList's renderItem.
 
 
 ### Usage (SectionGrid)
@@ -68,14 +67,13 @@ import { SectionGrid } from 'react-native-super-grid';
   )}
 />
 ```
-`sections` and `renderItem` prop has same signature as of SectionList.
 
 
 #### Properties
 
 | Property | Type | Default Value | Description |
 |---|---|---|---|
-| renderItem | Function |  | Function to render each object. Should return a react native component. Same signature as that of FlatList/SectionList's renderItem.  |
+| renderItem | Function |  | Function to render each object. Should return a react native component. Same signature as that of FlatList/SectionList's renderItem (with an additional key `rowIndex`).  |
 | items (for FlatGrid) sections (for SectionGrid)  | Array |  | Items to be rendered. renderItem will be called with each item in this array. Same signature as that of FlatList/SectionList. |  |
 | itemDimension | Number | 120  | Minimum width or height for each item in pixels (virtual). |
 | fixed | Boolean | false  | If true, the exact ```itemDimension``` will be used and won't be adjusted to fit the screen. |

@@ -76,6 +76,7 @@ class SectionGrid extends Component {
               index: (rowIndex * itemsPerRow) + i,
               section,
               separators,
+              rowIndex,
             })}
           </View>
         ))}
