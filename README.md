@@ -1,6 +1,7 @@
-# React Native Super Grid
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-![npm](https://img.shields.io/npm/dt/react-native-super-grid.svg?style=flat-square)
+# React Native Super Grid (3.0.1)
+
+![npm version](https://img.shields.io/npm/v/react-native-super-grid.svg?colorB=brightgreen&style=flat-square)
+![npm download](https://img.shields.io/npm/dt/react-native-super-grid.svg?style=flat-square)
 
 
 
@@ -285,6 +286,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Changelog
+
+### [3.0.1] - 2019-02-02
+- Fix in section key passed to various SectionGrid props.
 
 ### [3.0.0] - 2019-01-20
 - Rename components, FlatList renderItem signature, Performance improvements.
