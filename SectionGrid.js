@@ -132,7 +132,7 @@ class SectionGrid extends Component {
         renderItem={({ item, index, section }) => this.renderRow({
           rowItems: item,
           rowIndex: index,
-          section: section,
+          section,
           isFirstRow: index === 0,
           itemsPerRow,
           rowStyle,
