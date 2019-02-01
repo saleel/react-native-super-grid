@@ -92,7 +92,6 @@ class SectionGrid extends Component {
       itemDimension,
       staticDimension,
       renderItem,
-      renderSectionHeader,
       onLayout,
       ...restProps
     } = this.props;
@@ -119,9 +118,9 @@ class SectionGrid extends Component {
       const chunkedData = chunkArray(section.data, itemsPerRow);
 
       return {
-        title: section.title,
+        ...section,
         data: chunkedData,
-        actualSection: section,
+        originalData: section.data,
       };
     });
 
@@ -129,11 +128,10 @@ class SectionGrid extends Component {
     return (
       <SectionList
         sections={groupedSections}
-        renderSectionHeader={renderSectionHeader}
         renderItem={({ item, index, section }) => this.renderRow({
           rowItems: item,
           rowIndex: index,
-          section: section.actualSection,
+          section: section,
           isFirstRow: index === 0,
           itemsPerRow,
           rowStyle,
