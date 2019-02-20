@@ -287,6 +287,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [3.0.2] - 2019-02-20
+- Fix calculation bug where itemsPerRow became zero (#81).
+
 ### [3.0.1] - 2019-02-02
 - Fix in section key passed to various SectionGrid props.
 
