@@ -21,8 +21,8 @@ function calculateDimensions({
   spacing,
 }) {
   const usableTotalDimension = staticDimension || totalDimension;
-  const itemTotalDimension = itemDimension + spacing;
   const availableDimension = usableTotalDimension - spacing; // One spacing extra
+  const itemTotalDimension = Math.min(itemDimension + spacing, availableDimension); // itemTotalDimension should not exceed availableDimension
   const itemsPerRow = Math.floor(availableDimension / itemTotalDimension);
   const containerDimension = availableDimension / itemsPerRow;
 
