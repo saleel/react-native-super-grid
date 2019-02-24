@@ -2,6 +2,7 @@ import * as React from "react";
 import {
   ViewStyle,
   ListRenderItemInfo,
+  SectionListRenderItemInfo,
   SectionListData,
   StyleProp
 } from "react-native";
@@ -72,14 +73,14 @@ export class FlatGrid<ItemType = any> extends React.Component<
 > {}
 
 export interface SectionGridProps<ItemType = any> {
-  renderItem: (info: ListRenderItemInfo<ItemType>) => JSX.Element;
+  renderItem: (info: SectionListRenderItemInfo<ItemType>) => JSX.Element;
   sections: ItemType;
   itemDimension?: number;
   fixed?: boolean;
   spacing?: number;
   style?: StyleProp<ViewStyle>;
   staticDimension?: number;
-  renderSectionHeader?: (info: SectionListData<ItemType>) => JSX.Element;
+  renderSectionHeader?: (info: { section: SectionListData<ItemType> }) => JSX.Element;
   onLayout?: Function;
 }
 
