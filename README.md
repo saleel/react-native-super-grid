@@ -287,6 +287,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [3.0.3] - 2019-02-25
+- Fix type defenitions @jgbernalp
+
 ### [3.0.2] - 2019-02-20
 - Fix calculation bug where itemsPerRow became zero (#81).
 
