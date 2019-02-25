@@ -1,5 +1,11 @@
 import * as React from "react";
-import { ViewStyle, ListRenderItemInfo, SectionListData, StyleProp } from "react-native";
+import {
+  ViewStyle,
+  ListRenderItemInfo,
+  SectionListRenderItemInfo,
+  SectionListData,
+  StyleProp
+} from "react-native";
 
 /**
  * React Native Super Grid Properties
@@ -8,7 +14,7 @@ export interface FlatGridProps<ItemType = any> {
   /**
    * Function to render each object. Should return a react native component.
    */
-  renderItem: (info: { item: ListRenderItemInfo<ItemType> }) => JSX.Element;
+  renderItem: (info: ListRenderItemInfo<ItemType>) => JSX.Element;
   /**
    * Items to be rendered. renderItem will be called with each item in this array.
    */
@@ -56,7 +62,7 @@ export interface FlatGridProps<ItemType = any> {
    * Optional callback ran by the internal `FlatList` or `SectionList`'s `onLayout` function,
    * thus invoked on mount and layout changes.
    */
-  onLayout?: func;
+  onLayout?: Function;
 }
 
 /**
@@ -67,15 +73,15 @@ export class FlatGrid<ItemType = any> extends React.Component<
 > {}
 
 export interface SectionGridProps<ItemType = any> {
-  renderItem: (info: { item: SectionListData<ItemType> }) => JSX.Element;
-  sections: ItemType,
-  itemDimension?: number,
-  fixed?: boolean,
-  spacing?: number,
-  style?: StyleProp<ViewStyle>,
-  staticDimension?: number,
+  renderItem: (info: SectionListRenderItemInfo<ItemType>) => JSX.Element;
+  sections: ItemType;
+  itemDimension?: number;
+  fixed?: boolean;
+  spacing?: number;
+  style?: StyleProp<ViewStyle>;
+  staticDimension?: number;
   renderSectionHeader?: (info: { section: SectionListData<ItemType> }) => JSX.Element;
-  onLayout?: func,
+  onLayout?: Function;
 }
 
 export class SuperGridSectionList<ItemType = any> extends React.Component<
