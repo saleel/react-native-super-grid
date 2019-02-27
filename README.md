@@ -90,6 +90,38 @@ All additional props you pass will be passed on to the internal FlatList/Section
 In **SectionGrid**, `section` argument in methods like `renderSectionHeader`, `renderSectionFooter`, `ItemSeparatorComponent` will slightly different from the actual section you passed. The `data` key in the `section` will be the grouped versions of items (items that go in one row), and the original list of items can be found in `originalData` key. All other keys will remain intact.
 
 
+
+## v2 to v3 Migration
+
+The major API change in v3 was renaming the components to `FlatGrid` and `SectionGrid` and making the `renderItem` signature to match with `FlatList` and `SectionList`.
+
+
+So instead of 
+```javascript
+import GridView from 'react-native-super-grid';
+import { SuperGridSectionList } from 'react-native-super-grid';
+```
+use
+```javascript
+import { FlatGrid, SectionGrid } from 'react-native-super-grid';
+```
+
+Also change the renderItem function parameters from
+```javascript
+<GridView
+  items={[1,2,3,4,5,6]}
+  renderItem={(item, index) => (<Text>{item}</Text>)}
+/>
+```
+to
+```javascript
+<FlatGrid
+  items={[1,2,3,4,5,6]}
+  renderItem={({ item, index }) => (<Text>{item}</Text>)}
+/>
+```
+
+
 ## FlatGrid Example
 ```javascript
 import React, { Component } from 'react';
