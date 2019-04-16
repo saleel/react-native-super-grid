@@ -1,4 +1,4 @@
-# React Native Super Grid (3.0.1)
+# React Native Super Grid
 
 ![npm version](https://img.shields.io/npm/v/react-native-super-grid.svg?colorB=brightgreen&style=flat-square)
 ![npm download](https://img.shields.io/npm/dt/react-native-super-grid.svg?style=flat-square)
@@ -318,6 +318,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Changelog
+
+### [3.0.4] - 2019-04-16
+- Fix type defenitions @hisankaran
 
 ### [3.0.3] - 2019-02-25
 - Fix type defenitions @jgbernalp
