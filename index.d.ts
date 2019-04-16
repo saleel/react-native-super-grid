@@ -84,6 +84,6 @@ export interface SectionGridProps<ItemType = any> {
   onLayout?: Function;
 }
 
-export class SuperGridSectionList<ItemType = any> extends React.Component<
+export class SectionGrid<ItemType = any> extends React.Component<
   SectionGridProps<ItemType>
 > {}
