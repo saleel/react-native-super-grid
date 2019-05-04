@@ -4,8 +4,9 @@ import {
   ListRenderItemInfo,
   SectionListRenderItemInfo,
   SectionListData,
-  StyleProp, RefreshControlProps,
-} from 'react-native';
+  StyleProp,
+  RefreshControlProps,
+} from "react-native";
 
 /**
  * React Native Super Grid Properties
