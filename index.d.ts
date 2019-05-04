@@ -4,8 +4,8 @@ import {
   ListRenderItemInfo,
   SectionListRenderItemInfo,
   SectionListData,
-  StyleProp
-} from "react-native";
+  StyleProp, RefreshControlProps,
+} from 'react-native';
 
 /**
  * React Native Super Grid Properties
@@ -34,6 +34,46 @@ export interface FlatGridProps<ItemType = any> {
    * Spacing between each item.
    */
   spacing?: number;
+
+  /**
+   * Rendered when the list is empty.
+   */
+  ListEmptyComponent?: React.ComponentType<any> | React.ReactElement | null;
+
+  /**
+   * Rendered at the very end of the list.
+   */
+  ListFooterComponent?: React.ComponentType<any> | React.ReactElement | null;
+
+  /**
+   * Rendered at the very beginning of the list.
+   */
+  ListHeaderComponent?: React.ComponentType<any> | React.ReactElement | null;
+
+  /**
+   * Called once when the scroll position gets within onEndReachedThreshold of the rendered content.
+   */
+  onEndReached?: ((info: { distanceFromEnd: number }) => void) | null;
+
+  /**
+   * How far from the end (in units of visible length of the list) the bottom edge of the
+   * list must be from the end of the content to trigger the `onEndReached` callback.
+   * Thus a value of 0.5 will trigger `onEndReached` when the end of the content is
+   * within half the visible length of the list.
+   */
+  onEndReachedThreshold?: number | null;
+
+  /**
+   * A RefreshControl component, used to provide pull-to-refresh
+   * functionality for the ScrollView.
+   */
+  refreshControl?: React.ReactElement<RefreshControlProps>;
+
+  /**
+   * If provided, a standard RefreshControl will be adaded for "Pull to Refresh" functionality.
+   * Make sure to also set the refreshing prop correctly.
+   */
+  onRefresh?: (() => void) | null;
 
   /**
    * Style
