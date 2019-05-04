@@ -319,11 +319,14 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [3.0.5] - 2019-05-04
+- Add FlatList type definitions @zhigang1992
+
 ### [3.0.4] - 2019-04-16
-- Fix type defenitions @hisankaran
+- Fix type definitions @hisankaran
 
 ### [3.0.3] - 2019-02-25
-- Fix type defenitions @jgbernalp
+- Fix type definitions @jgbernalp
 
 ### [3.0.2] - 2019-02-20
 - Fix calculation bug where itemsPerRow became zero (#81).
