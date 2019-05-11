@@ -4,7 +4,8 @@ import {
   ListRenderItemInfo,
   SectionListRenderItemInfo,
   SectionListData,
-  StyleProp, RefreshControlProps,
+  StyleProp,
+  RefreshControlProps,
 } from 'react-native';
 
 /**
