@@ -4,9 +4,8 @@ import {
   ListRenderItemInfo,
   SectionListRenderItemInfo,
   SectionListData,
-  StyleProp,
-  RefreshControlProps,
-} from "react-native";
+  StyleProp, RefreshControlProps,
+} from 'react-native';
 
 /**
  * React Native Super Grid Properties
@@ -71,7 +70,7 @@ export interface FlatGridProps<ItemType = any> {
   refreshControl?: React.ReactElement<RefreshControlProps>;
 
   /**
-   * If provided, a standard RefreshControl will be adaded for "Pull to Refresh" functionality.
+   * If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality.
    * Make sure to also set the refreshing prop correctly.
    */
   onRefresh?: (() => void) | null;
@@ -104,6 +103,13 @@ export interface FlatGridProps<ItemType = any> {
    * thus invoked on mount and layout changes.
    */
   onLayout?: Function;
+
+  /**
+   * Used to extract a unique key for a given item at the specified index. Key is used for caching
+   * and as the react key to track item re-ordering. The default extractor checks `item.key`, then
+   * falls back to using the index, like React does.
+   */
+  keyExtractor?: (item: ItemT[], index: number) => string;
 }
 
 /**
