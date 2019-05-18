@@ -312,15 +312,18 @@ const styles = StyleSheet.create({
 | iPhone SectionGrid Portrait | iPhone6 Landscape  |
 
 ## License
-
+g
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 
 
 ## Changelog
 
+### [3.0.6] - 2019-05-18
+- Fix type definitions @zhigang1992
+
 ### [3.0.5] - 2019-05-04
-- Add FlatList type definitions @zhigang1992
+- Fix type definitions @zhigang1992
 
 ### [3.0.4] - 2019-04-16
 - Fix type definitions @hisankaran
