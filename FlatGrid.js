@@ -165,6 +165,7 @@ FlatGrid.propTypes = {
   staticDimension: PropTypes.number,
   horizontal: PropTypes.bool,
   onLayout: PropTypes.func,
+  listKey: PropTypes.string,
 };
 
 FlatGrid.defaultProps = {
@@ -176,6 +177,7 @@ FlatGrid.defaultProps = {
   staticDimension: undefined,
   horizontal: false,
   onLayout: null,
+  listKey: undefined,
 };
 
 export default FlatGrid;
