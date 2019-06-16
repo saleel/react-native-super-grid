@@ -111,6 +111,12 @@ export interface FlatGridProps<ItemType = any> {
    * falls back to using the index, like React does.
    */
   keyExtractor?: (item: ItemT[], index: number) => string;
+
+  /**
+   * This prop can be used when the same Grid, component is used several times inside the cell of
+   * an outer list
+   */
+  listKey?: string;
 }
 
 /**
@@ -130,6 +136,7 @@ export interface SectionGridProps<ItemType = any> {
   staticDimension?: number;
   renderSectionHeader?: (info: { section: SectionListData<ItemType> }) => JSX.Element;
   onLayout?: Function;
+  listKey?: string;
 }
 
 export class SectionGrid<ItemType = any> extends React.Component<
