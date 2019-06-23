@@ -110,11 +110,11 @@ export interface FlatGridProps<ItemType = any> {
    * and as the react key to track item re-ordering. The default extractor checks `item.key`, then
    * falls back to using the index, like React does.
    */
-  keyExtractor?: (item: ItemT[], index: number) => string;
+  keyExtractor?: (item: ItemType[], index: number) => string;
 
   /**
-   * This prop can be used when the same Grid, component is used several times inside the cell of
-   * an outer list
+   * A unique identifier for the Grid. This key is necessary if you are nesting multiple
+   * FlatGrid/SectionGrid inside another Grid (or any VirtualizedList)
    */
   listKey?: string;
 }
