@@ -158,6 +158,7 @@ SectionGrid.propTypes = {
   itemContainerStyle: ViewPropTypes.style,
   staticDimension: PropTypes.number,
   onLayout: PropTypes.func,
+  listKey: PropTypes.string,
 };
 
 SectionGrid.defaultProps = {
@@ -168,6 +169,7 @@ SectionGrid.defaultProps = {
   itemContainerStyle: undefined,
   staticDimension: undefined,
   onLayout: null,
+  listKey: undefined,
 };
 
 export default SectionGrid;

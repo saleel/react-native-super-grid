@@ -110,7 +110,13 @@ export interface FlatGridProps<ItemType = any> {
    * and as the react key to track item re-ordering. The default extractor checks `item.key`, then
    * falls back to using the index, like React does.
    */
-  keyExtractor?: (item: ItemT[], index: number) => string;
+  keyExtractor?: (item: ItemType[], index: number) => string;
+
+  /**
+   * A unique identifier for the Grid. This key is necessary if you are nesting multiple
+   * FlatGrid/SectionGrid inside another Grid (or any VirtualizedList)
+   */
+  listKey?: string;
 }
 
 /**
@@ -130,6 +136,7 @@ export interface SectionGridProps<ItemType = any> {
   staticDimension?: number;
   renderSectionHeader?: (info: { section: SectionListData<ItemType> }) => JSX.Element;
   onLayout?: Function;
+  listKey?: string;
 }
 
 export class SectionGrid<ItemType = any> extends React.Component<
