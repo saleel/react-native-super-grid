@@ -320,6 +320,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [3.0.7] - 2019-06-29
+- Add listKey prop @josemiguelo
+
 ### [3.0.6] - 2019-05-18
 - Fix type definitions @zhigang1992
 
