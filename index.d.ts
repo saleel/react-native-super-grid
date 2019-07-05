@@ -16,6 +16,7 @@ type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>
 // Original flat list component props
 type FlatListAllowedProps<ItemType = any> = Omit<FlatListProps<ItemType>,
   | "data"
+  | "renderItem"
 >
 
 /**
