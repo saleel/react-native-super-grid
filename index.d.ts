@@ -6,12 +6,22 @@ import {
   SectionListData,
   StyleProp,
   RefreshControlProps,
-} from 'react-native';
+  SectionListProps,
+  FlatListProps
+} from 'react-native'
+
+// Copy from TS 3.5
+type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>
+
+// Original flat list component props
+type FlatListAllowedProps<ItemType = any> = Omit<FlatListProps<ItemType>,
+  | "data"
+>
 
 /**
  * React Native Super Grid Properties
  */
-export interface FlatGridProps<ItemType = any> {
+export interface FlatGridProps<ItemType = any> extends FlatListAllowedProps<ItemType> {
   /**
    * Function to render each object. Should return a react native component.
    */
@@ -126,9 +136,14 @@ export class FlatGrid<ItemType = any> extends React.Component<
   FlatGridProps<ItemType>
 > {}
 
-export interface SectionGridProps<ItemType = any> {
+// Original section list component props
+type SectionGridAllowedProps<ItemType = any> = Omit<SectionListProps<ItemType>,
+  | "renderItem"
+>
+
+export interface SectionGridProps<ItemType = any> extends SectionGridAllowedProps<ItemType> {
   renderItem: (info: SectionListRenderItemInfo<ItemType>) => JSX.Element;
-  sections: ItemType;
+  sections: ItemType[];
   itemDimension?: number;
   fixed?: boolean;
   spacing?: number;
