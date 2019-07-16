@@ -6,20 +6,29 @@ import {
   SectionListData,
   StyleProp,
   RefreshControlProps,
-} from 'react-native';
+  SectionListProps,
+  FlatListProps
+} from 'react-native'
 
-/**
- * React Native Super Grid Properties
- */
-export interface FlatGridProps<ItemType = any> {
+// Copy from TS 3.5
+type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>
+
+// Grid item info, same as original + rowIndex
+export type GridRenderItemInfo<ItemT> = ListRenderItemInfo<ItemT> & {
+  rowIndex: number;
+}
+
+export type GridRenderItem<ItemT> = (
+  info: GridRenderItemInfo<ItemT>
+) => React.ReactElement | null;
+
+// Custom props that are present in both grid and list
+type CommonProps = {
+
   /**
    * Function to render each object. Should return a react native component.
    */
-  renderItem: (info: ListRenderItemInfo<ItemType>) => JSX.Element;
-  /**
-   * Items to be rendered. renderItem will be called with each item in this array.
-   */
-  items: ItemType[];
+  renderItem: GridRenderItem<ItemType>;
 
   /**
    * Minimum width or height for each item in pixels (virtual).
@@ -37,86 +46,35 @@ export interface FlatGridProps<ItemType = any> {
   spacing?: number;
 
   /**
-   * Rendered when the list is empty.
-   */
-  ListEmptyComponent?: React.ComponentType<any> | React.ReactElement | null;
-
-  /**
-   * Rendered at the very end of the list.
-   */
-  ListFooterComponent?: React.ComponentType<any> | React.ReactElement | null;
-
-  /**
-   * Rendered at the very beginning of the list.
-   */
-  ListHeaderComponent?: React.ComponentType<any> | React.ReactElement | null;
-
-  /**
-   * Called once when the scroll position gets within onEndReachedThreshold of the rendered content.
-   */
-  onEndReached?: ((info: { distanceFromEnd: number }) => void) | null;
-
-  /**
-   * How far from the end (in units of visible length of the list) the bottom edge of the
-   * list must be from the end of the content to trigger the `onEndReached` callback.
-   * Thus a value of 0.5 will trigger `onEndReached` when the end of the content is
-   * within half the visible length of the list.
-   */
-  onEndReachedThreshold?: number | null;
-
-  /**
-   * A RefreshControl component, used to provide pull-to-refresh
-   * functionality for the ScrollView.
-   */
-  refreshControl?: React.ReactElement<RefreshControlProps>;
-
-  /**
-   * If provided, a standard RefreshControl will be added for "Pull to Refresh" functionality.
-   * Make sure to also set the refreshing prop correctly.
-   */
-  onRefresh?: (() => void) | null;
-
-  /**
-   * Style
-   */
-  style?: StyleProp<ViewStyle>;
-
-  /**
-   * Specifies the style about content row view
-   */
-  itemContainerStyle?: StyleProp<ViewStyle>;
-
-  /**
    * Specifies a static width or height for the GridView container.
    * If your container dimension is known or can be calculated at runtime
    * (via Dimensions.get('window'), for example), passing this prop will force the grid container
    * to that dimension size and avoid the reflow associated with dynamically calculating it
    */
   staticDimension?: number;
+}
+
+// Original flat list component props
+type FlatListAllowedProps<ItemType = any> = Omit<FlatListProps<ItemType>,
+  | "data"
+  | "renderItem"
+>
+
+/**
+ * React Native Super Grid Properties
+ */
+export interface FlatGridProps<ItemType = any>
+  extends FlatListAllowedProps<ItemType>, CommonProps {
 
   /**
-   * If true, the grid will be scrolling horizontally
+   * Items to be rendered. renderItem will be called with each item in this array.
    */
-  horizontal?: boolean;
+  items: ItemType[];
 
   /**
-   * Optional callback ran by the internal `FlatList` or `SectionList`'s `onLayout` function,
-   * thus invoked on mount and layout changes.
+   * Specifies the style about content row view
    */
-  onLayout?: Function;
-
-  /**
-   * Used to extract a unique key for a given item at the specified index. Key is used for caching
-   * and as the react key to track item re-ordering. The default extractor checks `item.key`, then
-   * falls back to using the index, like React does.
-   */
-  keyExtractor?: (item: ItemType[], index: number) => string;
-
-  /**
-   * A unique identifier for the Grid. This key is necessary if you are nesting multiple
-   * FlatGrid/SectionGrid inside another Grid (or any VirtualizedList)
-   */
-  listKey?: string;
+  itemContainerStyle?: StyleProp<ViewStyle>;
 }
 
 /**
@@ -126,17 +84,22 @@ export class FlatGrid<ItemType = any> extends React.Component<
   FlatGridProps<ItemType>
 > {}
 
-export interface SectionGridProps<ItemType = any> {
-  renderItem: (info: SectionListRenderItemInfo<ItemType>) => JSX.Element;
-  sections: ItemType;
-  itemDimension?: number;
-  fixed?: boolean;
-  spacing?: number;
-  style?: StyleProp<ViewStyle>;
-  staticDimension?: number;
-  renderSectionHeader?: (info: { section: SectionListData<ItemType> }) => JSX.Element;
-  onLayout?: Function;
-  listKey?: string;
+export type SectionItem<ItemType> = {
+  title: string;
+  data: ItemType[];
+}
+
+// Original section list component props
+type SectionGridAllowedProps<ItemType = any> = Omit<SectionListProps<ItemType>,
+  | "renderItem"
+  //  This prop doesn't affect the SectionGrid, which only scrolls vertically.
+  | "horizontal"
+>
+
+export interface SectionGridProps<ItemType = any>
+  extends SectionGridAllowedProps<ItemType>, CommonProps {
+
+  sections: SectionItem<ItemType>[];
 }
 
 export class SectionGrid<ItemType = any> extends React.Component<
