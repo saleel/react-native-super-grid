@@ -8,7 +8,7 @@ import {
   RefreshControlProps,
   SectionListProps,
   FlatListProps
-} from 'react-native'
+} from "react-native"
 
 // Copy from TS 3.5
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>
@@ -23,7 +23,7 @@ export type GridRenderItem<ItemT> = (
 ) => React.ReactElement | null;
 
 // Custom props that are present in both grid and list
-type CommonProps = {
+type CommonProps<ItemType> = {
 
   /**
    * Function to render each object. Should return a react native component.
@@ -64,7 +64,7 @@ type FlatListAllowedProps<ItemType = any> = Omit<FlatListProps<ItemType>,
  * React Native Super Grid Properties
  */
 export interface FlatGridProps<ItemType = any>
-  extends FlatListAllowedProps<ItemType>, CommonProps {
+  extends FlatListAllowedProps<ItemType>, CommonProps<ItemType> {
 
   /**
    * Items to be rendered. renderItem will be called with each item in this array.
@@ -97,7 +97,7 @@ type SectionGridAllowedProps<ItemType = any> = Omit<SectionListProps<ItemType>,
 >
 
 export interface SectionGridProps<ItemType = any>
-  extends SectionGridAllowedProps<ItemType>, CommonProps {
+  extends SectionGridAllowedProps<ItemType>, CommonProps<ItemType> {
 
   sections: SectionItem<ItemType>[];
 }
