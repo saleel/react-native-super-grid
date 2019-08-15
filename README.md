@@ -320,6 +320,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [3.0.9] - 2019-08-16
+- Improve type definitions @Grohden
+
 ### [3.0.8] - 2019-07-16
 - Fix type definitions @Grohden
 
