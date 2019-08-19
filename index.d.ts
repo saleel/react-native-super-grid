@@ -24,12 +24,6 @@ export type GridRenderItem<ItemT> = (
 
 // Custom props that are present in both grid and list
 type CommonProps<ItemType> = {
-
-  /**
-   * Function to render each object. Should return a react native component.
-   */
-  renderItem: GridRenderItem<ItemType>;
-
   /**
    * Minimum width or height for each item in pixels (virtual).
    */
@@ -57,7 +51,6 @@ type CommonProps<ItemType> = {
 // Original flat list component props
 type FlatListAllowedProps<ItemType = any> = Omit<FlatListProps<ItemType>,
   | "data"
-  | "renderItem"
 >
 
 /**
@@ -65,7 +58,6 @@ type FlatListAllowedProps<ItemType = any> = Omit<FlatListProps<ItemType>,
  */
 export interface FlatGridProps<ItemType = any>
   extends FlatListAllowedProps<ItemType>, CommonProps<ItemType> {
-
   /**
    * Items to be rendered. renderItem will be called with each item in this array.
    */
@@ -87,11 +79,11 @@ export class FlatGrid<ItemType = any> extends React.Component<
 export type SectionItem<ItemType> = {
   title: string;
   data: ItemType[];
+  renderItem?: GridRenderItem<ItemType>;
 }
 
 // Original section list component props
 type SectionGridAllowedProps<ItemType = any> = Omit<SectionListProps<ItemType>,
-  | "renderItem"
   //  This prop doesn't affect the SectionGrid, which only scrolls vertically.
   | "horizontal"
 >

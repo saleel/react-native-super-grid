@@ -45,6 +45,7 @@ class SectionGrid extends Component {
   }
 
   renderRow({
+    renderItem,
     rowItems,
     rowIndex,
     section,
@@ -54,7 +55,7 @@ class SectionGrid extends Component {
     isFirstRow,
     containerStyle,
   }) {
-    const { spacing, itemContainerStyle, renderItem } = this.props;
+    const { spacing, itemContainerStyle } = this.props;
 
     // Add spacing below section header
     let additionalRowStyle = {};
@@ -115,11 +116,24 @@ class SectionGrid extends Component {
       fixed,
     });
 
+    const wrapRenderItem = (renderItem) => ({ item, index, section }) =>
+      this.renderRow({
+        renderItem,
+        rowItems: item,
+        rowIndex: index,
+        section,
+        isFirstRow: index === 0,
+        itemsPerRow,
+        rowStyle,
+        containerStyle,
+      })
+
     const groupedSections = sections.map((section) => {
       const chunkedData = chunkArray(section.data, itemsPerRow);
 
       return {
         ...section,
+        ...(section.renderItem ? { renderItem: wrapRenderItem(section.renderItem) } : {}),
         data: chunkedData,
         originalData: section.data,
       };
@@ -129,15 +143,7 @@ class SectionGrid extends Component {
     return (
       <SectionList
         sections={groupedSections}
-        renderItem={({ item, index, section }) => this.renderRow({
-          rowItems: item,
-          rowIndex: index,
-          section,
-          isFirstRow: index === 0,
-          itemsPerRow,
-          rowStyle,
-          containerStyle,
-        })}
+        renderItem={wrapRenderItem(this.props.renderItem)}
         keyExtractor={(_, index) => `row_${index}`}
         style={style}
         onLayout={this.onLayout}
@@ -149,7 +155,7 @@ class SectionGrid extends Component {
 }
 
 SectionGrid.propTypes = {
-  renderItem: PropTypes.func.isRequired,
+  renderItem: PropTypes.func,
   sections: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
   fixed: PropTypes.bool,
