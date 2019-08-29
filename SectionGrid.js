@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Dimensions, ViewPropTypes, SectionList,
+  View, Dimensions, ViewPropTypes, SectionList
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { generateStyles, calculateDimensions, chunkArray } from './utils';
@@ -93,7 +93,7 @@ class SectionGrid extends Component {
       fixed,
       itemDimension,
       staticDimension,
-      renderItem,
+      renderItem: originalRenderItem,
       onLayout,
       ...restProps
     } = this.props;
@@ -116,34 +116,29 @@ class SectionGrid extends Component {
       fixed,
     });
 
-    const wrapRenderItem = (renderItem) => ({ item, index, section }) =>
-      this.renderRow({
-        renderItem,
-        rowItems: item,
-        rowIndex: index,
-        section,
-        isFirstRow: index === 0,
-        itemsPerRow,
-        rowStyle,
-        containerStyle,
-      })
-
     const groupedSections = sections.map((section) => {
       const chunkedData = chunkArray(section.data, itemsPerRow);
-
+      const renderItem = section.renderItem || originalRenderItem;
       return {
         ...section,
-        ...(section.renderItem ? { renderItem: wrapRenderItem(section.renderItem) } : {}),
+        renderItem: ({ item, index, section }) => this.renderRow({
+          renderItem,
+          rowItems: item,
+          rowIndex: index,
+          section,
+          isFirstRow: index === 0,
+          itemsPerRow,
+          rowStyle,
+          containerStyle,
+        }),
         data: chunkedData,
         originalData: section.data,
       };
     });
 
-
     return (
       <SectionList
         sections={groupedSections}
-        renderItem={wrapRenderItem(this.props.renderItem)}
         keyExtractor={(_, index) => `row_${index}`}
         style={style}
         onLayout={this.onLayout}
