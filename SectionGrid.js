@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Dimensions, ViewPropTypes, SectionList,
+  View, Dimensions, ViewPropTypes, SectionList
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { generateStyles, calculateDimensions, chunkArray } from './utils';
@@ -45,6 +45,7 @@ class SectionGrid extends Component {
   }
 
   renderRow({
+    renderItem,
     rowItems,
     rowIndex,
     section,
@@ -54,7 +55,7 @@ class SectionGrid extends Component {
     isFirstRow,
     containerStyle,
   }) {
-    const { spacing, itemContainerStyle, renderItem } = this.props;
+    const { spacing, itemContainerStyle } = this.props;
 
     // Add spacing below section header
     let additionalRowStyle = {};
@@ -92,7 +93,7 @@ class SectionGrid extends Component {
       fixed,
       itemDimension,
       staticDimension,
-      renderItem,
+      renderItem: originalRenderItem,
       onLayout,
       ...restProps
     } = this.props;
@@ -117,19 +118,11 @@ class SectionGrid extends Component {
 
     const groupedSections = sections.map((section) => {
       const chunkedData = chunkArray(section.data, itemsPerRow);
-
+      const renderItem = section.renderItem || originalRenderItem;
       return {
         ...section,
-        data: chunkedData,
-        originalData: section.data,
-      };
-    });
-
-
-    return (
-      <SectionList
-        sections={groupedSections}
-        renderItem={({ item, index, section }) => this.renderRow({
+        renderItem: ({ item, index, section }) => this.renderRow({
+          renderItem,
           rowItems: item,
           rowIndex: index,
           section,
@@ -137,7 +130,15 @@ class SectionGrid extends Component {
           itemsPerRow,
           rowStyle,
           containerStyle,
-        })}
+        }),
+        data: chunkedData,
+        originalData: section.data,
+      };
+    });
+
+    return (
+      <SectionList
+        sections={groupedSections}
         keyExtractor={(_, index) => `row_${index}`}
         style={style}
         onLayout={this.onLayout}
@@ -149,7 +150,7 @@ class SectionGrid extends Component {
 }
 
 SectionGrid.propTypes = {
-  renderItem: PropTypes.func.isRequired,
+  renderItem: PropTypes.func,
   sections: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
   fixed: PropTypes.bool,
