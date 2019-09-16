@@ -11,7 +11,7 @@ Responsive Grid View for React Native.
 
 ## Getting Started
 
-This library export two components - FlatGrid (similar to FlatList) and SectionGrid (similart to SecionList). Both components render a Grid layout that adapts itself to various screen resolutions.
+This library export two components - FlatGrid (similar to FlatList) and SectionGrid (similar to SectionList). Both components render a Grid layout that adapts itself to various screen resolutions.
 
 Instead of passing an itemPerRow argument, you pass ```itemDimension``` and each item will be rendered with a dimension size equal to or more than (to fill the screen) the given dimension.
 
@@ -58,7 +58,7 @@ import { SectionGrid } from 'react-native-super-grid';
       data: [1,2,3,4,5,6],
     },
     {
-      title: 'Albhabets',
+      title: 'Alphabets',
       data: ['A', 'B', 'C', 'D', 'E'],
     },
   ]}
@@ -371,7 +371,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ### [2.1.0] - 2018-03-17
 #### Added
-- Use FlastList instead of ListView
+- Use FlatList instead of ListView
 - Fix spacing issues
 
 ### [2.0.2] - 2018-01-11
