@@ -313,12 +313,14 @@ const styles = StyleSheet.create({
 | iPhone SectionGrid Portrait | iPhone6 Landscape  |
 
 ## License
-g
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 
 
 ## Changelog
+
+### [3.1.0] - 2019-09-16
+- Support overriding of renderItem in SectionList @paldepind
 
 ### [3.0.9] - 2019-08-16
 - Improve type definitions @Grohden
