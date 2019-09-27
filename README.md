@@ -319,6 +319,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [3.1.1] - 2019-09-27
+- Fix type definitions @JulienKode
+
 ### [3.1.0] - 2019-09-16
 - Support overriding of renderItem in SectionList @paldepind
 
