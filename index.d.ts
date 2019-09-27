@@ -85,7 +85,7 @@ export type SectionItem<ItemType> = {
 // Original section list component props
 type SectionGridAllowedProps<ItemType = any> = Omit<SectionListProps<ItemType>,
   //  This prop doesn't affect the SectionGrid, which only scrolls vertically.
-  | "horizontal"
+  | "horizontal" | "sections"
 >
 
 export interface SectionGridProps<ItemType = any>
