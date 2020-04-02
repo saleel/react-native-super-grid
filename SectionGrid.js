@@ -55,7 +55,7 @@ class SectionGrid extends Component {
     isFirstRow,
     containerStyle,
   }) {
-    const { spacing, itemContainerStyle } = this.props;
+    const { spacing, itemContainerStyle, keyExtractor } = this.props;
 
     // Add spacing below section header
     let additionalRowStyle = {};
@@ -69,7 +69,7 @@ class SectionGrid extends Component {
       <View style={[rowStyle, additionalRowStyle]}>
         {rowItems.map((item, i) => (
           <View
-            key={`item_${(rowIndex * itemsPerRow) + i}`}
+            key={keyExtractor ? keyExtractor(item, i) : `item_${(rowIndex * itemsPerRow) + i}`}
             style={[containerStyle, itemContainerStyle]}
           >
             {renderItem({
@@ -95,6 +95,7 @@ class SectionGrid extends Component {
       staticDimension,
       renderItem: originalRenderItem,
       onLayout,
+      keyExtractor,
       ...restProps
     } = this.props;
 
@@ -139,7 +140,15 @@ class SectionGrid extends Component {
     return (
       <SectionList
         sections={groupedSections}
-        keyExtractor={(_, index) => `row_${index}`}
+        keyExtractor={(rowItems, index) => {
+          if (keyExtractor) {
+            return rowItems.map((rowItem, rowItemIndex) => {
+              return keyExtractor(rowItem, rowItemIndex)
+            }).join('_')
+          } else {
+            return `row_${index}`
+          }
+        }}
         style={style}
         onLayout={this.onLayout}
         ref={(sectionList) => { this.sectionList = sectionList; }}

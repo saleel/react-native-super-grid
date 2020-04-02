@@ -59,7 +59,7 @@ class FlatGrid extends React.Component {
     containerStyle,
   }) {
     const {
-      spacing, horizontal, itemContainerStyle, renderItem,
+      spacing, horizontal, itemContainerStyle, renderItem, keyExtractor,
     } = this.props;
 
     // To make up for the top padding
@@ -75,7 +75,7 @@ class FlatGrid extends React.Component {
       <View style={[rowStyle, additionalRowStyle]}>
         {rowItems.map((item, i) => (
           <View
-            key={`item_${(rowIndex * itemsPerRow) + i}`}
+            key={keyExtractor ? keyExtractor(item, i) : `item_${(rowIndex * itemsPerRow) + i}`}
             style={[containerStyle, itemContainerStyle]}
           >
             {renderItem({
@@ -102,6 +102,7 @@ class FlatGrid extends React.Component {
       onLayout,
       staticDimension,
       itemContainerStyle,
+      keyExtractor,
       ...restProps
     } = this.props;
 
@@ -145,7 +146,15 @@ class FlatGrid extends React.Component {
           style,
         ]}
         onLayout={this.onLayout}
-        keyExtractor={(_, index) => `row_${index}`}
+        keyExtractor={(rowItems, index) => {
+          if (keyExtractor) {
+            return rowItems.map((rowItem, rowItemIndex) => {
+              return keyExtractor(rowItem, rowItemIndex)
+            }).join('_')
+          } else {
+            return `row_${index}`
+          }
+        }}
         {...restProps}
         horizontal={horizontal}
         ref={(flatList) => { this.flatList = flatList; }}
