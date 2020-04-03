@@ -320,6 +320,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [3.2.0] - 2020-04-03
+- Add keyExtractor prop @sammarks
+
 ### [3.1.2] - 2019-09-27
 - Security updates in packages @dependabot
 
