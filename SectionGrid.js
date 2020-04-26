@@ -1,9 +1,6 @@
 import React, {
   forwardRef,
   memo,
-  PureComponent,
-  useEffect,
-  useRef,
   useState,
 } from 'react';
 import { View, Dimensions, ViewPropTypes, SectionList } from 'react-native';
