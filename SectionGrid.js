@@ -1,8 +1,4 @@
-import React, {
-  forwardRef,
-  memo,
-  useState,
-} from 'react';
+import React, { forwardRef, memo, useCallback, useMemo, useState } from 'react';
 import { View, Dimensions, ViewPropTypes, SectionList } from 'react-native';
 import PropTypes from 'prop-types';
 import { generateStyles, calculateDimensions, chunkArray } from './utils';
@@ -18,137 +14,165 @@ const SectionGrid = memo(
       staticDimension,
       renderItem: originalRenderItem,
       keyExtractor,
+      onLayout,
+      itemContainerStyle,
       ...restProps
     } = props;
-    const { onLayout } = props;
-    const { itemContainerStyle } = props;
 
     const [totalDimension, setTotalDimension] = useState(
       staticDimension || Dimensions.get('window').width,
     );
 
-    const onLocalLayout = e => {
-      if (!staticDimension) {
-        const { width: newTotalDimension } = e.nativeEvent.layout || {};
+    const onLocalLayout = useCallback(
+      e => {
+        if (!staticDimension) {
+          const { width: newTotalDimension } = e.nativeEvent.layout || {};
 
-        if (totalDimension !== newTotalDimension) {
-          setTotalDimension(newTotalDimension);
+          if (totalDimension !== newTotalDimension) {
+            setTotalDimension(newTotalDimension);
+          }
         }
-      }
 
-      // call onLayout prop if passed
-      if (onLayout) {
-        onLayout(e);
-      }
-    };
+        // call onLayout prop if passed
+        if (onLayout) {
+          onLayout(e);
+        }
+      },
+      [onLayout, staticDimension, totalDimension],
+    );
 
-    const renderRow = ({
-                         renderItem,
-                         rowItems,
-                         rowIndex,
-                         section,
-                         itemsPerRow,
-                         rowStyle,
-                         separators,
-                         isFirstRow,
-                         containerStyle,
-                       }) => {
-      // Add spacing below section header
-      let additionalRowStyle = {};
-      if (isFirstRow) {
-        additionalRowStyle = {
-          marginTop: spacing,
+    const renderRow = useCallback(
+      ({
+         renderItem,
+         rowItems,
+         rowIndex,
+         section,
+         itemsPerRow,
+         rowStyle,
+         separators,
+         isFirstRow,
+         containerStyle,
+       }) => {
+        // Add spacing below section header
+        let additionalRowStyle = {};
+        if (isFirstRow) {
+          additionalRowStyle = {
+            marginTop: spacing,
+          };
+        }
+
+        return (
+          <View style={[rowStyle, additionalRowStyle]}>
+            {rowItems.map((item, i) => (
+              <View
+                key={
+                  keyExtractor
+                    ? keyExtractor(item, i)
+                    : `item_${rowIndex * itemsPerRow + i}`
+                }
+                style={[containerStyle, itemContainerStyle]}
+              >
+                {renderItem({
+                  item,
+                  index: rowIndex * itemsPerRow + i,
+                  section,
+                  separators,
+                  rowIndex,
+                })}
+              </View>
+            ))}
+          </View>
+        );
+      },
+      [spacing, keyExtractor, itemContainerStyle],
+    );
+
+    const { containerDimension, itemsPerRow, fixedSpacing } = useMemo(
+      () =>
+        calculateDimensions({
+          itemDimension,
+          staticDimension,
+          totalDimension,
+          spacing,
+          fixed,
+        }),
+      [itemDimension, staticDimension, totalDimension, spacing, fixed],
+    );
+
+    const { containerStyle, rowStyle } = useMemo(
+      () =>
+        generateStyles({
+          itemDimension,
+          containerDimension,
+          spacing,
+          fixedSpacing,
+          fixed,
+        }),
+      [itemDimension, containerDimension, spacing, fixedSpacing, fixed],
+    );
+
+    const groupSectionsFunc = useCallback(
+      section => {
+        const chunkedData = chunkArray(section.data, itemsPerRow);
+        const renderItem = section.renderItem || originalRenderItem;
+        return {
+          ...section,
+          renderItem: ({ item, index, section }) =>
+            renderRow({
+              renderItem,
+              rowItems: item,
+              rowIndex: index,
+              section,
+              isFirstRow: index === 0,
+              itemsPerRow,
+              rowStyle,
+              containerStyle,
+            }),
+          data: chunkedData,
+          originalData: section.data,
         };
-      }
+      },
+      [
+        itemsPerRow,
+        originalRenderItem,
+        renderRow,
+        rowStyle,
+        containerStyle,
+      ],
+    );
 
-      return (
-        <View style={[rowStyle, additionalRowStyle]}>
-          {rowItems.map((item, i) => (
-            <View
-              key={
-                keyExtractor
-                  ? keyExtractor(item, i)
-                  : `item_${rowIndex * itemsPerRow + i}`
-              }
-              style={[containerStyle, itemContainerStyle]}
-            >
-              {renderItem({
-                item,
-                index: rowIndex * itemsPerRow + i,
-                section,
-                separators,
-                rowIndex,
-              })}
-            </View>
-          ))}
-        </View>
-      );
-    };
+    const groupedSections = sections.map(groupSectionsFunc);
 
-    const {
-      containerDimension,
-      itemsPerRow,
-      fixedSpacing,
-    } = calculateDimensions({
-      itemDimension,
-      staticDimension,
-      totalDimension,
-      spacing,
-      fixed,
-    });
-
-    const { containerStyle, rowStyle } = generateStyles({
-      itemDimension,
-      containerDimension,
-      spacing,
-      fixedSpacing,
-      fixed,
-    });
-
-    const groupedSections = sections.map(section => {
-      const chunkedData = chunkArray(section.data, itemsPerRow);
-      const renderItem = section.renderItem || originalRenderItem;
-      return {
-        ...section,
-        renderItem: ({ item, index, section }) =>
-          renderRow({
-            renderItem,
-            rowItems: item,
-            rowIndex: index,
-            section,
-            isFirstRow: index === 0,
-            itemsPerRow,
-            rowStyle,
-            containerStyle,
-          }),
-        data: chunkedData,
-        originalData: section.data,
-      };
-    });
+    const localKeyExtractor = useCallback(
+      (rowItems, index) => {
+        if (keyExtractor) {
+          return rowItems
+            .map((rowItem, rowItemIndex) => {
+              return keyExtractor(rowItem, rowItemIndex);
+            })
+            .join('_');
+        } else {
+          return `row_${index}`;
+        }
+      },
+      [keyExtractor],
+    );
 
     return (
-      <SectionList
-        sections={groupedSections}
-        keyExtractor={(rowItems, index) => {
-          if (keyExtractor) {
-            return rowItems
-              .map((rowItem, rowItemIndex) => {
-                return keyExtractor(rowItem, rowItemIndex);
-              })
-              .join('_');
-          } else {
-            return `row_${index}`;
-          }
-        }}
-        style={style}
-        onLayout={onLocalLayout}
-        ref={ref}
-        {...restProps}
-      />
+      <View onLayout={onLocalLayout}>
+        <SectionList
+          sections={groupedSections}
+          keyExtractor={localKeyExtractor}
+          style={style}
+          ref={ref}
+          {...restProps}
+        />
+      </View>
     );
   }),
 );
 
+SectionGrid.displayName = 'SectionGrid';
 SectionGrid.propTypes = {
   renderItem: PropTypes.func,
   sections: PropTypes.arrayOf(PropTypes.any).isRequired,
