@@ -142,6 +142,7 @@ const FlatGrid = memo(
       <FlatList
         data={rows}
         ref={ref}
+        extraData={totalDimension}
         renderItem={({ item, index }) => renderRow({
           rowItems: item,
           rowIndex: index,
