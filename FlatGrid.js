@@ -27,7 +27,7 @@ const FlatGrid = memo(
 
     if (props.items && !props.data) {
       // eslint-disable-next-line no-console
-      console.error('React Native Super Grid - Prop "items" has been renamed to "data" in version 4');
+      throw new Error('React Native Super Grid - Prop "items" has been renamed to "data" in version 4');
     }
 
     const [totalDimension, setTotalDimension] = useState(() => {
