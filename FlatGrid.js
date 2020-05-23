@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, memo } from 'react';
 import {
   View, Dimensions, ViewPropTypes, FlatList,
 } from 'react-native';
@@ -6,40 +6,42 @@ import PropTypes from 'prop-types';
 import { chunkArray, calculateDimensions, generateStyles } from './utils';
 
 
-class FlatGrid extends React.Component {
-  constructor(props) {
-    super(props);
+const FlatGrid = memo(forwardRef((props, ref) => {
+  const {
+    items,
+    style,
+    spacing,
+    fixed,
+    itemDimension,
+    renderItem,
+    horizontal,
+    onLayout,
+    staticDimension,
+    itemContainerStyle,
+    keyExtractor,
+    ...restProps
+  } = props;
 
-    this.renderRow = this.renderRow.bind(this);
-    this.onLayout = this.onLayout.bind(this);
 
-    const { staticDimension, horizontal } = props;
-
-    // Calculate total dimensions and set to state
-    let totalDimension = staticDimension;
+  const [totalDimension, setTotalDimension] = React.useState(() => {
+    let defaultTotalDimension = staticDimension;
 
     if (!staticDimension) {
       const dimension = horizontal ? 'height' : 'width';
-      totalDimension = Dimensions.get('window')[dimension];
+      defaultTotalDimension = Dimensions.get('window')[dimension];
     }
 
-    this.state = {
-      totalDimension,
-    };
-  }
+    return defaultTotalDimension;
+  });
 
-  onLayout(e) {
-    const { staticDimension, horizontal, onLayout } = this.props;
-    const { totalDimension } = this.state;
 
+  const onLayoutLocal = (e) => {
     if (!staticDimension) {
       const { width, height } = e.nativeEvent.layout || {};
       const newTotalDimension = horizontal ? height : width;
 
       if (totalDimension !== newTotalDimension) {
-        this.setState({
-          totalDimension: newTotalDimension,
-        });
+        setTotalDimension(newTotalDimension);
       }
     }
 
@@ -47,9 +49,10 @@ class FlatGrid extends React.Component {
     if (onLayout) {
       onLayout(e);
     }
-  }
+  };
 
-  renderRow({
+
+  const renderRow = ({
     rowItems,
     rowIndex,
     separators,
@@ -57,11 +60,7 @@ class FlatGrid extends React.Component {
     itemsPerRow,
     rowStyle,
     containerStyle,
-  }) {
-    const {
-      spacing, horizontal, itemContainerStyle, renderItem, keyExtractor,
-    } = this.props;
-
+  }) => {
     // To make up for the top padding
     let additionalRowStyle = {};
     if (isLastRow) {
@@ -75,12 +74,16 @@ class FlatGrid extends React.Component {
       <View style={[rowStyle, additionalRowStyle]}>
         {rowItems.map((item, i) => (
           <View
-            key={keyExtractor ? keyExtractor(item, i) : `item_${(rowIndex * itemsPerRow) + i}`}
+            key={
+              keyExtractor
+                ? keyExtractor(item, i)
+                : `item_${rowIndex * itemsPerRow + i}`
+            }
             style={[containerStyle, itemContainerStyle]}
           >
             {renderItem({
               item,
-              index: (rowIndex * itemsPerRow) + i,
+              index: rowIndex * itemsPerRow + i,
               separators,
               rowIndex,
             })}
@@ -88,80 +91,67 @@ class FlatGrid extends React.Component {
         ))}
       </View>
     );
-  }
+  };
 
-  render() {
-    const {
-      items,
-      style,
-      spacing,
-      fixed,
-      itemDimension,
-      renderItem,
-      horizontal,
-      onLayout,
-      staticDimension,
-      itemContainerStyle,
-      keyExtractor,
-      ...restProps
-    } = this.props;
 
-    const { totalDimension } = this.state;
-
-    const { containerDimension, itemsPerRow, fixedSpacing } = calculateDimensions({
+  const { containerDimension, itemsPerRow, fixedSpacing } = calculateDimensions(
+    {
       itemDimension,
       staticDimension,
       totalDimension,
       spacing,
       fixed,
-    });
+    },
+  );
 
-    const { containerStyle, rowStyle } = generateStyles({
-      horizontal,
-      itemDimension,
-      containerDimension,
-      spacing,
-      fixedSpacing,
-      fixed,
-    });
 
-    const rows = chunkArray(items, itemsPerRow); // Splitting the data into rows
+  const { containerStyle, rowStyle } = generateStyles({
+    horizontal,
+    itemDimension,
+    containerDimension,
+    spacing,
+    fixedSpacing,
+    fixed,
+  });
 
-    return (
-      <FlatList
-        data={rows}
-        renderItem={({ item, index }) => this.renderRow({
-          rowItems: item,
-          rowIndex: index,
-          isLastRow: index === rows.length - 1,
-          itemsPerRow,
-          rowStyle,
-          containerStyle,
-        })
+
+  const rows = chunkArray(items, itemsPerRow); // Splitting the data into rows
+
+
+  return (
+    <FlatList
+      data={rows}
+      ref={ref}
+      renderItem={({ item, index }) => renderRow({
+        rowItems: item,
+        rowIndex: index,
+        isLastRow: index === rows.length - 1,
+        itemsPerRow,
+        rowStyle,
+        containerStyle,
+      })
+      }
+      style={[
+        {
+          ...(horizontal ? { paddingLeft: spacing } : { paddingTop: spacing }),
+        },
+        style,
+      ]}
+      onLayout={onLayoutLocal}
+      keyExtractor={(rowItems, index) => {
+        if (keyExtractor) {
+          return rowItems
+            .map((rowItem, rowItemIndex) => keyExtractor(rowItem, rowItemIndex))
+            .join('_');
         }
-        style={[
-          {
-            ...(horizontal ? { paddingLeft: spacing } : { paddingTop: spacing }),
-          },
-          style,
-        ]}
-        onLayout={this.onLayout}
-        keyExtractor={(rowItems, index) => {
-          if (keyExtractor) {
-            return rowItems.map((rowItem, rowItemIndex) => {
-              return keyExtractor(rowItem, rowItemIndex)
-            }).join('_')
-          } else {
-            return `row_${index}`
-          }
-        }}
-        {...restProps}
-        horizontal={horizontal}
-        ref={(flatList) => { this.flatList = flatList; }}
-      />
-    );
-  }
-}
+        return `row_${index}`;
+      }}
+      {...restProps}
+      horizontal={horizontal}
+    />
+  );
+}));
+
 
 FlatGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
@@ -177,6 +167,7 @@ FlatGrid.propTypes = {
   listKey: PropTypes.string,
 };
 
+
 FlatGrid.defaultProps = {
   fixed: false,
   itemDimension: 120,
@@ -188,5 +179,6 @@ FlatGrid.defaultProps = {
   onLayout: null,
   listKey: undefined,
 };
+
 
 export default FlatGrid;
