@@ -11,10 +11,10 @@ import { chunkArray, calculateDimensions, generateStyles } from './utils';
 const FlatGrid = memo(
   forwardRef((props, ref) => {
     const {
-      items,
       style,
       spacing,
       fixed,
+      data,
       itemDimension,
       renderItem,
       horizontal,
@@ -24,6 +24,11 @@ const FlatGrid = memo(
       keyExtractor,
       ...restProps
     } = props;
+
+    if (props.items && !props.data) {
+      // eslint-disable-next-line no-console
+      console.error('React Native Super Grid - Prop "items" has been renamed to "data" in version 4');
+    }
 
     const [totalDimension, setTotalDimension] = useState(() => {
       let defaultTotalDimension = staticDimension;
@@ -74,6 +79,8 @@ const FlatGrid = memo(
           };
         }
 
+        console.log({ rowItems });
+
         return (
           <View style={[rowStyle, additionalRowStyle]}>
             {rowItems.map((item, i) => (
@@ -122,7 +129,7 @@ const FlatGrid = memo(
       [horizontal, itemDimension, containerDimension, spacing, fixedSpacing, fixed],
     );
 
-    const rows = chunkArray(items, itemsPerRow); // Splitting the data into rows
+    const rows = chunkArray(data, itemsPerRow); // Splitting the data into rows
 
 
     const localKeyExtractor = useCallback(
@@ -174,7 +181,7 @@ FlatGrid.displayName = 'FlatGrid';
 
 FlatGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
-  items: PropTypes.arrayOf(PropTypes.any).isRequired,
+  data: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
@@ -183,6 +190,7 @@ FlatGrid.propTypes = {
   staticDimension: PropTypes.number,
   horizontal: PropTypes.bool,
   onLayout: PropTypes.func,
+  keyExtractor: PropTypes.func,
   listKey: PropTypes.string,
 };
 
@@ -195,6 +203,7 @@ FlatGrid.defaultProps = {
   staticDimension: undefined,
   horizontal: false,
   onLayout: null,
+  keyExtractor: null,
   listKey: undefined,
 };
 
