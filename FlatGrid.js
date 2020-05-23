@@ -7,6 +7,7 @@ import {
 import PropTypes from 'prop-types';
 import { chunkArray, calculateDimensions, generateStyles } from './utils';
 
+
 const FlatGrid = memo(
   forwardRef((props, ref) => {
     const {
@@ -123,6 +124,20 @@ const FlatGrid = memo(
 
     const rows = chunkArray(items, itemsPerRow); // Splitting the data into rows
 
+
+    const localKeyExtractor = useCallback(
+      (rowItems, index) => {
+        if (keyExtractor) {
+          return rowItems
+            .map((rowItem, rowItemIndex) => keyExtractor(rowItem, rowItemIndex))
+            .join('_');
+        }
+        return `row_${index}`;
+      },
+      [keyExtractor],
+    );
+
+
     return (
       <FlatList
         data={rows}
@@ -145,20 +160,16 @@ const FlatGrid = memo(
           style,
         ]}
         onLayout={onLayoutLocal}
-        keyExtractor={(rowItems, index) => {
-          if (keyExtractor) {
-            return rowItems
-              .map((rowItem, rowItemIndex) => keyExtractor(rowItem, rowItemIndex))
-              .join('_');
-          }
-          return `row_${index}`;
-        }}
+        keyExtractor={localKeyExtractor}
         {...restProps}
         horizontal={horizontal}
       />
     );
   }),
 );
+
+
+FlatGrid.displayName = 'FlatGrid';
 
 FlatGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
@@ -185,5 +196,6 @@ FlatGrid.defaultProps = {
   onLayout: null,
   listKey: undefined,
 };
+
 
 export default FlatGrid;

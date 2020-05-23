@@ -1,7 +1,12 @@
-import React, { forwardRef, memo, useCallback, useMemo, useState } from 'react';
-import { View, Dimensions, ViewPropTypes, SectionList } from 'react-native';
+import React, {
+  forwardRef, memo, useCallback, useMemo, useState,
+} from 'react';
+import {
+  View, Dimensions, ViewPropTypes, SectionList,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { generateStyles, calculateDimensions, chunkArray } from './utils';
+
 
 const SectionGrid = memo(
   forwardRef((props, ref) => {
@@ -24,7 +29,7 @@ const SectionGrid = memo(
     );
 
     const onLocalLayout = useCallback(
-      e => {
+      (e) => {
         if (!staticDimension) {
           const { width: newTotalDimension } = e.nativeEvent.layout || {};
 
@@ -43,16 +48,16 @@ const SectionGrid = memo(
 
     const renderRow = useCallback(
       ({
-         renderItem,
-         rowItems,
-         rowIndex,
-         section,
-         itemsPerRow,
-         rowStyle,
-         separators,
-         isFirstRow,
-         containerStyle,
-       }) => {
+        renderItem,
+        rowItems,
+        rowIndex,
+        section,
+        itemsPerRow,
+        rowStyle,
+        separators,
+        isFirstRow,
+        containerStyle,
+      }) => {
         // Add spacing below section header
         let additionalRowStyle = {};
         if (isFirstRow) {
@@ -88,46 +93,44 @@ const SectionGrid = memo(
     );
 
     const { containerDimension, itemsPerRow, fixedSpacing } = useMemo(
-      () =>
-        calculateDimensions({
-          itemDimension,
-          staticDimension,
-          totalDimension,
-          spacing,
-          fixed,
-        }),
+      () => calculateDimensions({
+        itemDimension,
+        staticDimension,
+        totalDimension,
+        spacing,
+        fixed,
+      }),
       [itemDimension, staticDimension, totalDimension, spacing, fixed],
     );
 
     const { containerStyle, rowStyle } = useMemo(
-      () =>
-        generateStyles({
-          itemDimension,
-          containerDimension,
-          spacing,
-          fixedSpacing,
-          fixed,
-        }),
+      () => generateStyles({
+        itemDimension,
+        containerDimension,
+        spacing,
+        fixedSpacing,
+        fixed,
+      }),
       [itemDimension, containerDimension, spacing, fixedSpacing, fixed],
     );
 
     const groupSectionsFunc = useCallback(
-      section => {
+      (section) => {
         const chunkedData = chunkArray(section.data, itemsPerRow);
         const renderItem = section.renderItem || originalRenderItem;
+
         return {
           ...section,
-          renderItem: ({ item, index, section }) =>
-            renderRow({
-              renderItem,
-              rowItems: item,
-              rowIndex: index,
-              section,
-              isFirstRow: index === 0,
-              itemsPerRow,
-              rowStyle,
-              containerStyle,
-            }),
+          renderItem: ({ item, index, section }) => renderRow({
+            renderItem,
+            rowItems: item,
+            rowIndex: index,
+            section,
+            isFirstRow: index === 0,
+            itemsPerRow,
+            rowStyle,
+            containerStyle,
+          }),
           data: chunkedData,
           originalData: section.data,
         };
@@ -147,13 +150,10 @@ const SectionGrid = memo(
       (rowItems, index) => {
         if (keyExtractor) {
           return rowItems
-            .map((rowItem, rowItemIndex) => {
-              return keyExtractor(rowItem, rowItemIndex);
-            })
+            .map((rowItem, rowItemIndex) => keyExtractor(rowItem, rowItemIndex))
             .join('_');
-        } else {
-          return `row_${index}`;
         }
+        return `row_${index}`;
       },
       [keyExtractor],
     );
@@ -173,7 +173,9 @@ const SectionGrid = memo(
   }),
 );
 
+
 SectionGrid.displayName = 'SectionGrid';
+
 SectionGrid.propTypes = {
   renderItem: PropTypes.func,
   sections: PropTypes.arrayOf(PropTypes.any).isRequired,
@@ -197,5 +199,6 @@ SectionGrid.defaultProps = {
   onLayout: null,
   listKey: undefined,
 };
+
 
 export default SectionGrid;
