@@ -20,6 +20,7 @@ const FlatGrid = memo(
       horizontal,
       onLayout,
       staticDimension,
+      maxDimension,
       itemContainerStyle,
       keyExtractor,
       ...restProps
@@ -38,6 +39,10 @@ const FlatGrid = memo(
         defaultTotalDimension = Dimensions.get('window')[dimension];
       }
 
+      if (maxDimension && defaultTotalDimension > maxDimension) {
+        defaultTotalDimension = maxDimension;
+      }
+
       return defaultTotalDimension;
     });
 
@@ -45,7 +50,11 @@ const FlatGrid = memo(
       (e) => {
         if (!staticDimension) {
           const { width, height } = e.nativeEvent.layout || {};
-          const newTotalDimension = horizontal ? height : width;
+          let newTotalDimension = horizontal ? height : width;
+
+          if (maxDimension && newTotalDimension > maxDimension) {
+            newTotalDimension = maxDimension;
+          }
 
           if (totalDimension !== newTotalDimension) {
             setTotalDimension(newTotalDimension);
@@ -57,7 +66,7 @@ const FlatGrid = memo(
           onLayout(e);
         }
       },
-      [staticDimension, onLayout, totalDimension, horizontal],
+      [staticDimension, maxDimension, totalDimension, horizontal, onLayout],
     );
 
     const renderRow = useCallback(
