@@ -48,10 +48,8 @@ type CommonProps<ItemType> = {
   staticDimension?: number;
 
   /**
-   * Specifies a max width or height for the GridView container. This takes precedence over
-   * staticDimension.
-   * The container will never be rendered, on initial render or subsequent ones,
-   * with a width or height higher than specified here.
+   * Specifies a maximum width or height for the container. If not passed, full width/height
+   * of the screen will be used.
    */
   maxDimension?: number;
 }
