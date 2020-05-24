@@ -46,6 +46,12 @@ type CommonProps<ItemType> = {
    * to that dimension size and avoid the reflow associated with dynamically calculating it
    */
   staticDimension?: number;
+
+  /**
+   * Specifies a maximum width or height for the container. If not passed, full width/height
+   * of the screen will be used.
+   */
+  maxDimension?: number;
 }
 
 // Original flat list component props

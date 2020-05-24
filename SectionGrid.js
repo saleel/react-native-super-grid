@@ -17,6 +17,7 @@ const SectionGrid = memo(
       fixed,
       itemDimension,
       staticDimension,
+      maxDimension,
       renderItem: originalRenderItem,
       keyExtractor,
       onLayout,
@@ -24,14 +25,24 @@ const SectionGrid = memo(
       ...restProps
     } = props;
 
-    const [totalDimension, setTotalDimension] = useState(
-      staticDimension || Dimensions.get('window').width,
-    );
+    const [totalDimension, setTotalDimension] = useState(() => {
+      let defaultTotalDimension = staticDimension;
+
+      if (!staticDimension) {
+        defaultTotalDimension = maxDimension || Dimensions.get('window').width;
+      }
+
+      return defaultTotalDimension;
+    });
 
     const onLocalLayout = useCallback(
       (e) => {
         if (!staticDimension) {
-          const { width: newTotalDimension } = e.nativeEvent.layout || {};
+          let { width: newTotalDimension } = e.nativeEvent.layout || {};
+
+          if (maxDimension && newTotalDimension > maxDimension) {
+            newTotalDimension = maxDimension;
+          }
 
           if (totalDimension !== newTotalDimension) {
             setTotalDimension(newTotalDimension);
@@ -43,7 +54,7 @@ const SectionGrid = memo(
           onLayout(e);
         }
       },
-      [onLayout, staticDimension, totalDimension],
+      [staticDimension, maxDimension, totalDimension, onLayout],
     );
 
     const renderRow = useCallback(
