@@ -170,16 +170,15 @@ const SectionGrid = memo(
     );
 
     return (
-      <View onLayout={onLocalLayout}>
-        <SectionList
-          extraData={totalDimension}
-          sections={groupedSections}
-          keyExtractor={localKeyExtractor}
-          style={style}
-          ref={ref}
-          {...restProps}
-        />
-      </View>
+      <SectionList
+        onLayout={onLocalLayout}
+        extraData={totalDimension}
+        sections={groupedSections}
+        keyExtractor={localKeyExtractor}
+        style={style}
+        ref={ref}
+        {...restProps}
+      />
     );
   }),
 );
