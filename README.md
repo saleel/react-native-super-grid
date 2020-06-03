@@ -107,7 +107,7 @@ In **SectionGrid**, `section` argument in methods like `renderSectionHeader`, `r
 ```javascript
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { FlatGrid } from './react-native-super-grid';
+import { FlatGrid } from 'react-native-super-grid';
 
 export default function Example() {
   const [items, setItems] = React.useState([
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
 ```javascript
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { SectionGrid } from './react-native-super-grid';
+import { SectionGrid } from 'react-native-super-grid';
 
 export default function Example() {
   const [items, setItems] = React.useState([
