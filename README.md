@@ -307,6 +307,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ### [4.0.0] - 2020-05-23
 - Improve SectionList performance by using hooks @IsaaX
 - Improve FlatList performance by using hooks
+- Add maxDimension prop @ianmartorell
 
 ### [3.2.0] - 2020-04-03
 - Add keyExtractor prop @sammarks
