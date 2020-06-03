@@ -9,6 +9,7 @@
 Responsive Grid View for React Native.
 
 
+
 ## Getting Started
 
 This library export two components - FlatGrid (similar to FlatList) and SectionGrid (similar to SectionList). Both components render a Grid layout that adapts itself to various screen resolutions.
@@ -18,16 +19,21 @@ Instead of passing an itemPerRow argument, you pass ```itemDimension``` and each
 Internally, these components use the native [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) and [SectionList](https://facebook.github.io/react-native/docs/sectionlist.html).
 
 
+[Demo Snack](https://snack.expo.io/@saleel/react-native-super-grid)
+
+
 **Version 3.x, please refer [v3 branch](https://github.com/saleel/react-native-super-grid/tree/v3) for documentation**  
 
 **Version 2.x and older, please refer [v2 branch](https://github.com/saleel/react-native-super-grid/tree/v2) for documentation**  
-  
+
 
 ### v3 to v4 Migration
 
-Rename FlatList's `items` prop to `data`.
 
-v4 is based on React hooks, and requires React Native version > `0.59`.
+- Rename FlatList's `items` prop to `data`.
+- v4 is based on React hooks, and requires React Native version > `0.59`.
+- Methods called on SectionList/FlatList refs can be called directly now (because of forwardRef). i.e Instead of `ref.current.sectionList.scrollToLocation`, use `ref.current.scrollToLocation`.
+
 
 
 ### Installing
