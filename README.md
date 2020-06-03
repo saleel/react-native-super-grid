@@ -18,8 +18,17 @@ Instead of passing an itemPerRow argument, you pass ```itemDimension``` and each
 Internally, these components use the native [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) and [SectionList](https://facebook.github.io/react-native/docs/sectionlist.html).
 
 
+**Version 3.x, please refer [v3 branch](https://github.com/saleel/react-native-super-grid/tree/v3) for documentation**  
+
 **Version 2.x and older, please refer [v2 branch](https://github.com/saleel/react-native-super-grid/tree/v2) for documentation**  
   
+
+### v3 to v4 Migration
+
+Rename FlatList's `items` prop to `data`.
+
+v4 is based on React hooks, and requires React Native version > `0.59`.
+
 
 ### Installing
 
@@ -38,7 +47,7 @@ import { FlatGrid } from 'react-native-super-grid';
 ```javascript
 <FlatGrid
   itemDimension={130}
-  items={[1,2,3,4,5,6]}
+  data={[1,2,3,4,5,6]}
   renderItem={({ item }) => (<Text>{item}</Text>)}
 />
 ```
@@ -75,17 +84,18 @@ import { SectionGrid } from 'react-native-super-grid';
 | Property | Type | Default Value | Description |
 |---|---|---|---|
 | renderItem | Function |  | Function to render each object. Should return a react native component. Same signature as that of FlatList/SectionList's renderItem (with an additional key `rowIndex`).  |
-| items (for FlatGrid) sections (for SectionGrid)  | Array |  | Items to be rendered. renderItem will be called with each item in this array. Same signature as that of FlatList/SectionList. |  |
+| data (for FlatGrid) sections (for SectionGrid)  | Array |  | Data to be rendered. renderItem will be called with each item in this array. Same signature as that of FlatList/SectionList. |  |
 | itemDimension | Number | 120  | Minimum width or height for each item in pixels (virtual). |
 | fixed | Boolean | false  | If true, the exact ```itemDimension``` will be used and won't be adjusted to fit the screen. |
 | spacing | Number | 10 | Spacing between each item. |
 | style | [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
 | itemContainerStyle | styles (Object) | | Style for item's container. Not needed for most cases.
-| staticDimension | Number | undefined | Specifies a static width or height for the container. If not passed, full width/height of the screen will be used.|
+| staticDimension | Number | | Specifies a static width or height for the container. If not passed, `maxDimension` will be used.|
+| maxDimension | Number | | Specifies a maximum width or height for the container. If not passed, full width/height of the screen will be used.|
 | horizontal | boolean | false | If true, the grid will be scrolling horizontally. If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'. This prop doesn't affect the SectionGrid, which only scrolls vertically. |
 | onLayout | Function |  | Optional callback ran by the internal `FlatList` or `SectionList`'s `onLayout` function, thus invoked on mount and layout changes. |
-| listKey | String | undefined | A unique identifier for the Grid. This key is necessary if you are nesting multiple FlatGrid/SectionGrid inside another Grid (or any VirtualizedList).|
-| keyExtractor | Function | undefined | A function `(item, rowItemIndex) => {String}` that should return a unique key for the item passed.|
+| listKey | String | | A unique identifier for the Grid. This key is necessary if you are nesting multiple FlatGrid/SectionGrid inside another Grid (or any VirtualizedList).|
+| keyExtractor | Function | | A function `(item, rowItemIndex) => {String}` that should return a unique key for the item passed.|
 
 All additional props you pass will be passed on to the internal FlatList/SectionList. This means you can make use of various props and methods like `ListHeaderComponent`, `onEndReached`, `onRefresh`...etc. While these are not tested for compatibility, most of them should work as expected.
 
@@ -93,80 +103,57 @@ In **SectionGrid**, `section` argument in methods like `renderSectionHeader`, `r
 
 
 
-## v2 to v3 Migration
-
-The major API change in v3 was renaming the components to `FlatGrid` and `SectionGrid` and making the `renderItem` signature to match with `FlatList` and `SectionList`.
-
-
-So instead of 
-```javascript
-import GridView from 'react-native-super-grid';
-import { SuperGridSectionList } from 'react-native-super-grid';
-```
-use
-```javascript
-import { FlatGrid, SectionGrid } from 'react-native-super-grid';
-```
-
-Also change the renderItem function parameters from
-```javascript
-<GridView
-  items={[1,2,3,4,5,6]}
-  renderItem={(item, index) => (<Text>{item}</Text>)}
-/>
-```
-to
-```javascript
-<FlatGrid
-  items={[1,2,3,4,5,6]}
-  renderItem={({ item, index }) => (<Text>{item}</Text>)}
-/>
-```
-
-
 ## FlatGrid Example
 ```javascript
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { FlatGrid } from 'react-native-super-grid';
+import { FlatGrid } from './react-native-super-grid';
 
-export default class Example extends Component {
-  render() {
-    const items = [
-      { name: 'TURQUOISE', code: '#1abc9c' }, { name: 'EMERALD', code: '#2ecc71' },
-      { name: 'PETER RIVER', code: '#3498db' }, { name: 'AMETHYST', code: '#9b59b6' },
-      { name: 'WET ASPHALT', code: '#34495e' }, { name: 'GREEN SEA', code: '#16a085' },
-      { name: 'NEPHRITIS', code: '#27ae60' }, { name: 'BELIZE HOLE', code: '#2980b9' },
-      { name: 'WISTERIA', code: '#8e44ad' }, { name: 'MIDNIGHT BLUE', code: '#2c3e50' },
-      { name: 'SUN FLOWER', code: '#f1c40f' }, { name: 'CARROT', code: '#e67e22' },
-      { name: 'ALIZARIN', code: '#e74c3c' }, { name: 'CLOUDS', code: '#ecf0f1' },
-      { name: 'CONCRETE', code: '#95a5a6' }, { name: 'ORANGE', code: '#f39c12' },
-      { name: 'PUMPKIN', code: '#d35400' }, { name: 'POMEGRANATE', code: '#c0392b' },
-      { name: 'SILVER', code: '#bdc3c7' }, { name: 'ASBESTOS', code: '#7f8c8d' },
-    ];
+export default function Example() {
+  const [items, setItems] = React.useState([
+    { name: 'TURQUOISE', code: '#1abc9c' },
+    { name: 'EMERALD', code: '#2ecc71' },
+    { name: 'PETER RIVER', code: '#3498db' },
+    { name: 'AMETHYST', code: '#9b59b6' },
+    { name: 'WET ASPHALT', code: '#34495e' },
+    { name: 'GREEN SEA', code: '#16a085' },
+    { name: 'NEPHRITIS', code: '#27ae60' },
+    { name: 'BELIZE HOLE', code: '#2980b9' },
+    { name: 'WISTERIA', code: '#8e44ad' },
+    { name: 'MIDNIGHT BLUE', code: '#2c3e50' },
+    { name: 'SUN FLOWER', code: '#f1c40f' },
+    { name: 'CARROT', code: '#e67e22' },
+    { name: 'ALIZARIN', code: '#e74c3c' },
+    { name: 'CLOUDS', code: '#ecf0f1' },
+    { name: 'CONCRETE', code: '#95a5a6' },
+    { name: 'ORANGE', code: '#f39c12' },
+    { name: 'PUMPKIN', code: '#d35400' },
+    { name: 'POMEGRANATE', code: '#c0392b' },
+    { name: 'SILVER', code: '#bdc3c7' },
+    { name: 'ASBESTOS', code: '#7f8c8d' },
+  ]);
 
-    return (
-      <FlatGrid
-        itemDimension={130}
-        items={items}
-        style={styles.gridView}
-        // staticDimension={300}
-        // fixed
-        // spacing={20}
-        renderItem={({ item, index }) => (
-          <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemCode}>{item.code}</Text>
-          </View>
-        )}
-      />
-    );
-  }
+  return (
+    <FlatGrid
+      itemDimension={130}
+      data={items}
+      style={styles.gridView}
+      // staticDimension={300}
+      // fixed
+      spacing={10}
+      renderItem={({ item }) => (
+        <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+          <Text style={styles.itemName}>{item.name}</Text>
+          <Text style={styles.itemCode}>{item.code}</Text>
+        </View>
+      )}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
   gridView: {
-    marginTop: 20,
+    marginTop: 10,
     flex: 1,
   },
   itemContainer: {
@@ -186,7 +173,6 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
-
 ```
 
 
@@ -215,66 +201,64 @@ const styles = StyleSheet.create({
 ```javascript
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { SectionGrid } from 'react-native-super-grid';
+import { SectionGrid } from './react-native-super-grid';
 
-export default class Example extends Component {
-  render() {
-    const items = [
-      { name: 'TURQUOISE', code: '#1abc9c' },
-      { name: 'EMERALD', code: '#2ecc71' },
-      { name: 'PETER RIVER', code: '#3498db' },
-      { name: 'AMETHYST', code: '#9b59b6' },
-      { name: 'WET ASPHALT', code: '#34495e' },
-      { name: 'GREEN SEA', code: '#16a085' },
-      { name: 'NEPHRITIS', code: '#27ae60' },
-      { name: 'BELIZE HOLE', code: '#2980b9' },
-      { name: 'WISTERIA', code: '#8e44ad' },
-      { name: 'MIDNIGHT BLUE', code: '#2c3e50' },
-      { name: 'SUN FLOWER', code: '#f1c40f' },
-      { name: 'CARROT', code: '#e67e22' },
-      { name: 'ALIZARIN', code: '#e74c3c' },
-      { name: 'CLOUDS', code: '#ecf0f1' },
-      { name: 'CONCRETE', code: '#95a5a6' },
-      { name: 'ORANGE', code: '#f39c12' },
-      { name: 'PUMPKIN', code: '#d35400' },
-      { name: 'POMEGRANATE', code: '#c0392b' },
-      { name: 'SILVER', code: '#bdc3c7' },
-      { name: 'ASBESTOS', code: '#7f8c8d' },
-    ];
+export default function Example() {
+  const [items, setItems] = React.useState([
+    { name: 'TURQUOISE', code: '#1abc9c' },
+    { name: 'EMERALD', code: '#2ecc71' },
+    { name: 'PETER RIVER', code: '#3498db' },
+    { name: 'AMETHYST', code: '#9b59b6' },
+    { name: 'WET ASPHALT', code: '#34495e' },
+    { name: 'GREEN SEA', code: '#16a085' },
+    { name: 'NEPHRITIS', code: '#27ae60' },
+    { name: 'BELIZE HOLE', code: '#2980b9' },
+    { name: 'WISTERIA', code: '#8e44ad' },
+    { name: 'MIDNIGHT BLUE', code: '#2c3e50' },
+    { name: 'SUN FLOWER', code: '#f1c40f' },
+    { name: 'CARROT', code: '#e67e22' },
+    { name: 'ALIZARIN', code: '#e74c3c' },
+    { name: 'CLOUDS', code: '#ecf0f1' },
+    { name: 'CONCRETE', code: '#95a5a6' },
+    { name: 'ORANGE', code: '#f39c12' },
+    { name: 'PUMPKIN', code: '#d35400' },
+    { name: 'POMEGRANATE', code: '#c0392b' },
+    { name: 'SILVER', code: '#bdc3c7' },
+    { name: 'ASBESTOS', code: '#7f8c8d' },
+  ]);
 
-    return (
-      <SectionGrid
-        itemDimension={90}
-        // staticDimension={300}
-        // fixed
-        // spacing={20}
-        sections={[
-          {
-            title: 'Title1',
-            data: items.slice(0, 6),
-          },
-          {
-            title: 'Title2',
-            data: items.slice(6, 12),
-          },
-          {
-            title: 'Title3',
-            data: items.slice(12, 20),
-          },
-        ]}
-        style={styles.gridView}
-        renderItem={({ item, section, index }) => (
-          <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemCode}>{item.code}</Text>
-          </View>
-        )}
-        renderSectionHeader={({ section }) => (
-          <Text style={styles.sectionHeader}>{section.title}</Text>
-        )}
-      />
-    );
-  }
+  return (
+    <SectionGrid
+      itemDimension={90}
+      // staticDimension={300}
+      // fixed
+      // spacing={20}
+      sections={[
+        {
+          title: 'Title1',
+          data: items.slice(0, 6),
+        },
+        {
+          title: 'Title2',
+          data: items.slice(6, 12),
+        },
+        {
+          title: 'Title3',
+          data: items.slice(12, 20),
+        },
+      ]}
+      style={styles.gridView}
+      renderItem={({ item, section, index }) => (
+        <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+          <Text style={styles.itemName}>{item.name}</Text>
+          <Text style={styles.itemCode}>{item.code}</Text>
+        </View>
+      )}
+      renderSectionHeader={({ section }) => (
+        <Text style={styles.sectionHeader}>{section.title}</Text>
+      )}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
@@ -319,6 +303,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Changelog
+
+### [4.0.0] - 2020-05-23
+- Improve SectionList performance by using hooks @IsaaX
+- Improve FlatList performance by using hooks
 
 ### [3.2.0] - 2020-04-03
 - Add keyExtractor prop @sammarks
