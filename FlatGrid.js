@@ -84,8 +84,6 @@ const FlatGrid = memo(
           };
         }
 
-        console.log({ rowItems });
-
         return (
           <View style={[rowStyle, additionalRowStyle]}>
             {rowItems.map((item, i) => (
