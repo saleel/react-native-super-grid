@@ -310,6 +310,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.0.1] - 2020-06-05
+- Remove accidental console.log @ianmartorell
+
 ### [4.0.0] - 2020-05-23
 - Improve SectionList performance by using hooks @IsaaX
 - Improve FlatList performance by using hooks
