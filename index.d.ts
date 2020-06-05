@@ -67,7 +67,7 @@ export interface FlatGridProps<ItemType = any>
   /**
    * Items to be rendered. renderItem will be called with each item in this array.
    */
-  items: ItemType[];
+  data: ItemType[];
 
   /**
    * Specifies the style about content row view
