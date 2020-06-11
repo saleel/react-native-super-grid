@@ -310,6 +310,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.0.2] - 2020-06-05
+- Fix type definition of v4 FlatList
+
 ### [4.0.1] - 2020-06-05
 - Remove accidental console.log @ianmartorell
 
