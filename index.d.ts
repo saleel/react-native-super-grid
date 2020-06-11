@@ -54,20 +54,15 @@ type CommonProps<ItemType> = {
   maxDimension?: number;
 }
 
-// Original flat list component props
-type FlatListAllowedProps<ItemType = any> = Omit<FlatListProps<ItemType>,
-  | "data"
->
-
 /**
  * React Native Super Grid Properties
  */
 export interface FlatGridProps<ItemType = any>
-  extends FlatListAllowedProps<ItemType>, CommonProps<ItemType> {
+  extends FlatListProps<ItemType>, CommonProps<ItemType> {
   /**
    * Items to be rendered. renderItem will be called with each item in this array.
    */
-  items: ItemType[];
+  data: ItemType[];
 
   /**
    * Specifies the style about content row view
