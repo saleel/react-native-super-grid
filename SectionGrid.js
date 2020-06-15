@@ -110,6 +110,8 @@ const SectionGrid = memo(
         totalDimension,
         spacing,
         fixed,
+        fillSpace: false,
+        dataLength: 0 //since fillSpace is false, this value is never used
       }),
       [itemDimension, staticDimension, totalDimension, spacing, fixed],
     );

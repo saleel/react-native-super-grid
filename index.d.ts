@@ -68,6 +68,12 @@ export interface FlatGridProps<ItemType = any>
    * Specifies the style about content row view
    */
   itemContainerStyle?: StyleProp<ViewStyle>;
+
+  /**
+   * Specifies if the number of items is less than can fit in one row/column if the items should fill
+   * the row's width instead.
+   */
+  fillSpace?: boolean;
 }
 
 /**
