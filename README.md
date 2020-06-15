@@ -99,6 +99,7 @@ import { SectionGrid } from 'react-native-super-grid';
 | staticDimension | Number | | Specifies a static width or height for the container. If not passed, `maxDimension` will be used.|
 | maxDimension | Number | | Specifies a maximum width or height for the container. If not passed, full width/height of the screen will be used.|
 | horizontal | boolean | false | If true, the grid will be scrolling horizontally. If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'. This prop doesn't affect the SectionGrid, which only scrolls vertically. |
+| fillSpace (FlatGrid only) | boolean | false | If true and the number of data items is less than can fit on one row, the items will be sized to fill the row. |
 | onLayout | Function |  | Optional callback ran by the internal `FlatList` or `SectionList`'s `onLayout` function, thus invoked on mount and layout changes. |
 | listKey | String | | A unique identifier for the Grid. This key is necessary if you are nesting multiple FlatGrid/SectionGrid inside another Grid (or any VirtualizedList).|
 | keyExtractor | Function | | A function `(item, rowItemIndex) => {String}` that should return a unique key for the item passed.|
