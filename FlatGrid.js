@@ -21,7 +21,7 @@ const FlatGrid = memo(
       onLayout,
       staticDimension,
       maxDimension,
-      rowExternalStyle,
+      additionalRowStyle: externalRowStyle,
       itemContainerStyle,
       keyExtractor,
       ...restProps
@@ -86,7 +86,7 @@ const FlatGrid = memo(
         }
 
         return (
-          <View style={[rowStyle, additionalRowStyle, rowExternalStyle]}>
+          <View style={[rowStyle, additionalRowStyle, externalRowStyle]}>
             {rowItems.map((item, i) => (
               <View
                 key={
@@ -107,7 +107,7 @@ const FlatGrid = memo(
           </View>
         );
       },
-      [renderItem, spacing, keyExtractor, rowExternalStyle, itemContainerStyle, horizontal],
+      [renderItem, spacing, keyExtractor, externalRowStyle, itemContainerStyle, horizontal],
     );
 
     const { containerDimension, itemsPerRow, fixedSpacing } = useMemo(
@@ -190,7 +190,7 @@ FlatGrid.propTypes = {
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: PropTypes.object,
-  rowExternalStyle: PropTypes.object,
+  additionalRowStyle: PropTypes.object,
   itemContainerStyle: PropTypes.object,
   staticDimension: PropTypes.number,
   horizontal: PropTypes.bool,
@@ -204,7 +204,7 @@ FlatGrid.defaultProps = {
   itemDimension: 120,
   spacing: 10,
   style: {},
-  rowExternalStyle: undefined,
+  additionalRowStyle: undefined,
   itemContainerStyle: undefined,
   staticDimension: undefined,
   horizontal: false,

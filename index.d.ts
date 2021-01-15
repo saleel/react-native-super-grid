@@ -25,9 +25,9 @@ export type GridRenderItem<ItemT> = (
 // Custom props that are present in both grid and list
 type CommonProps<ItemType> = {
   /**
-   * Specifies the style about each row
+   * Additional styles for rows (rows render multiple items within), apart from the generated ones.
    */
-  rowExternalStyle?: StyleProp<ViewStyle>;
+  additionalRowStyle?: StyleProp<ViewStyle>;
 
   /**
    * Minimum width or height for each item in pixels (virtual).

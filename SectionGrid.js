@@ -21,7 +21,7 @@ const SectionGrid = memo(
       renderItem: originalRenderItem,
       keyExtractor,
       onLayout,
-      rowExternalStyle,
+      additionalRowStyle: externalRowStyle,
       itemContainerStyle,
       ...restProps
     } = props;
@@ -79,7 +79,7 @@ const SectionGrid = memo(
         }
 
         return (
-          <View style={[rowStyle, additionalRowStyle, rowExternalStyle]}>
+          <View style={[rowStyle, additionalRowStyle, externalRowStyle]}>
             {rowItems.map((item, i) => (
               <View
                 key={
@@ -101,7 +101,7 @@ const SectionGrid = memo(
           </View>
         );
       },
-      [spacing, keyExtractor, rowExternalStyle, itemContainerStyle],
+      [spacing, keyExtractor, externalRowStyle, itemContainerStyle],
     );
 
     const { containerDimension, itemsPerRow, fixedSpacing } = useMemo(
@@ -194,7 +194,7 @@ SectionGrid.propTypes = {
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: PropTypes.object,
-  rowExternalStyle: PropTypes.object,
+  additionalRowStyle: PropTypes.object,
   itemContainerStyle: PropTypes.object,
   staticDimension: PropTypes.number,
   onLayout: PropTypes.func,
@@ -206,7 +206,7 @@ SectionGrid.defaultProps = {
   itemDimension: 120,
   spacing: 10,
   style: {},
-  rowExternalStyle: undefined,
+  additionalRowStyle: undefined,
   itemContainerStyle: undefined,
   staticDimension: undefined,
   onLayout: null,
