@@ -311,6 +311,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.1.0] - 2021-01-16
+- Add additionalRowStyle prop @sanghavan
+
 ### [4.0.3] - 2020-07-14
 - Remove ViewPropTypes @miracle2k
 
