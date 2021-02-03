@@ -311,6 +311,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.1.1] - 2021-02-03
+- Update type definition @henrymoulton
+
 ### [4.1.0] - 2021-01-16
 - Add additionalRowStyle prop @sanghavan
 
