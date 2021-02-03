@@ -56,7 +56,12 @@ type CommonProps<ItemType> = {
    * Specifies a maximum width or height for the container. If not passed, full width/height
    * of the screen will be used.
    */
-  maxDimension?: number;
+  maxDimension?: number; 
+  
+  /**
+   * Specifies the style about content row view
+   */
+  itemContainerStyle?: StyleProp<ViewStyle>;
 }
 
 /**
@@ -68,11 +73,6 @@ export interface FlatGridProps<ItemType = any>
    * Items to be rendered. renderItem will be called with each item in this array.
    */
   data: ItemType[];
-
-  /**
-   * Specifies the style about content row view
-   */
-  itemContainerStyle?: StyleProp<ViewStyle>;
 }
 
 /**
