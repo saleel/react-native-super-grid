@@ -311,6 +311,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.1.2] - 2021-05-27
+- Fix prop-type for styles @siarheipashkevich
+
 ### [4.1.1] - 2021-02-03
 - Update type definition @henrymoulton
 
