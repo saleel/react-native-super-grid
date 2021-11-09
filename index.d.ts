@@ -62,6 +62,11 @@ type CommonProps<ItemType> = {
    * Specifies the style about content row view
    */
   itemContainerStyle?: StyleProp<ViewStyle>;
+
+  /**
+   * Invert each row items' order. ex) [0, 1, 2] -> [2, 1, 0]
+   */
+   isInvertedRowItem?: boolean;
 }
 
 /**

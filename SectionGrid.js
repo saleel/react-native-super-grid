@@ -7,7 +7,6 @@ import {
 import PropTypes from 'prop-types';
 import { generateStyles, calculateDimensions, chunkArray } from './utils';
 
-
 const SectionGrid = memo(
   forwardRef((props, ref) => {
     const {
@@ -23,6 +22,7 @@ const SectionGrid = memo(
       onLayout,
       additionalRowStyle: externalRowStyle,
       itemContainerStyle,
+      isInvertedRowItem,
       ...restProps
     } = props;
 
@@ -69,6 +69,7 @@ const SectionGrid = memo(
         separators,
         isFirstRow,
         containerStyle,
+        isInverted,
       }) => {
         // Add spacing below section header
         let additionalRowStyle = {};
@@ -80,24 +81,28 @@ const SectionGrid = memo(
 
         return (
           <View style={[rowStyle, additionalRowStyle, externalRowStyle]}>
-            {rowItems.map((item, i) => (
-              <View
-                key={
-                  keyExtractor
-                    ? keyExtractor(item, i)
-                    : `item_${rowIndex * itemsPerRow + i}`
-                }
-                style={[containerStyle, itemContainerStyle]}
-              >
-                {renderItem({
-                  item,
-                  index: rowIndex * itemsPerRow + i,
-                  section,
-                  separators,
-                  rowIndex,
-                })}
-              </View>
-            ))}
+            {rowItems.map((item, index) => {
+              let i = isInverted ? -index + itemsPerRow - 1 : index
+
+              return (
+                <View
+                  key={
+                    keyExtractor
+                      ? keyExtractor(item, i)
+                      : `item_${rowIndex * itemsPerRow + i}`
+                  }
+                  style={[containerStyle, itemContainerStyle]}
+                >
+                  {renderItem({
+                    item,
+                    index: rowIndex * itemsPerRow + i,
+                    section,
+                    separators,
+                    rowIndex,
+                  })}
+                </View>
+              )
+            })}
           </View>
         );
       },
@@ -128,7 +133,12 @@ const SectionGrid = memo(
 
     const groupSectionsFunc = useCallback(
       (section) => {
-        const chunkedData = chunkArray(section.data, itemsPerRow);
+        let chunkedData = chunkArray(section.data, itemsPerRow, true);
+
+        if (isInvertedRowItem) {
+          chunkedData = chunkedData.map($0 => $0.reverse())
+        }
+
         const renderItem = section.renderItem || originalRenderItem;
 
         return {
@@ -142,6 +152,7 @@ const SectionGrid = memo(
             itemsPerRow,
             rowStyle,
             containerStyle,
+            isInverted: isInvertedRowItem,
           }),
           data: chunkedData,
           originalData: section.data,
