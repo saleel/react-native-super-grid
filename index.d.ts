@@ -64,7 +64,8 @@ type CommonProps<ItemType> = {
   itemContainerStyle?: StyleProp<ViewStyle>;
 
   /**
-   * Invert each row items' order. ex) [0, 1, 2] -> [2, 1, 0]
+   * Reverses the direction of each row item. It can be used the [`inverted`](https://reactnative.dev/docs/flatlist#inverted) property.
+   * ex) [0, 1, 2] -> [2, 1, 0]
    */
    invertedRow?: boolean;
 }
