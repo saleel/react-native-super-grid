@@ -66,7 +66,7 @@ type CommonProps<ItemType> = {
   /**
    * Invert each row items' order. ex) [0, 1, 2] -> [2, 1, 0]
    */
-   isInvertedRowItem?: boolean;
+   invertedRow?: boolean;
 }
 
 /**

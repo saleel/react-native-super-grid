@@ -22,7 +22,7 @@ const SectionGrid = memo(
       onLayout,
       additionalRowStyle: externalRowStyle,
       itemContainerStyle,
-      isInvertedRowItem,
+      invertedRow,
       ...restProps
     } = props;
 
@@ -135,7 +135,7 @@ const SectionGrid = memo(
       (section) => {
         let chunkedData = chunkArray(section.data, itemsPerRow, true);
 
-        if (isInvertedRowItem) {
+        if (invertedRow) {
           chunkedData = chunkedData.map($0 => $0.reverse())
         }
 
@@ -152,7 +152,7 @@ const SectionGrid = memo(
             itemsPerRow,
             rowStyle,
             containerStyle,
-            isInverted: isInvertedRowItem,
+            isInverted: invertedRow,
           }),
           data: chunkedData,
           originalData: section.data,
