@@ -69,7 +69,7 @@ const SectionGrid = memo(
         separators,
         isFirstRow,
         containerStyle,
-        isInverted,
+        invertedRow,
       }) => {
         // Add spacing below section header
         let additionalRowStyle = {};
@@ -82,7 +82,7 @@ const SectionGrid = memo(
         return (
           <View style={[rowStyle, additionalRowStyle, externalRowStyle]}>
             {rowItems.map((item, index) => {
-              let i = isInverted ? -index + itemsPerRow - 1 : index
+              let i = invertedRow ? -index + itemsPerRow - 1 : index
 
               return (
                 <View
@@ -152,7 +152,7 @@ const SectionGrid = memo(
             itemsPerRow,
             rowStyle,
             containerStyle,
-            isInverted: invertedRow,
+            invertedRow,
           }),
           data: chunkedData,
           originalData: section.data,
