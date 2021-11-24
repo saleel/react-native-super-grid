@@ -133,7 +133,7 @@ const SectionGrid = memo(
 
     const groupSectionsFunc = useCallback(
       (section) => {
-        let chunkedData = chunkArray(section.data, itemsPerRow, true);
+        let chunkedData = chunkArray(section.data, itemsPerRow);
 
         if (invertedRow) {
           chunkedData = chunkedData.map($0 => $0.reverse())
