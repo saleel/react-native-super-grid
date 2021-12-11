@@ -24,6 +24,7 @@ const FlatGrid = memo(
       additionalRowStyle: externalRowStyle,
       itemContainerStyle,
       keyExtractor,
+      invertedRow,
       ...restProps
     } = props;
 
@@ -75,6 +76,7 @@ const FlatGrid = memo(
         itemsPerRow,
         rowStyle,
         containerStyle,
+        invertedRow,
       }) => {
         // To make up for the top padding
         let additionalRowStyle = {};
@@ -87,23 +89,28 @@ const FlatGrid = memo(
 
         return (
           <View style={[rowStyle, additionalRowStyle, externalRowStyle]}>
-            {rowItems.map((item, i) => (
-              <View
-                key={
-                  keyExtractor
-                    ? keyExtractor(item, i)
-                    : `item_${rowIndex * itemsPerRow + i}`
-                }
-                style={[containerStyle, itemContainerStyle]}
-              >
-                {renderItem({
-                  item,
-                  index: rowIndex * itemsPerRow + i,
-                  separators,
-                  rowIndex,
-                })}
-              </View>
-            ))}
+            {rowItems.map((item, index) => {
+              const i = invertedRow ? -index + itemsPerRow - 1 : index;
+
+              return (
+                <View
+                  key={
+                    keyExtractor
+                      ? keyExtractor(item, i)
+                      : `item_${rowIndex * itemsPerRow + i}`
+                  }
+                  style={[containerStyle, itemContainerStyle]}
+                >
+                  {renderItem({
+                    item,
+                    index: rowIndex * itemsPerRow + i,
+                    separators,
+                    rowIndex,
+                  })}
+                </View>
+              )
+            }
+            )}
           </View>
         );
       },
@@ -133,8 +140,10 @@ const FlatGrid = memo(
       [horizontal, itemDimension, containerDimension, spacing, fixedSpacing, fixed],
     );
 
-    const rows = chunkArray(data, itemsPerRow); // Splitting the data into rows
-
+    let rows = chunkArray(data, itemsPerRow); // Splitting the data into rows
+    if (invertedRow) {
+      rows = rows.map(r => r.reverse())
+    }
 
     const localKeyExtractor = useCallback(
       (rowItems, index) => {
