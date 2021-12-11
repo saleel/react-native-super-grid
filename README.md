@@ -312,6 +312,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.2.0] - 2021-05-27
+- Add invertedRow option @JeffGuKang
+
 ### [4.1.2] - 2021-05-27
 - Fix prop-type for styles @siarheipashkevich
 
