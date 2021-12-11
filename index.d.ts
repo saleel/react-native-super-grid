@@ -62,6 +62,12 @@ type CommonProps<ItemType> = {
    * Specifies the style about content row view
    */
   itemContainerStyle?: StyleProp<ViewStyle>;
+
+  /**
+   * Reverses the direction of each row item. It can be used with the [`inverted`](https://reactnative.dev/docs/flatlist#inverted) property.
+   * ex) [0, 1, 2] -> [2, 1, 0]
+   */
+   invertedRow?: boolean;
 }
 
 /**

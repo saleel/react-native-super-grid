@@ -103,6 +103,7 @@ import { SectionGrid } from 'react-native-super-grid';
 | onLayout | Function |  | Optional callback ran by the internal `FlatList` or `SectionList`'s `onLayout` function, thus invoked on mount and layout changes. |
 | listKey | String | | A unique identifier for the Grid. This key is necessary if you are nesting multiple FlatGrid/SectionGrid inside another Grid (or any VirtualizedList).|
 | keyExtractor | Function | | A function `(item, rowItemIndex) => {String}` that should return a unique key for the item passed.|
+| invertedRow | boolean | | Reverses the direction of row items. It can be used with the [`inverted`](https://reactnative.dev/docs/flatlist#inverted) property.|
 
 All additional props you pass will be passed on to the internal FlatList/SectionList. This means you can make use of various props and methods like `ListHeaderComponent`, `onEndReached`, `onRefresh`...etc. While these are not tested for compatibility, most of them should work as expected.
 
