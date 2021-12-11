@@ -69,7 +69,6 @@ const SectionGrid = memo(
         separators,
         isFirstRow,
         containerStyle,
-        invertedRow,
       }) => {
         // Add spacing below section header
         let additionalRowStyle = {};
@@ -82,7 +81,7 @@ const SectionGrid = memo(
         return (
           <View style={[rowStyle, additionalRowStyle, externalRowStyle]}>
             {rowItems.map((item, index) => {
-              let i = invertedRow ? -index + itemsPerRow - 1 : index
+              const i = invertedRow ? -index + itemsPerRow - 1 : index;
 
               return (
                 <View
@@ -101,12 +100,12 @@ const SectionGrid = memo(
                     rowIndex,
                   })}
                 </View>
-              )
+              );
             })}
           </View>
         );
       },
-      [spacing, keyExtractor, externalRowStyle, itemContainerStyle],
+      [spacing, keyExtractor, externalRowStyle, itemContainerStyle, invertedRow],
     );
 
     const { containerDimension, itemsPerRow, fixedSpacing } = useMemo(
@@ -136,23 +135,22 @@ const SectionGrid = memo(
         let chunkedData = chunkArray(section.data, itemsPerRow);
 
         if (invertedRow) {
-          chunkedData = chunkedData.map($0 => $0.reverse())
+          chunkedData = chunkedData.map($0 => $0.reverse());
         }
 
         const renderItem = section.renderItem || originalRenderItem;
 
         return {
           ...section,
-          renderItem: ({ item, index, section }) => renderRow({
+          renderItem: ({ item, index, section: s }) => renderRow({
             renderItem,
             rowItems: item,
             rowIndex: index,
-            section,
+            section: s,
             isFirstRow: index === 0,
             itemsPerRow,
             rowStyle,
             containerStyle,
-            invertedRow,
           }),
           data: chunkedData,
           originalData: section.data,
@@ -199,7 +197,7 @@ const SectionGrid = memo(
 SectionGrid.displayName = 'SectionGrid';
 
 SectionGrid.propTypes = {
-  renderItem: PropTypes.func,
+  renderItem: PropTypes.func.isRequired,
   sections: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
   fixed: PropTypes.bool,
@@ -209,7 +207,10 @@ SectionGrid.propTypes = {
   itemContainerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   staticDimension: PropTypes.number,
   onLayout: PropTypes.func,
+  maxDimension: PropTypes.number,
   listKey: PropTypes.string,
+  keyExtractor: PropTypes.func,
+  invertedRow: PropTypes.bool,
 };
 
 SectionGrid.defaultProps = {
@@ -222,6 +223,9 @@ SectionGrid.defaultProps = {
   staticDimension: undefined,
   onLayout: null,
   listKey: undefined,
+  maxDimension: undefined,
+  invertedRow: false,
+  keyExtractor: null,
 };
 
 

@@ -28,6 +28,7 @@ const FlatGrid = memo(
       ...restProps
     } = props;
 
+    // eslint-disable-next-line react/prop-types
     if (props.items && !props.data) {
       // eslint-disable-next-line no-console
       throw new Error('React Native Super Grid - Prop "items" has been renamed to "data" in version 4');
@@ -76,7 +77,6 @@ const FlatGrid = memo(
         itemsPerRow,
         rowStyle,
         containerStyle,
-        invertedRow,
       }) => {
         // To make up for the top padding
         let additionalRowStyle = {};
@@ -108,13 +108,12 @@ const FlatGrid = memo(
                     rowIndex,
                   })}
                 </View>
-              )
-            }
-            )}
+              );
+            })}
           </View>
         );
       },
-      [renderItem, spacing, keyExtractor, externalRowStyle, itemContainerStyle, horizontal],
+      [renderItem, spacing, keyExtractor, externalRowStyle, itemContainerStyle, horizontal, invertedRow],
     );
 
     const { containerDimension, itemsPerRow, fixedSpacing } = useMemo(
@@ -142,7 +141,7 @@ const FlatGrid = memo(
 
     let rows = chunkArray(data, itemsPerRow); // Splitting the data into rows
     if (invertedRow) {
-      rows = rows.map(r => r.reverse())
+      rows = rows.map(r => r.reverse());
     }
 
     const localKeyExtractor = useCallback(
@@ -196,6 +195,7 @@ FlatGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
+  maxDimension: PropTypes.number,
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
@@ -206,6 +206,7 @@ FlatGrid.propTypes = {
   onLayout: PropTypes.func,
   keyExtractor: PropTypes.func,
   listKey: PropTypes.string,
+  invertedRow: PropTypes.bool,
 };
 
 FlatGrid.defaultProps = {
@@ -220,6 +221,8 @@ FlatGrid.defaultProps = {
   onLayout: null,
   keyExtractor: null,
   listKey: undefined,
+  maxDimension: undefined,
+  invertedRow: false,
 };
 
 
