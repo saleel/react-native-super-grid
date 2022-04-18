@@ -68,6 +68,11 @@ type CommonProps<ItemType> = {
    * ex) [0, 1, 2] -> [2, 1, 0]
    */
    invertedRow?: boolean;
+  
+  /**
+   * Specifies the maximum items to render per row
+   */
+   maxItemsPerRow?: number;
 }
 
 /**
