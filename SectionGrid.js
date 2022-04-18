@@ -23,6 +23,7 @@ const SectionGrid = memo(
       additionalRowStyle: externalRowStyle,
       itemContainerStyle,
       invertedRow,
+      maxItemsPerRow,
       ...restProps
     } = props;
 
@@ -115,8 +116,9 @@ const SectionGrid = memo(
         totalDimension,
         spacing,
         fixed,
+        maxItemsPerRow,
       }),
-      [itemDimension, staticDimension, totalDimension, spacing, fixed],
+      [itemDimension, staticDimension, totalDimension, spacing, fixed, maxItemsPerRow],
     );
 
     const { containerStyle, rowStyle } = useMemo(
@@ -211,6 +213,7 @@ SectionGrid.propTypes = {
   listKey: PropTypes.string,
   keyExtractor: PropTypes.func,
   invertedRow: PropTypes.bool,
+  maxItemsPerRow: PropTypes.number,
 };
 
 SectionGrid.defaultProps = {
@@ -226,6 +229,7 @@ SectionGrid.defaultProps = {
   maxDimension: undefined,
   invertedRow: false,
   keyExtractor: null,
+  maxItemsPerRow: undefined,
 };
 
 
