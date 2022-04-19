@@ -56,7 +56,7 @@ const FlatGrid = memo(
             newTotalDimension = maxDimension;
           }
 
-          if (totalDimension !== newTotalDimension) {
+          if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
           }
         }
