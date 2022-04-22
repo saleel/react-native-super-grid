@@ -25,6 +25,7 @@ const FlatGrid = memo(
       itemContainerStyle,
       keyExtractor,
       invertedRow,
+      maxItemsPerRow,
       ...restProps
     } = props;
 
@@ -55,7 +56,7 @@ const FlatGrid = memo(
             newTotalDimension = maxDimension;
           }
 
-          if (totalDimension !== newTotalDimension) {
+          if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
           }
         }
@@ -123,8 +124,9 @@ const FlatGrid = memo(
         totalDimension,
         spacing,
         fixed,
+        maxItemsPerRow,
       }),
-      [itemDimension, staticDimension, totalDimension, spacing, fixed],
+      [itemDimension, staticDimension, totalDimension, spacing, fixed, maxItemsPerRow],
     );
 
     const { containerStyle, rowStyle } = useMemo(
@@ -207,6 +209,7 @@ FlatGrid.propTypes = {
   keyExtractor: PropTypes.func,
   listKey: PropTypes.string,
   invertedRow: PropTypes.bool,
+  maxItemsPerRow: PropTypes.number,
 };
 
 FlatGrid.defaultProps = {
@@ -223,6 +226,7 @@ FlatGrid.defaultProps = {
   listKey: undefined,
   maxDimension: undefined,
   invertedRow: false,
+  maxItemsPerRow: undefined,
 };
 
 
