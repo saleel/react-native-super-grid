@@ -40,7 +40,10 @@ const FlatGrid = memo(
 
       if (!staticDimension) {
         const dimension = horizontal ? 'height' : 'width';
-        defaultTotalDimension = maxDimension || Dimensions.get('window')[dimension];
+        defaultTotalDimension = Dimensions.get('window')[dimension];
+        if (maxDimension && defaultTotalDimension > maxDimension) {
+          defaultTotalDimension = maxDimension;
+        }
       }
 
       return defaultTotalDimension;
