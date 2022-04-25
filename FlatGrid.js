@@ -5,7 +5,7 @@ import {
   View, Dimensions, FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { chunkArray, calculateDimensions, generateStyles } from './utils';
+import { chunkArray, calculateDimensions, generateStyles, adjustDimension } from './utils';
 
 
 const FlatGrid = memo(
@@ -40,10 +40,7 @@ const FlatGrid = memo(
 
       if (!staticDimension) {
         const dimension = horizontal ? 'height' : 'width';
-        defaultTotalDimension = Dimensions.get('window')[dimension];
-        if (maxDimension && defaultTotalDimension > maxDimension) {
-          defaultTotalDimension = maxDimension;
-        }
+        defaultTotalDimension = adjustDimension({newTotalDimension: Dimensions.get('window')[dimension], maxDimension, contentContainerStyle: restProps.contentContainerStyle, horizontal});
       }
 
       return defaultTotalDimension;
@@ -55,9 +52,7 @@ const FlatGrid = memo(
           const { width, height } = e.nativeEvent.layout || {};
           let newTotalDimension = horizontal ? height : width;
 
-          if (maxDimension && newTotalDimension > maxDimension) {
-            newTotalDimension = maxDimension;
-          }
+          newTotalDimension = adjustDimension({newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, horizontal});
 
           if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
