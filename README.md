@@ -94,7 +94,7 @@ import { SectionGrid } from 'react-native-super-grid';
 | itemDimension | Number | 120  | Minimum width or height for each item in pixels (virtual). |
 | fixed | Boolean | false  | If true, the exact ```itemDimension``` will be used and won't be adjusted to fit the screen. |
 | spacing | Number | 10 | Spacing between each item. |
-| style | [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
+| style | [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. Note: padding added in this prop will be used to adjust the total dimentions of the grid to reflect the padding in this style object. |
 | additionalRowStyle | styles (Object) | | Additional styles for rows (rows render multiple items within), apart from the generated ones.
 | itemContainerStyle | styles (Object) | | Style for item's container. Not needed for most cases.
 | staticDimension | Number | | Specifies a static width or height for the container. If not passed, `maxDimension` will be used.|
