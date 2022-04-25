@@ -5,7 +5,7 @@ import {
   View, Dimensions, SectionList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { generateStyles, calculateDimensions, chunkArray } from './utils';
+import { generateStyles, calculateDimensions, chunkArray, adjustDimension } from './utils';
 
 const SectionGrid = memo(
   forwardRef((props, ref) => {
@@ -31,10 +31,7 @@ const SectionGrid = memo(
       let defaultTotalDimension = staticDimension;
 
       if (!staticDimension) {
-        defaultTotalDimension = Dimensions.get('window').width;
-        if (maxDimension && defaultTotalDimension > maxDimension) {
-          defaultTotalDimension = maxDimension;
-        }
+        defaultTotalDimension = adjustDimension({newTotalDimension: Dimensions.get('window').width, maxDimension, contentContainerStyle: restProps.contentContainerStyle});
       }
 
       return defaultTotalDimension;
@@ -45,9 +42,7 @@ const SectionGrid = memo(
         if (!staticDimension) {
           let { width: newTotalDimension } = e.nativeEvent.layout || {};
 
-          if (maxDimension && newTotalDimension > maxDimension) {
-            newTotalDimension = maxDimension;
-          }
+          newTotalDimension = adjustDimension({newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle});
 
           if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
