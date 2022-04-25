@@ -1,3 +1,4 @@
+import { StyleSheet } from 'react-native';
 
 function chunkArray(array = [], size) {
   if (array === []) return [];
@@ -41,6 +42,50 @@ function calculateDimensions({
   };
 }
 
+function adjustDimension({
+  newTotalDimension,
+  maxDimension,
+  contentContainerStyle,
+  horizontal = false,
+}) {
+  let sMaxDimensionXY = "maxWidth";
+  let sPaddingXY = "paddingHorizontal";
+  let sPadding1 = "paddingLeft";
+  let sPadding2 = "paddingRight";
+  if (horizontal) {
+    sMaxDimensionXY = "maxHeight";
+    sPaddingXY = "paddingVertical";
+    sPadding1 = "paddingTop";
+    sPadding2 = "paddingBottom";
+  }
+
+  // adjust for maxDimension prop
+  if (maxDimension && newTotalDimension > maxDimension) {
+    newTotalDimension = maxDimension;
+  }
+
+  if (contentContainerStyle) {
+    contentContainerStyle = Array.isArray(contentContainerStyle) ? StyleSheet.flatten(contentContainerStyle) : contentContainerStyle;
+
+    // adjust for maxWidth or maxHeight in contentContainerStyle
+    if (contentContainerStyle[sMaxDimensionXY] && typeof contentContainerStyle[sMaxDimensionXY] === "number" && newTotalDimension > contentContainerStyle[sMaxDimensionXY]) {
+      newTotalDimension = contentContainerStyle[sMaxDimensionXY];
+    }
+
+    // subtract horizontal or vertical padding from newTotalDimension
+    const padding = contentContainerStyle[sPaddingXY] || contentContainerStyle.padding;
+    const padding1 = contentContainerStyle[sPadding1] || padding || 0;
+    const padding2 = contentContainerStyle[sPadding2] || padding || 0;
+    const space1 = (typeof padding1 === "number" ? padding1 : 0);
+    const space2 = (typeof padding2 === "number" ? padding2 : 0);
+    if (space1 || space2) {
+      newTotalDimension = newTotalDimension - space1 - space2;
+    }
+  }
+
+  return newTotalDimension;
+};
+
 function generateStyles({
   itemDimension,
   containerDimension,
@@ -83,4 +128,4 @@ function generateStyles({
   };
 }
 
-export { chunkArray, calculateDimensions, generateStyles };
+export { chunkArray, calculateDimensions, generateStyles, adjustDimension };
