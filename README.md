@@ -313,6 +313,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.3.0] - 2022-04-23
+- Add maxItemsPerRow option @levic92
+
 ### [4.2.0] - 2021-05-27
 - Add invertedRow option @JeffGuKang
 
