@@ -48,15 +48,15 @@ function adjustDimension({
   contentContainerStyle,
   horizontal = false,
 }) {
-  let sMaxDimensionXY = "maxWidth";
-  let sPaddingXY = "paddingHorizontal";
-  let sPadding1 = "paddingLeft";
-  let sPadding2 = "paddingRight";
+  let sMaxDimensionXY = 'maxWidth';
+  let sPaddingXY = 'paddingHorizontal';
+  let sPadding1 = 'paddingLeft';
+  let sPadding2 = 'paddingRight';
   if (horizontal) {
-    sMaxDimensionXY = "maxHeight";
-    sPaddingXY = "paddingVertical";
-    sPadding1 = "paddingTop";
-    sPadding2 = "paddingBottom";
+    sMaxDimensionXY = 'maxHeight';
+    sPaddingXY = 'paddingVertical';
+    sPadding1 = 'paddingTop';
+    sPadding2 = 'paddingBottom';
   }
 
   // adjust for maxDimension prop
@@ -68,7 +68,7 @@ function adjustDimension({
     contentContainerStyle = Array.isArray(contentContainerStyle) ? StyleSheet.flatten(contentContainerStyle) : contentContainerStyle;
 
     // adjust for maxWidth or maxHeight in contentContainerStyle
-    if (contentContainerStyle[sMaxDimensionXY] && typeof contentContainerStyle[sMaxDimensionXY] === "number" && newTotalDimension > contentContainerStyle[sMaxDimensionXY]) {
+    if (contentContainerStyle[sMaxDimensionXY] && typeof contentContainerStyle[sMaxDimensionXY] === 'number' && newTotalDimension > contentContainerStyle[sMaxDimensionXY]) {
       newTotalDimension = contentContainerStyle[sMaxDimensionXY];
     }
 
@@ -76,8 +76,8 @@ function adjustDimension({
     const padding = contentContainerStyle[sPaddingXY] || contentContainerStyle.padding;
     const padding1 = contentContainerStyle[sPadding1] || padding || 0;
     const padding2 = contentContainerStyle[sPadding2] || padding || 0;
-    const space1 = (typeof padding1 === "number" ? padding1 : 0);
-    const space2 = (typeof padding2 === "number" ? padding2 : 0);
+    const space1 = (typeof padding1 === 'number' ? padding1 : 0);
+    const space2 = (typeof padding2 === 'number' ? padding2 : 0);
     if (space1 || space2) {
       newTotalDimension = newTotalDimension - space1 - space2;
     }
