@@ -5,7 +5,7 @@ import {
   View, Dimensions, FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { chunkArray, calculateDimensions, generateStyles, adjustDimension } from './utils';
+import { chunkArray, calculateDimensions, generateStyles, getAdjustedTotalDimensions } from './utils';
 
 
 const FlatGrid = memo(
@@ -26,6 +26,7 @@ const FlatGrid = memo(
       keyExtractor,
       invertedRow,
       maxItemsPerRow,
+      adjustGridToStyles,
       ...restProps
     } = props;
 
@@ -40,7 +41,7 @@ const FlatGrid = memo(
 
       if (!staticDimension) {
         const dimension = horizontal ? 'height' : 'width';
-        defaultTotalDimension = adjustDimension({newTotalDimension: Dimensions.get('window')[dimension], maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal});
+        defaultTotalDimension = getAdjustedTotalDimensions({newTotalDimension: Dimensions.get('window')[dimension], maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal, adjustGridToStyles});
       }
 
       return defaultTotalDimension;
@@ -52,7 +53,7 @@ const FlatGrid = memo(
           const { width, height } = e.nativeEvent.layout || {};
           let newTotalDimension = horizontal ? height : width;
 
-          newTotalDimension = adjustDimension({newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal});
+          newTotalDimension = getAdjustedTotalDimensions({newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal, adjustGridToStyles});
 
           if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
@@ -64,7 +65,7 @@ const FlatGrid = memo(
           onLayout(e);
         }
       },
-      [staticDimension, maxDimension, totalDimension, horizontal, onLayout],
+      [staticDimension, maxDimension, totalDimension, horizontal, onLayout, adjustGridToStyles],
     );
 
     const renderRow = useCallback(
@@ -208,6 +209,7 @@ FlatGrid.propTypes = {
   listKey: PropTypes.string,
   invertedRow: PropTypes.bool,
   maxItemsPerRow: PropTypes.number,
+  adjustGridToStyles: PropTypes.bool,
 };
 
 FlatGrid.defaultProps = {
@@ -225,6 +227,7 @@ FlatGrid.defaultProps = {
   maxDimension: undefined,
   invertedRow: false,
   maxItemsPerRow: undefined,
+  adjustGridToStyles: false,
 };
 
 
