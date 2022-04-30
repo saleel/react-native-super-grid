@@ -75,48 +75,51 @@ function getStyleDimensions(
   return { space1, space2, maxStyleDimension };
 }
 
-function adjustDimension({
-  newTotalDimension,
+function getAdjustedTotalDimensions({
+  totalDimension,
   maxDimension,
   contentContainerStyle,
   style,
   horizontal = false,
+  adjustGridToStyles = false,
 }) {
-  const componentDimension = newTotalDimension; // keep track of initial max of component/screen
-  let actualMaxDimension = newTotalDimension; // keep track of smallest max dimension
+  const componentDimension = totalDimension; // keep track of initial max of component/screen
+  let actualMaxDimension = totalDimension; // keep track of smallest max dimension
 
   // adjust for maxDimension prop
-  if (maxDimension && newTotalDimension > maxDimension) {
+  if (maxDimension && totalDimension > maxDimension) {
     actualMaxDimension = maxDimension;
-    newTotalDimension = maxDimension;
+    totalDimension = maxDimension;
+  }
+  
+  if (adjustGridToStyles) {
+    if (contentContainerStyle) {
+      const { space1, space2, maxStyleDimension } = getStyleDimensions(contentContainerStyle, horizontal);
+      // adjust for maxWidth or maxHeight in contentContainerStyle
+      if (maxStyleDimension && totalDimension > maxStyleDimension) {
+        actualMaxDimension = maxStyleDimension;
+        totalDimension = maxStyleDimension;
+      }
+      // subtract horizontal or vertical padding from totalDimension
+      if (space1 || space2) {
+        totalDimension = totalDimension - space1 - space2;
+      }
+    }
+
+    if (style) {
+      const edgeSpaceDiff = (componentDimension - actualMaxDimension) / 2; // if content is floating in middle of screen get margin on either side
+      const { space1, space2 } = getStyleDimensions(style, horizontal);
+      // only subtract if space is greater than the margin on either side
+      if (space1 > edgeSpaceDiff) {
+        totalDimension = totalDimension - (space1 - edgeSpaceDiff); // subtract the padding minus any remaining margin
+      }
+      if (space2 > edgeSpaceDiff) {
+        totalDimension = totalDimension - (space2 - edgeSpaceDiff); // subtract the padding minus any remaining margin
+      }
+    }
   }
 
-  if (contentContainerStyle) {
-    const { space1, space2, maxStyleDimension } = getStyleDimensions(contentContainerStyle, horizontal);
-    // adjust for maxWidth or maxHeight in contentContainerStyle
-    if (maxStyleDimension && newTotalDimension > maxStyleDimension) {
-      actualMaxDimension = maxStyleDimension;
-      newTotalDimension = maxStyleDimension;
-    }
-    // subtract horizontal or vertical padding from newTotalDimension
-    if (space1 || space2) {
-      newTotalDimension = newTotalDimension - space1 - space2;
-    }
-  }
-
-  if (style) {
-    const edgeSpaceDiff = (componentDimension - actualMaxDimension) / 2; // if content is floating in middle of screen get margin on either side
-    const { space1, space2 } = getStyleDimensions(style, horizontal);
-    // only subtract if space is greater than the margin on either side
-    if (space1 > edgeSpaceDiff) {
-      newTotalDimension = newTotalDimension - (space1 - edgeSpaceDiff); // subtract the padding minus any remaining margin
-    }
-    if (space2 > edgeSpaceDiff) {
-      newTotalDimension = newTotalDimension - (space2 - edgeSpaceDiff); // subtract the padding minus any remaining margin
-    }
-  }
-
-  return newTotalDimension;
+  return totalDimension;
 }
 
 function generateStyles({
@@ -161,4 +164,4 @@ function generateStyles({
   };
 }
 
-export { chunkArray, calculateDimensions, generateStyles, adjustDimension };
+export { chunkArray, calculateDimensions, generateStyles, getAdjustedTotalDimensions };
