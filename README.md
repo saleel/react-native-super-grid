@@ -94,17 +94,19 @@ import { SectionGrid } from 'react-native-super-grid';
 | itemDimension | Number | 120  | Minimum width or height for each item in pixels (virtual). |
 | fixed | Boolean | false  | If true, the exact ```itemDimension``` will be used and won't be adjusted to fit the screen. |
 | spacing | Number | 10 | Spacing between each item. |
-| style | [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. |
+| style | [FlatList](https://facebook.github.io/react-native/docs/flatlist.html) styles (Object) |  | Styles for the container. Styles for an item should be applied inside ```renderItem```. Note: If you set `adjustGridToStyles` to `true` then padding added in this prop will be used to adjust the total dimensions of the grid to reflect the padding in this style object. |
 | additionalRowStyle | styles (Object) | | Additional styles for rows (rows render multiple items within), apart from the generated ones.
 | itemContainerStyle | styles (Object) | | Style for item's container. Not needed for most cases.
 | staticDimension | Number | | Specifies a static width or height for the container. If not passed, `maxDimension` will be used.|
-| maxDimension | Number | | Specifies a maximum width or height for the container. If not passed, full width/height of the screen will be used.|
+| maxDimension | Number | | Specifies a maximum width or height for the container. If not passed, full width/height of the screen will be used. Note: If you set `adjustGridToStyles` to `true` then you can alternatively use the `contentContainerStyle` prop and set `maxWidth` or `maxHeight`.|
 | horizontal | boolean | false | If true, the grid will be scrolling horizontally. If you want your item to fill the height when using a horizontal grid, you should give it a height of '100%'. This prop doesn't affect the SectionGrid, which only scrolls vertically. |
 | onLayout | Function |  | Optional callback ran by the internal `FlatList` or `SectionList`'s `onLayout` function, thus invoked on mount and layout changes. |
 | listKey | String | | A unique identifier for the Grid. This key is necessary if you are nesting multiple FlatGrid/SectionGrid inside another Grid (or any VirtualizedList).|
 | keyExtractor | Function | | A function `(item, rowItemIndex) => {String}` that should return a unique key for the item passed.|
 | invertedRow | boolean | | Reverses the direction of row items. It can be used with the [`inverted`](https://reactnative.dev/docs/flatlist#inverted) property.|
 | maxItemsPerRow | number | | Specifies the maximum number of items to render per row|
+| contentContainerStyle | styles (Object) | | This is the regular FlatList/SectionList prop. If you set `adjustGridToStyles` to `true` and specify `maxWidth` or `maxHeight` it will be used the same as `maxDimension`. In addition, padding added here will be used to adjust the total dimensions of the grid to reflect the padding in this style object.|
+| adjustGridToStyles | boolean | | Set to true when you want the library to automatically adjust the total dimensions of the grid based on `style` and `contentContainerStyle` props |
 
 All additional props you pass will be passed on to the internal FlatList/SectionList. This means you can make use of various props and methods like `ListHeaderComponent`, `onEndReached`, `onRefresh`...etc. While these are not tested for compatibility, most of them should work as expected.
 

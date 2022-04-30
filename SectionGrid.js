@@ -5,7 +5,7 @@ import {
   View, Dimensions, SectionList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { generateStyles, calculateDimensions, chunkArray } from './utils';
+import { generateStyles, calculateDimensions, chunkArray, getAdjustedTotalDimensions } from './utils';
 
 const SectionGrid = memo(
   forwardRef((props, ref) => {
@@ -24,6 +24,7 @@ const SectionGrid = memo(
       itemContainerStyle,
       invertedRow,
       maxItemsPerRow,
+      adjustGridToStyles,
       ...restProps
     } = props;
 
@@ -31,7 +32,7 @@ const SectionGrid = memo(
       let defaultTotalDimension = staticDimension;
 
       if (!staticDimension) {
-        defaultTotalDimension = maxDimension || Dimensions.get('window').width;
+        defaultTotalDimension = getAdjustedTotalDimensions({totalDimension: Dimensions.get('window').width, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, adjustGridToStyles});
       }
 
       return defaultTotalDimension;
@@ -42,9 +43,7 @@ const SectionGrid = memo(
         if (!staticDimension) {
           let { width: newTotalDimension } = e.nativeEvent.layout || {};
 
-          if (maxDimension && newTotalDimension > maxDimension) {
-            newTotalDimension = maxDimension;
-          }
+          newTotalDimension = getAdjustedTotalDimensions({totalDimension: newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, adjustGridToStyles});
 
           if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
@@ -56,7 +55,7 @@ const SectionGrid = memo(
           onLayout(e);
         }
       },
-      [staticDimension, maxDimension, totalDimension, onLayout],
+      [staticDimension, maxDimension, totalDimension, onLayout, adjustGridToStyles],
     );
 
     const renderRow = useCallback(
@@ -214,6 +213,7 @@ SectionGrid.propTypes = {
   keyExtractor: PropTypes.func,
   invertedRow: PropTypes.bool,
   maxItemsPerRow: PropTypes.number,
+  adjustGridToStyles: PropTypes.bool,
 };
 
 SectionGrid.defaultProps = {
@@ -230,6 +230,7 @@ SectionGrid.defaultProps = {
   invertedRow: false,
   keyExtractor: null,
   maxItemsPerRow: undefined,
+  adjustGridToStyles: false,
 };
 
 

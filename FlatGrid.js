@@ -5,7 +5,7 @@ import {
   View, Dimensions, FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { chunkArray, calculateDimensions, generateStyles } from './utils';
+import { chunkArray, calculateDimensions, generateStyles, getAdjustedTotalDimensions } from './utils';
 
 
 const FlatGrid = memo(
@@ -26,6 +26,7 @@ const FlatGrid = memo(
       keyExtractor,
       invertedRow,
       maxItemsPerRow,
+      adjustGridToStyles,
       ...restProps
     } = props;
 
@@ -40,7 +41,7 @@ const FlatGrid = memo(
 
       if (!staticDimension) {
         const dimension = horizontal ? 'height' : 'width';
-        defaultTotalDimension = maxDimension || Dimensions.get('window')[dimension];
+        defaultTotalDimension = getAdjustedTotalDimensions({totalDimension: Dimensions.get('window')[dimension], maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal, adjustGridToStyles});
       }
 
       return defaultTotalDimension;
@@ -52,9 +53,7 @@ const FlatGrid = memo(
           const { width, height } = e.nativeEvent.layout || {};
           let newTotalDimension = horizontal ? height : width;
 
-          if (maxDimension && newTotalDimension > maxDimension) {
-            newTotalDimension = maxDimension;
-          }
+          newTotalDimension = getAdjustedTotalDimensions({totalDimension: newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal, adjustGridToStyles});
 
           if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
@@ -66,7 +65,7 @@ const FlatGrid = memo(
           onLayout(e);
         }
       },
-      [staticDimension, maxDimension, totalDimension, horizontal, onLayout],
+      [staticDimension, maxDimension, totalDimension, horizontal, onLayout, adjustGridToStyles],
     );
 
     const renderRow = useCallback(
@@ -210,6 +209,7 @@ FlatGrid.propTypes = {
   listKey: PropTypes.string,
   invertedRow: PropTypes.bool,
   maxItemsPerRow: PropTypes.number,
+  adjustGridToStyles: PropTypes.bool,
 };
 
 FlatGrid.defaultProps = {
@@ -227,6 +227,7 @@ FlatGrid.defaultProps = {
   maxDimension: undefined,
   invertedRow: false,
   maxItemsPerRow: undefined,
+  adjustGridToStyles: false,
 };
 
 
