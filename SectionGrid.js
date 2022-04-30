@@ -32,7 +32,7 @@ const SectionGrid = memo(
       let defaultTotalDimension = staticDimension;
 
       if (!staticDimension) {
-        defaultTotalDimension = getAdjustedTotalDimensions({newTotalDimension: Dimensions.get('window').width, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, adjustGridToStyles});
+        defaultTotalDimension = getAdjustedTotalDimensions({totalDimension: Dimensions.get('window').width, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, adjustGridToStyles});
       }
 
       return defaultTotalDimension;
@@ -43,7 +43,7 @@ const SectionGrid = memo(
         if (!staticDimension) {
           let { width: newTotalDimension } = e.nativeEvent.layout || {};
 
-          newTotalDimension = getAdjustedTotalDimensions({newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, adjustGridToStyles});
+          newTotalDimension = getAdjustedTotalDimensions({totalDimension: newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, adjustGridToStyles});
 
           if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
