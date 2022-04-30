@@ -41,7 +41,7 @@ const FlatGrid = memo(
 
       if (!staticDimension) {
         const dimension = horizontal ? 'height' : 'width';
-        defaultTotalDimension = getAdjustedTotalDimensions({newTotalDimension: Dimensions.get('window')[dimension], maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal, adjustGridToStyles});
+        defaultTotalDimension = getAdjustedTotalDimensions({totalDimension: Dimensions.get('window')[dimension], maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal, adjustGridToStyles});
       }
 
       return defaultTotalDimension;
@@ -53,7 +53,7 @@ const FlatGrid = memo(
           const { width, height } = e.nativeEvent.layout || {};
           let newTotalDimension = horizontal ? height : width;
 
-          newTotalDimension = getAdjustedTotalDimensions({newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal, adjustGridToStyles});
+          newTotalDimension = getAdjustedTotalDimensions({totalDimension: newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, horizontal, adjustGridToStyles});
 
           if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
