@@ -75,7 +75,7 @@ type CommonProps<ItemType> = {
    maxItemsPerRow?: number;
   
   /**
-   * When set to true the library will calcualte the total dimensions taking into account padding in style prop, and padding + maxWidth in contentContainerStyle prop
+   * When set to true the library will calcualte the total dimensions taking into account padding in style prop, and padding + maxWidth/maxHeight in contentContainerStyle prop
    */
    adjustGridToStyles?: boolean;
 }
