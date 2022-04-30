@@ -315,6 +315,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.4.0] - 2022-04-30
+- Introduce `adjustGridToStyles` prop @levic92
+
 ### [4.3.0] - 2022-04-23
 - Add maxItemsPerRow option @levic92
 
