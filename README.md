@@ -315,6 +315,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.4.2] - 2022-07-06
+- Fix itemIndex in keyExtractor
+
 ### [4.4.1] - 2022-07-06
 - Fix SectionGrid types (title) @LightenedLimited
 
