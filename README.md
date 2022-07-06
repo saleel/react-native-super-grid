@@ -315,6 +315,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.4.1] - 2022-07-06
+- Fix SectionGrid types (title) @LightenedLimited
+
 ### [4.4.0] - 2022-04-30
 - Introduce `adjustGridToStyles` prop @levic92
 
