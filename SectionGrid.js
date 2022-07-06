@@ -87,7 +87,7 @@ const SectionGrid = memo(
                 <View
                   key={
                     keyExtractor
-                      ? keyExtractor(item, i)
+                      ? keyExtractor(item, rowIndex * itemsPerRow + i)
                       : `item_${rowIndex * itemsPerRow + i}`
                   }
                   style={[containerStyle, itemContainerStyle]}
