@@ -99,7 +99,7 @@ export class FlatGrid<ItemType = any> extends React.Component<
 > {}
 
 export type SectionItem<ItemType> = {
-  title: string;
+  title?: string;
   data: ItemType[];
   renderItem?: GridRenderItem<ItemType>;
 }
