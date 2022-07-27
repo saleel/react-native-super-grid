@@ -6,7 +6,9 @@ import {
   SectionListData,
   StyleProp,
   RefreshControlProps,
+  SectionList,
   SectionListProps,
+  FlatList,
   FlatListProps
 } from "react-native"
 
@@ -94,9 +96,9 @@ export interface FlatGridProps<ItemType = any>
 /**
  * Responsive Grid View for React Native.
  */
-export class FlatGrid<ItemType = any> extends React.Component<
-  FlatGridProps<ItemType>
-> {}
+export function FlatGrid<ItemType = any>(
+  props: React.PropsWithoutRef<FlatGridProps<ItemType>> & React.RefAttributes<FlatList<ItemType>>
+): React.ReactElement
 
 export type SectionItem<ItemType> = {
   title?: string;
@@ -116,6 +118,6 @@ export interface SectionGridProps<ItemType = any>
   sections: SectionItem<ItemType>[];
 }
 
-export class SectionGrid<ItemType = any> extends React.Component<
-  SectionGridProps<ItemType>
-> {}
+export function SectionGrid<ItemType = any>(
+  props: React.PropsWithoutRef<SectionGridProps<ItemType>> & React.RefAttributes<SectionList<ItemType>>
+): React.ReactElement
