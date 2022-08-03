@@ -315,6 +315,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.4.3] - 2022-08-03
+- Update type defs to handle `ref` attribute @leezumstein
+
 ### [4.4.2] - 2022-07-06
 - Fix itemIndex in keyExtractor
 
