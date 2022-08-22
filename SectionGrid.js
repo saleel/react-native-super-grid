@@ -25,6 +25,7 @@ const SectionGrid = memo(
       invertedRow,
       maxItemsPerRow,
       adjustGridToStyles,
+      customSectionList: SectionListComponent = SectionList,
       ...restProps
     } = props;
 
@@ -181,7 +182,7 @@ const SectionGrid = memo(
     );
 
     return (
-      <SectionList
+      <SectionListComponent
         onLayout={onLocalLayout}
         extraData={totalDimension}
         sections={groupedSections}
@@ -214,6 +215,7 @@ SectionGrid.propTypes = {
   invertedRow: PropTypes.bool,
   maxItemsPerRow: PropTypes.number,
   adjustGridToStyles: PropTypes.bool,
+  customSectionList: PropTypes.elementType
 };
 
 SectionGrid.defaultProps = {
@@ -231,6 +233,7 @@ SectionGrid.defaultProps = {
   keyExtractor: null,
   maxItemsPerRow: undefined,
   adjustGridToStyles: false,
+  customSectionList: undefined
 };
 
 

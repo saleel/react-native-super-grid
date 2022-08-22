@@ -27,6 +27,7 @@ const FlatGrid = memo(
       invertedRow,
       maxItemsPerRow,
       adjustGridToStyles,
+      customFlatList: FlatListComponent = FlatList,
       ...restProps
     } = props;
 
@@ -159,7 +160,7 @@ const FlatGrid = memo(
 
 
     return (
-      <FlatList
+      <FlatListComponent
         data={rows}
         ref={ref}
         extraData={totalDimension}
@@ -210,6 +211,7 @@ FlatGrid.propTypes = {
   invertedRow: PropTypes.bool,
   maxItemsPerRow: PropTypes.number,
   adjustGridToStyles: PropTypes.bool,
+  customFlatList: PropTypes.elementType
 };
 
 FlatGrid.defaultProps = {
@@ -228,6 +230,7 @@ FlatGrid.defaultProps = {
   invertedRow: false,
   maxItemsPerRow: undefined,
   adjustGridToStyles: false,
+  customFlatList: undefined
 };
 
 
