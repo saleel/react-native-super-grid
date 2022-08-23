@@ -90,7 +90,12 @@ export interface FlatGridProps<ItemType = any>
   /**
    * Items to be rendered. renderItem will be called with each item in this array.
    */
-  data: ItemType[];
+   data: ItemType[];
+
+  /**
+   * Overwrites FlatList with custom interface
+   */
+   customFlatList?: typeof FlatList;
 }
 
 /**
@@ -114,8 +119,12 @@ type SectionGridAllowedProps<ItemType = any> = Omit<SectionListProps<ItemType>,
 
 export interface SectionGridProps<ItemType = any>
   extends SectionGridAllowedProps<ItemType>, CommonProps<ItemType> {
+   sections: SectionItem<ItemType>[];
 
-  sections: SectionItem<ItemType>[];
+  /**
+   * Overwrites SectionList with custom interface
+   */
+   customSectionList?: typeof SectionList;
 }
 
 export function SectionGrid<ItemType = any>(
