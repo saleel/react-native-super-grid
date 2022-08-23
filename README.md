@@ -107,6 +107,8 @@ import { SectionGrid } from 'react-native-super-grid';
 | maxItemsPerRow | number | | Specifies the maximum number of items to render per row|
 | contentContainerStyle | styles (Object) | | This is the regular FlatList/SectionList prop. If you set `adjustGridToStyles` to `true` and specify `maxWidth` or `maxHeight` it will be used the same as `maxDimension`. In addition, padding added here will be used to adjust the total dimensions of the grid to reflect the padding in this style object.|
 | adjustGridToStyles | boolean | | Set to true when you want the library to automatically adjust the total dimensions of the grid based on `style` and `contentContainerStyle` props |
+| customFlatList (for FlatGrid) | ElementType | | Replaces `FlatList` in FlatGrid with ElementType. E.g. `Animated.FlatList` |
+| customSectionList (for SectionGrid) | ElementType | | Replaces `SectionList` in SectionGrid with ElementType. E.g. `Animated.SectionList` |
 
 All additional props you pass will be passed on to the internal FlatList/SectionList. This means you can make use of various props and methods like `ListHeaderComponent`, `onEndReached`, `onRefresh`...etc. While these are not tested for compatibility, most of them should work as expected.
 
