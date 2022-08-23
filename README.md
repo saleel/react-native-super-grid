@@ -317,6 +317,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.5.0] - 2022-08-23
+- Add ability to add custom interfaces @Ryanjso 
+
 ### [4.4.3] - 2022-08-03
 - Update type defs to handle `ref` attribute @leezumstein
 
