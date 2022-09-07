@@ -80,6 +80,12 @@ type CommonProps<ItemType> = {
    * When set to true the library will calcualte the total dimensions taking into account padding in style prop, and padding + maxWidth/maxHeight in contentContainerStyle prop
    */
    adjustGridToStyles?: boolean;
+
+  /**
+   * When number of items per row is determined, this callback is called.
+   * @param itemsPerRow Number of items per row
+   */
+  onItemsPerRowChange?: (itemsPerRow: number) => void;
 }
 
 /**
