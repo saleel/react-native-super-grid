@@ -1,5 +1,5 @@
 import React, {
-  forwardRef, memo, useCallback, useMemo, useState,
+  forwardRef, memo, useCallback, useEffect, useMemo, useState,
 } from 'react';
 import {
   View, Dimensions, SectionList,
@@ -26,6 +26,7 @@ const SectionGrid = memo(
       maxItemsPerRow,
       adjustGridToStyles,
       customSectionList: SectionListComponent = SectionList,
+      onItemsPerRowChange,
       ...restProps
     } = props;
 
@@ -180,6 +181,12 @@ const SectionGrid = memo(
       },
       [keyExtractor],
     );
+
+    useEffect(() => {
+      if (onItemsPerRowChange) {
+        onItemsPerRowChange(itemsPerRow);
+      }
+    }, [itemsPerRow]);
 
     return (
       <SectionListComponent
