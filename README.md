@@ -317,6 +317,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.5.1] - 2022-09-08
+- Fix SectionGrid renderItem types @wjaykim
+
 ### [4.5.0] - 2022-08-23
 - Add ability to add custom interfaces @Ryanjso 
 

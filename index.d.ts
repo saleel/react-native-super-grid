@@ -20,8 +20,16 @@ export type GridRenderItemInfo<ItemT> = ListRenderItemInfo<ItemT> & {
   rowIndex: number;
 }
 
+export type SectionGridRenderItemInfo<ItemT> = SectionListRenderItemInfo<ItemT> & {
+  rowIndex: number;
+}
+
 export type GridRenderItem<ItemT> = (
   info: GridRenderItemInfo<ItemT>
+) => React.ReactElement | null;
+
+export type SectionGridRenderItem<ItemT> = (
+  info: SectionGridRenderItemInfo<ItemT>
 ) => React.ReactElement | null;
 
 // Custom props that are present in both grid and list
@@ -114,18 +122,20 @@ export function FlatGrid<ItemType = any>(
 export type SectionItem<ItemType> = {
   title?: string;
   data: ItemType[];
-  renderItem?: GridRenderItem<ItemType>;
+  renderItem?: SectionGridRenderItem<ItemType>;
 }
 
 // Original section list component props
 type SectionGridAllowedProps<ItemType = any> = Omit<SectionListProps<ItemType>,
   //  This prop doesn't affect the SectionGrid, which only scrolls vertically.
-  | "horizontal" | "sections"
+  | "horizontal" | "sections" | "renderItem"
 >
 
 export interface SectionGridProps<ItemType = any>
   extends SectionGridAllowedProps<ItemType>, CommonProps<ItemType> {
    sections: SectionItem<ItemType>[];
+
+   renderItem?: SectionGridRenderItem<ItemType>;
 
   /**
    * Overwrites SectionList with custom interface
