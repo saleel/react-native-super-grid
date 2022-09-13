@@ -1,5 +1,5 @@
 import React, {
-  forwardRef, memo, useState, useCallback, useMemo,
+  forwardRef, memo, useState, useCallback, useMemo, useEffect,
 } from 'react';
 import {
   View, Dimensions, FlatList,
@@ -28,6 +28,7 @@ const FlatGrid = memo(
       maxItemsPerRow,
       adjustGridToStyles,
       customFlatList: FlatListComponent = FlatList,
+      onItemsPerRowChange,
       ...restProps
     } = props;
 
@@ -158,6 +159,11 @@ const FlatGrid = memo(
       [keyExtractor],
     );
 
+    useEffect(() => {
+      if (onItemsPerRowChange) {
+        onItemsPerRowChange(itemsPerRow);
+      }
+    }, [itemsPerRow]);
 
     return (
       <FlatListComponent

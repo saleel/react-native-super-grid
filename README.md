@@ -109,6 +109,7 @@ import { SectionGrid } from 'react-native-super-grid';
 | adjustGridToStyles | boolean | | Set to true when you want the library to automatically adjust the total dimensions of the grid based on `style` and `contentContainerStyle` props |
 | customFlatList (for FlatGrid) | ElementType | | Replaces `FlatList` in FlatGrid with ElementType. E.g. `Animated.FlatList` |
 | customSectionList (for SectionGrid) | ElementType | | Replaces `SectionList` in SectionGrid with ElementType. E.g. `Animated.SectionList` |
+| onItemsPerRowChange | Function | | A callback `(itemsPerRow: number) => void` that is called when number of items per row is determined. |
 
 All additional props you pass will be passed on to the internal FlatList/SectionList. This means you can make use of various props and methods like `ListHeaderComponent`, `onEndReached`, `onRefresh`...etc. While these are not tested for compatibility, most of them should work as expected.
 
