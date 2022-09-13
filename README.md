@@ -318,6 +318,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [4.6.0] - 2022-09-12
+- Add onItemsPerRowChange  @wjaykim
+
 ### [4.5.1] - 2022-09-08
 - Fix SectionGrid renderItem types @wjaykim
 
