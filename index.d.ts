@@ -143,6 +143,7 @@ export function SimpleGrid<ItemType = any>(
     | "maxItemsPerRow"
     | "adjustGridToStyles"
     | "onItemsPerRowChange"
+    | "renderItem"
   >> & React.RefAttributes<View<ItemType>> & ViewProps
 ): React.ReactElement
 
