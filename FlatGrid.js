@@ -2,9 +2,9 @@ import React, { forwardRef, memo, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import { generateStyles } from './utils';
-import useRenderRow from './utils/useRenderRow';
-import useDimensions from './utils/useDimensions';
-import useRows from './utils/useRows';
+import useRenderRow from './hooks/useRenderRow';
+import useDimensions from './hooks/useDimensions';
+import useRows from './hooks/useRows';
 
 
 const FlatGrid = memo(
