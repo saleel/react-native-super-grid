@@ -10,7 +10,8 @@ import {
   SectionListProps,
   FlatList,
   FlatListProps,
-  View
+  View,
+  ViewProps
 } from "react-native"
 
 // Copy from TS 3.5
@@ -142,7 +143,7 @@ export function SimpleGrid<ItemType = any>(
     | "maxItemsPerRow"
     | "adjustGridToStyles"
     | "onItemsPerRowChange"
-  >> & React.RefAttributes<View<ItemType>>
+  >> & React.RefAttributes<View<ItemType>> & ViewProps
 ): React.ReactElement
 
 
