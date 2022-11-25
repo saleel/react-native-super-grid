@@ -59,6 +59,19 @@ import { FlatGrid } from 'react-native-super-grid';
 ```
 
 
+### Usage (SimpleGrid)
+
+```javascript
+import { SimpleGrid } from 'react-native-super-grid';
+```
+```javascript
+<SimpleGrid
+  itemDimension={130}
+  data={[1,2,3,4,5,6]}
+  renderItem={({ item }) => (<Text>{item}</Text>)}
+/>
+```
+
 ### Usage (SectionGrid)
 
 ```javascript
