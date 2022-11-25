@@ -9,7 +9,8 @@ import {
   SectionList,
   SectionListProps,
   FlatList,
-  FlatListProps
+  FlatListProps,
+  View
 } from "react-native"
 
 // Copy from TS 3.5
@@ -113,11 +114,37 @@ export interface FlatGridProps<ItemType = any>
 }
 
 /**
- * Responsive Grid View for React Native.
+ * Responsive Grid View for React Native (FlatList based)
  */
 export function FlatGrid<ItemType = any>(
   props: React.PropsWithoutRef<FlatGridProps<ItemType>> & React.RefAttributes<FlatList<ItemType>>
 ): React.ReactElement
+
+
+/**
+ * Responsive Grid View for React Native (View based)
+ */
+export function SimpleGrid<ItemType = any>(
+  props: React.PropsWithoutRef<Pick<FlatGridProps<ItemType>, "data"
+    | "fixed"
+    | "itemDimension"
+    | "spacing"
+    | "style"
+    | "additionalRowStyle"
+    | "itemContainerStyle"
+    | "staticDimension"
+    | "horizontal"
+    | "onLayout"
+    | "keyExtractor"
+    | "listKey"
+    | "maxDimension"
+    | "invertedRow"
+    | "maxItemsPerRow"
+    | "adjustGridToStyles"
+    | "onItemsPerRowChange"
+  >> & React.RefAttributes<View<ItemType>>
+): React.ReactElement
+
 
 export type SectionItem<ItemType> = {
   title?: string;
