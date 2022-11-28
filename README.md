@@ -331,6 +331,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [5.0.0] - 2022-11-28
+- Add SimpleGrid component @paulrostorp
+
 ### [4.6.0] - 2022-09-12
 - Add onItemsPerRowChange  @wjaykim
 
