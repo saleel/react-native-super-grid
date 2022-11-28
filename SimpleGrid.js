@@ -25,13 +25,6 @@ const SimpleGrid = memo(
       ...restProps
     } = props;
 
-    // eslint-disable-next-line react/prop-types
-    if (props.items && !props.data) {
-      // eslint-disable-next-line no-console
-      throw new Error('React Native Super Grid - Prop "items" has been renamed to "data" in version 4');
-    }
-
-
     const {
       onLayout,
       itemsPerRow,
