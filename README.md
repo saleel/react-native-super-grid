@@ -60,7 +60,7 @@ import { FlatGrid } from 'react-native-super-grid';
 
 
 ### Usage (SimpleGrid)
-
+This component is similar to the FlatGrid but does not use a FlatList, instead, it simply maps over the data items. This is useful if you need to put a grid inside a ScrollView or if you have a small array.
 ```javascript
 import { SimpleGrid } from 'react-native-super-grid';
 ```
