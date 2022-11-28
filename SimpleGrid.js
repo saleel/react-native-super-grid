@@ -1,5 +1,5 @@
 import React, { forwardRef, memo, useMemo } from 'react';
-import { FlatList } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { generateStyles } from './utils';
 import useRenderRow from './hooks/useRenderRow';
@@ -7,7 +7,7 @@ import useDimensions from './hooks/useDimensions';
 import useRows from './hooks/useRows';
 
 
-const FlatGrid = memo(
+const SimpleGrid = memo(
   forwardRef((props, ref) => {
     const {
       style,
@@ -17,30 +17,16 @@ const FlatGrid = memo(
       itemDimension,
       renderItem,
       horizontal,
-      onLayout: _,
-      staticDimension,
-      maxDimension,
       additionalRowStyle: externalRowStyle,
       itemContainerStyle,
       keyExtractor: customKeyExtractor,
       invertedRow,
-      maxItemsPerRow,
-      adjustGridToStyles,
-      customFlatList: FlatListComponent = FlatList,
       onItemsPerRowChange,
       ...restProps
     } = props;
 
-    // eslint-disable-next-line react/prop-types
-    if (props.items && !props.data) {
-      // eslint-disable-next-line no-console
-      throw new Error('React Native Super Grid - Prop "items" has been renamed to "data" in version 4');
-    }
-
-
     const {
       onLayout,
-      totalDimension,
       itemsPerRow,
       containerDimension,
       fixedSpacing,
@@ -77,63 +63,66 @@ const FlatGrid = memo(
 
 
     return (
-      <FlatListComponent
-        data={rows}
-        ref={ref}
-        extraData={totalDimension}
-        renderItem={({ item, index }) => renderRow({
-          rowItems: item,
-          rowIndex: index,
-          isLastRow: index === rows.length - 1,
-          itemsPerRow,
-          rowStyle,
-          containerStyle,
-        })
-        }
+      <View
         style={[
           {
-            ...(horizontal
-              ? { paddingLeft: spacing }
-              : { paddingTop: spacing }),
+            ...(horizontal ? { paddingLeft: spacing } : { paddingTop: spacing }),
           },
           style,
         ]}
-        onLayout={onLayout}
-        keyExtractor={keyExtractor}
+        ref={ref}
         {...restProps}
-        horizontal={horizontal}
-      />
+      >
+        {rows.map((row, index) => (
+          <View key={keyExtractor(row, index)} onLayout={onLayout}>
+            {renderRow({
+              rowItems: row,
+              rowIndex: index,
+              isLastRow: index === rows.length - 1,
+              itemsPerRow,
+              rowStyle,
+              containerStyle,
+              separators: null,
+            })}
+          </View>
+        ))}
+      </View>
     );
   }),
 );
 
 
-FlatGrid.displayName = 'FlatGrid';
+SimpleGrid.displayName = 'SimpleGrid';
 
-FlatGrid.propTypes = {
+SimpleGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
   itemDimension: PropTypes.number,
+  // eslint-disable-next-line react/no-unused-prop-types
   maxDimension: PropTypes.number,
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   additionalRowStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
   itemContainerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
+  // eslint-disable-next-line react/no-unused-prop-types
   staticDimension: PropTypes.number,
   horizontal: PropTypes.bool,
+  // eslint-disable-next-line react/no-unused-prop-types
   onLayout: PropTypes.func,
   keyExtractor: PropTypes.func,
+  // eslint-disable-next-line react/no-unused-prop-types
   listKey: PropTypes.string,
   invertedRow: PropTypes.bool,
+  // eslint-disable-next-line react/no-unused-prop-types
   maxItemsPerRow: PropTypes.number,
+  // eslint-disable-next-line react/no-unused-prop-types
   adjustGridToStyles: PropTypes.bool,
   onItemsPerRowChange: PropTypes.func,
-  customFlatList: PropTypes.elementType,
 };
 
-FlatGrid.defaultProps = {
+SimpleGrid.defaultProps = {
   fixed: false,
   itemDimension: 120,
   spacing: 10,
@@ -150,8 +139,7 @@ FlatGrid.defaultProps = {
   maxItemsPerRow: undefined,
   adjustGridToStyles: false,
   onItemsPerRowChange: undefined,
-  customFlatList: undefined,
 };
 
 
-export default FlatGrid;
+export default SimpleGrid;
