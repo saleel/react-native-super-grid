@@ -37,6 +37,7 @@ const FlatGrid = memo(
       throw new Error('React Native Super Grid - Prop "items" has been renamed to "data" in version 4');
     }
 
+    console.log("FlatGrid rerender")
 
     const {
       onLayout,
@@ -46,7 +47,7 @@ const FlatGrid = memo(
       fixedSpacing,
     } = useDimensions(props);
 
-    const { containerStyle, rowStyle } = useMemo(
+    const { containerStyle, containerFullWidthStyle, rowStyle } = useMemo(
       () => generateStyles({
         horizontal,
         itemDimension,
@@ -54,6 +55,7 @@ const FlatGrid = memo(
         spacing,
         fixedSpacing,
         fixed,
+        itemsPerRow
       }),
       [horizontal, itemDimension, containerDimension, spacing, fixedSpacing, fixed],
     );
@@ -88,6 +90,7 @@ const FlatGrid = memo(
           itemsPerRow,
           rowStyle,
           containerStyle,
+          containerFullWidthStyle,
         })
         }
         style={[
