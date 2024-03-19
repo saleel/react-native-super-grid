@@ -106,7 +106,7 @@ export interface FlatGridProps<ItemType = any>
   /**
    * Items to be rendered. renderItem will be called with each item in this array.
    */
-   data: ItemType[];
+   data: readonly ItemType[];
 
   /**
    * Overwrites FlatList with custom interface
