@@ -37,8 +37,6 @@ const FlatGrid = memo(
       throw new Error('React Native Super Grid - Prop "items" has been renamed to "data" in version 4');
     }
 
-    console.log("FlatGrid rerender")
-
     const {
       onLayout,
       totalDimension,
