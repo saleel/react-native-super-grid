@@ -106,7 +106,7 @@ export interface FlatGridProps<ItemType = any>
   /**
    * Items to be rendered. renderItem will be called with each item in this array.
    */
-   data: ItemType[];
+   data: readonly ItemType[];
 
   /**
    * Overwrites FlatList with custom interface
@@ -149,8 +149,8 @@ export function SimpleGrid<ItemType = any>(
 
 
 export type SectionItem<ItemType> = {
-  title?: string;
-  data: ItemType[];
+  title?: readonly string;
+  data: readonly ItemType[];
   renderItem?: SectionGridRenderItem<ItemType>;
 }
 
@@ -162,7 +162,7 @@ type SectionGridAllowedProps<ItemType = any> = Omit<SectionListProps<ItemType>,
 
 export interface SectionGridProps<ItemType = any>
   extends SectionGridAllowedProps<ItemType>, CommonProps<ItemType> {
-   sections: SectionItem<ItemType>[];
+   sections: readonly SectionItem<ItemType>[];
 
    renderItem?: SectionGridRenderItem<ItemType>;
 
