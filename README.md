@@ -331,6 +331,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [5.0.1] - 2024-03-23
+- Add readonly to types @annepham25
+
 ### [5.0.0] - 2022-11-28
 - Add SimpleGrid component @paulrostorp
 
