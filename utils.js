@@ -5,7 +5,9 @@ function chunkArray(array = [], size) {
   return array.reduce((acc, val) => {
     if (acc.length === 0) acc.push([]);
     const last = acc[acc.length - 1];
-    if (last.length < size) {
+    const rowHadFullWidth = last[0] && last[0].fullWidth;
+    const currentIsFullWidth = !!val.fullWidth;
+    if (last.length < size && !rowHadFullWidth && !currentIsFullWidth) {
       last.push(val);
     } else {
       acc.push([val]);
