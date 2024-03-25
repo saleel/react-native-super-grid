@@ -55,7 +55,7 @@ const FlatGrid = memo(
         fixed,
         itemsPerRow
       }),
-      [horizontal, itemDimension, containerDimension, spacing, fixedSpacing, fixed],
+      [horizontal, itemDimension, containerDimension, itemsPerRow, spacing, fixedSpacing, fixed],
     );
 
     const { rows, keyExtractor } = useRows({

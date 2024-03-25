@@ -129,7 +129,7 @@ function generateStyles({
   fixed,
   horizontal,
   fixedSpacing,
-  itemsPerRow=2,
+  itemsPerRow,
 }) {
   let rowStyle = {
     flexDirection: 'row',
@@ -147,7 +147,7 @@ function generateStyles({
   let containerFullWidthStyle = {
     flexDirection: 'column',
     justifyContent: 'center',
-    width: containerDimension*itemsPerRow - spacing*(itemsPerRow-1),
+    width: containerDimension*itemsPerRow - spacing,
     marginBottom: spacing,
   };
 
