@@ -18,6 +18,7 @@ const useRenderRow = ({
     itemsPerRow,
     rowStyle,
     containerStyle,
+    containerFullWidthStyle,
   }) => {
     // To make up for the top padding
     let additionalRowStyle = {};
@@ -26,10 +27,12 @@ const useRenderRow = ({
         ...(!horizontal ? { marginBottom: spacing } : {}),
         ...(horizontal ? { marginRight: spacing } : {}),
       };
-    }
+    };
+
+    const hasFullWidthItem = !!rowItems.find(i => i.fullWidth);
 
     return (
-      <View style={[rowStyle, additionalRowStyle, externalRowStyle]}>
+      <View style={[rowStyle, additionalRowStyle, externalRowStyle, hasFullWidthItem ? { flexDirection: "column", paddingBottom: 0 } : {}]}>
         {rowItems.map((item, index) => {
           const i = invertedRow ? -index + itemsPerRow - 1 : index;
 
@@ -40,7 +43,7 @@ const useRenderRow = ({
                   ? keyExtractor(item, rowIndex * itemsPerRow + i)
                   : `item_${rowIndex * itemsPerRow + i}`
               }
-              style={[containerStyle, itemContainerStyle]}
+              style={[item.fullWidth ? containerFullWidthStyle : containerStyle, itemContainerStyle]}
             >
               {renderItem({
                 item,

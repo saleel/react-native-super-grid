@@ -128,7 +128,13 @@ All additional props you pass will be passed on to the internal FlatList/Section
 
 In **SectionGrid**, `section` argument in methods like `renderSectionHeader`, `renderSectionFooter`, `ItemSeparatorComponent` will slightly different from the actual section you passed. The `data` key in the `section` will be the grouped versions of items (items that go in one row), and the original list of items can be found in `originalData` key. All other keys will remain intact.
 
+#### Full width items
 
+To make an item full width, simply include `fullWidth: true` in the data object for that item. For example: 
+
+```javascript
+{ name: 'TURQUOISE', code: '#1abc9c', fullWidth: true }
+```
 
 ## FlatGrid Example
 ```javascript

@@ -32,7 +32,7 @@ const SimpleGrid = memo(
       fixedSpacing,
     } = useDimensions(props);
 
-    const { containerStyle, rowStyle } = useMemo(
+    const { containerStyle, containerFullWidthStyle, rowStyle } = useMemo(
       () => generateStyles({
         horizontal,
         itemDimension,
@@ -40,8 +40,9 @@ const SimpleGrid = memo(
         spacing,
         fixedSpacing,
         fixed,
+        itemsPerRow
       }),
-      [horizontal, itemDimension, containerDimension, spacing, fixedSpacing, fixed],
+      [horizontal, itemDimension, containerDimension, itemsPerRow, spacing, fixedSpacing, fixed],
     );
 
     const { rows, keyExtractor } = useRows({
@@ -82,6 +83,7 @@ const SimpleGrid = memo(
               itemsPerRow,
               rowStyle,
               containerStyle,
+              containerFullWidthStyle,
               separators: null,
             })}
           </View>

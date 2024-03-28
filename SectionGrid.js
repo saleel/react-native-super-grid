@@ -80,8 +80,10 @@ const SectionGrid = memo(
           };
         }
 
+        const hasFullWidthItem = !!rowItems.find(i => i.fullWidth);
+
         return (
-          <View style={[rowStyle, additionalRowStyle, externalRowStyle]}>
+          <View style={[rowStyle, additionalRowStyle, externalRowStyle, hasFullWidthItem ? { flexDirection: "column", paddingBottom: 0 } : {}]}>
             {rowItems.map((item, index) => {
               const i = invertedRow ? -index + itemsPerRow - 1 : index;
 
@@ -92,7 +94,7 @@ const SectionGrid = memo(
                       ? keyExtractor(item, rowIndex * itemsPerRow + i)
                       : `item_${rowIndex * itemsPerRow + i}`
                   }
-                  style={[containerStyle, itemContainerStyle]}
+                  style={[item.fullWidth ? containerFullWidthStyle : containerStyle, itemContainerStyle,]}
                 >
                   {renderItem({
                     item,
@@ -122,15 +124,16 @@ const SectionGrid = memo(
       [itemDimension, staticDimension, totalDimension, spacing, fixed, maxItemsPerRow],
     );
 
-    const { containerStyle, rowStyle } = useMemo(
+    const { containerStyle, containerFullWidthStyle, rowStyle } = useMemo(
       () => generateStyles({
         itemDimension,
         containerDimension,
         spacing,
         fixedSpacing,
         fixed,
+        itemsPerRow
       }),
-      [itemDimension, containerDimension, spacing, fixedSpacing, fixed],
+      [itemDimension, containerDimension, itemsPerRow, spacing, fixedSpacing, fixed],
     );
 
     const groupSectionsFunc = useCallback(
@@ -154,6 +157,7 @@ const SectionGrid = memo(
             itemsPerRow,
             rowStyle,
             containerStyle,
+            containerFullWidthStyle,
           }),
           data: chunkedData,
           originalData: section.data,
