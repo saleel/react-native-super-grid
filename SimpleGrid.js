@@ -40,7 +40,7 @@ const SimpleGrid = memo(
         spacing,
         fixedSpacing,
         fixed,
-        itemsPerRow
+        itemsPerRow,
       }),
       [horizontal, itemDimension, containerDimension, itemsPerRow, spacing, fixedSpacing, fixed],
     );

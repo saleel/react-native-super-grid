@@ -50,7 +50,7 @@ function getStyleDimensions(
 ) {
   let space1 = 0;
   let space2 = 0;
-  let maxStyleDimension = undefined;
+  let maxStyleDimension;
   if (style) {
     const flatStyle = Array.isArray(style) ? StyleSheet.flatten(style) : style;
     let sMaxDimensionXY = 'maxWidth';
@@ -93,7 +93,7 @@ function getAdjustedTotalDimensions({
     actualMaxDimension = maxDimension;
     totalDimension = maxDimension;
   }
-  
+
   if (adjustGridToStyles) {
     if (contentContainerStyle) {
       const { space1, space2, maxStyleDimension } = getStyleDimensions(contentContainerStyle, horizontal);
@@ -113,10 +113,10 @@ function getAdjustedTotalDimensions({
       const { space1, space2 } = getStyleDimensions(style, horizontal);
       // only subtract if space is greater than the margin on either side
       if (space1 > edgeSpaceDiff) {
-        totalDimension = totalDimension - (space1 - edgeSpaceDiff); // subtract the padding minus any remaining margin
+        totalDimension -= (space1 - edgeSpaceDiff); // subtract the padding minus any remaining margin
       }
       if (space2 > edgeSpaceDiff) {
-        totalDimension = totalDimension - (space2 - edgeSpaceDiff); // subtract the padding minus any remaining margin
+        totalDimension -= (space2 - edgeSpaceDiff); // subtract the padding minus any remaining margin
       }
     }
   }
@@ -146,10 +146,10 @@ function generateStyles({
     marginRight: fixed ? fixedSpacing : spacing,
   };
 
-  let containerFullWidthStyle = {
+  const containerFullWidthStyle = {
     flexDirection: 'column',
     justifyContent: 'center',
-    width: containerDimension*itemsPerRow - spacing,
+    width: containerDimension * itemsPerRow - spacing,
     marginBottom: spacing,
   };
 
@@ -175,4 +175,6 @@ function generateStyles({
   };
 }
 
-export { chunkArray, calculateDimensions, generateStyles, getAdjustedTotalDimensions };
+export {
+  chunkArray, calculateDimensions, generateStyles, getAdjustedTotalDimensions,
+};

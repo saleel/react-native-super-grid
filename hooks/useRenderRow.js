@@ -27,12 +27,12 @@ const useRenderRow = ({
         ...(!horizontal ? { marginBottom: spacing } : {}),
         ...(horizontal ? { marginRight: spacing } : {}),
       };
-    };
+    }
 
     const hasFullWidthItem = !!rowItems.find(i => i.fullWidth);
 
     return (
-      <View style={[rowStyle, additionalRowStyle, externalRowStyle, hasFullWidthItem ? { flexDirection: "column", paddingBottom: 0 } : {}]}>
+      <View style={[rowStyle, additionalRowStyle, externalRowStyle, hasFullWidthItem ? { flexDirection: 'column', paddingBottom: 0 } : {}]}>
         {rowItems.map((item, index) => {
           const i = invertedRow ? -index + itemsPerRow - 1 : index;
 

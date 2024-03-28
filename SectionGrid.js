@@ -5,7 +5,9 @@ import {
   View, Dimensions, SectionList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { generateStyles, calculateDimensions, chunkArray, getAdjustedTotalDimensions } from './utils';
+import {
+  generateStyles, calculateDimensions, chunkArray, getAdjustedTotalDimensions,
+} from './utils';
 
 const SectionGrid = memo(
   forwardRef((props, ref) => {
@@ -34,7 +36,13 @@ const SectionGrid = memo(
       let defaultTotalDimension = staticDimension;
 
       if (!staticDimension) {
-        defaultTotalDimension = getAdjustedTotalDimensions({totalDimension: Dimensions.get('window').width, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, adjustGridToStyles});
+        defaultTotalDimension = getAdjustedTotalDimensions({
+          totalDimension: Dimensions.get('window').width,
+          maxDimension,
+          contentContainerStyle: restProps.contentContainerStyle,
+          style,
+          adjustGridToStyles,
+        });
       }
 
       return defaultTotalDimension;
@@ -45,7 +53,9 @@ const SectionGrid = memo(
         if (!staticDimension) {
           let { width: newTotalDimension } = e.nativeEvent.layout || {};
 
-          newTotalDimension = getAdjustedTotalDimensions({totalDimension: newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, adjustGridToStyles});
+          newTotalDimension = getAdjustedTotalDimensions({
+            totalDimension: newTotalDimension, maxDimension, contentContainerStyle: restProps.contentContainerStyle, style, adjustGridToStyles,
+          });
 
           if (totalDimension !== newTotalDimension && newTotalDimension > 0) {
             setTotalDimension(newTotalDimension);
@@ -83,7 +93,7 @@ const SectionGrid = memo(
         const hasFullWidthItem = !!rowItems.find(i => i.fullWidth);
 
         return (
-          <View style={[rowStyle, additionalRowStyle, externalRowStyle, hasFullWidthItem ? { flexDirection: "column", paddingBottom: 0 } : {}]}>
+          <View style={[rowStyle, additionalRowStyle, externalRowStyle, hasFullWidthItem ? { flexDirection: 'column', paddingBottom: 0 } : {}]}>
             {rowItems.map((item, index) => {
               const i = invertedRow ? -index + itemsPerRow - 1 : index;
 
@@ -94,7 +104,7 @@ const SectionGrid = memo(
                       ? keyExtractor(item, rowIndex * itemsPerRow + i)
                       : `item_${rowIndex * itemsPerRow + i}`
                   }
-                  style={[item.fullWidth ? containerFullWidthStyle : containerStyle, itemContainerStyle,]}
+                  style={[item.fullWidth ? containerFullWidthStyle : containerStyle, itemContainerStyle]}
                 >
                   {renderItem({
                     item,
@@ -131,7 +141,7 @@ const SectionGrid = memo(
         spacing,
         fixedSpacing,
         fixed,
-        itemsPerRow
+        itemsPerRow,
       }),
       [itemDimension, containerDimension, itemsPerRow, spacing, fixedSpacing, fixed],
     );
@@ -211,7 +221,7 @@ SectionGrid.displayName = 'SectionGrid';
 
 SectionGrid.propTypes = {
   renderItem: PropTypes.func.isRequired,
-  sections: PropTypes.arrayOf(PropTypes.any).isRequired,
+  sections: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   itemDimension: PropTypes.number,
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
@@ -226,7 +236,8 @@ SectionGrid.propTypes = {
   invertedRow: PropTypes.bool,
   maxItemsPerRow: PropTypes.number,
   adjustGridToStyles: PropTypes.bool,
-  customSectionList: PropTypes.elementType
+  customSectionList: PropTypes.elementType,
+  onItemsPerRowChange: PropTypes.func,
 };
 
 SectionGrid.defaultProps = {
@@ -244,7 +255,8 @@ SectionGrid.defaultProps = {
   keyExtractor: null,
   maxItemsPerRow: undefined,
   adjustGridToStyles: false,
-  customSectionList: undefined
+  customSectionList: undefined,
+  onItemsPerRowChange: null,
 };
 
 
