@@ -29,7 +29,7 @@ const useRenderRow = ({
       };
     }
 
-    const hasFullWidthItem = !!rowItems.find(i => i.fullWidth);
+    const hasFullWidthItem = !!rowItems.find(i => i._fullWidth);
 
     return (
       <View style={[rowStyle, additionalRowStyle, externalRowStyle, hasFullWidthItem ? { flexDirection: 'column', paddingBottom: 0 } : {}]}>
@@ -43,7 +43,7 @@ const useRenderRow = ({
                   ? keyExtractor(item, rowIndex * itemsPerRow + i)
                   : `item_${rowIndex * itemsPerRow + i}`
               }
-              style={[item.fullWidth ? containerFullWidthStyle : containerStyle, itemContainerStyle]}
+              style={[item._fullWidth ? containerFullWidthStyle : containerStyle, itemContainerStyle]}
             >
               {renderItem({
                 item,
