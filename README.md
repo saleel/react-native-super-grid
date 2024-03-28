@@ -130,10 +130,10 @@ In **SectionGrid**, `section` argument in methods like `renderSectionHeader`, `r
 
 #### Full width items
 
-To make an item full width, simply include `fullWidth: true` in the data object for that item. For example: 
+To make an item full width, simply include `_fullWidth: true` in the data object for that item. For example: 
 
 ```javascript
-{ name: 'TURQUOISE', code: '#1abc9c', fullWidth: true }
+{ name: 'TURQUOISE', code: '#1abc9c', _fullWidth: true }
 ```
 
 ## FlatGrid Example
@@ -336,6 +336,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Changelog
+
+### [5.1.0] - 2024-03-28
+- Add support for fullWidth items @devjeff
 
 ### [5.0.1] - 2024-03-23
 - Add readonly to types @annepham25

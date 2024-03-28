@@ -1,6 +1,6 @@
 {
   "name": "react-native-super-grid",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "description": "Responsive Grid View for React Native",
   "main": "index.js",
   "types": "index.d.ts",
@@ -12,7 +12,7 @@
     "url": "https://github.com/saleel97/react-native-super-grid.git"
   },
   "peerDependencies": {
-    "react": ">=16.8.0",
+    "react": ">=16.8.6",
     "react-native": ">=0.59.0"
   },
   "homepage": "https://github.com/saleel97/react-native-super-grid",
@@ -33,11 +33,11 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.27.1"
   },
   "dependencies": {
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.2"
   }
 }
