@@ -65,6 +65,7 @@ const FlatGrid = memo(
       keyExtractor: customKeyExtractor,
       onItemsPerRowChange,
     });
+
     const renderRow = useRenderRow({
       renderItem,
       spacing,

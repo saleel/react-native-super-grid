@@ -81,6 +81,7 @@ const SectionGrid = memo(
         separators,
         isFirstRow,
         containerStyle,
+        containerFullWidthStyle,
       }) => {
         // Add spacing below section header
         let additionalRowStyle = {};
