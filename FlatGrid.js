@@ -1,14 +1,37 @@
 import React, { forwardRef, memo, useMemo } from 'react';
 import { FlatList } from 'react-native';
-import PropTypes from 'prop-types';
 import { generateStyles } from './utils';
 import useRenderRow from './hooks/useRenderRow';
 import useDimensions from './hooks/useDimensions';
 import useRows from './hooks/useRows';
 
+const defaultProps = {
+  fixed: false,
+  itemDimension: 120,
+  spacing: 10,
+  style: {},
+  additionalRowStyle: undefined,
+  itemContainerStyle: undefined,
+  staticDimension: undefined,
+  horizontal: false,
+  onLayout: null,
+  keyExtractor: null,
+  listKey: undefined,
+  maxDimension: undefined,
+  invertedRow: false,
+  maxItemsPerRow: undefined,
+  adjustGridToStyles: false,
+  onItemsPerRowChange: undefined,
+  customFlatList: undefined,
+};
 
 const FlatGrid = memo(
   forwardRef((props, ref) => {
+    const options = {
+      ...defaultProps,
+      ...props,
+    };
+
     const {
       style,
       spacing,
@@ -29,10 +52,10 @@ const FlatGrid = memo(
       customFlatList: FlatListComponent = FlatList,
       onItemsPerRowChange,
       ...restProps
-    } = props;
+    } = options;
 
     // eslint-disable-next-line react/prop-types
-    if (props.items && !props.data) {
+    if (options.items && !options.data) {
       // eslint-disable-next-line no-console
       throw new Error('React Native Super Grid - Prop "items" has been renamed to "data" in version 4');
     }
@@ -43,7 +66,7 @@ const FlatGrid = memo(
       itemsPerRow,
       containerDimension,
       fixedSpacing,
-    } = useDimensions(props);
+    } = useDimensions(options);
 
     const { containerStyle, containerFullWidthStyle, rowStyle } = useMemo(
       () => generateStyles({
@@ -111,49 +134,5 @@ const FlatGrid = memo(
 
 
 FlatGrid.displayName = 'FlatGrid';
-
-FlatGrid.propTypes = {
-  renderItem: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  data: PropTypes.arrayOf(PropTypes.any).isRequired,
-  itemDimension: PropTypes.number,
-  maxDimension: PropTypes.number,
-  fixed: PropTypes.bool,
-  spacing: PropTypes.number,
-  style: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  additionalRowStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  itemContainerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  staticDimension: PropTypes.number,
-  horizontal: PropTypes.bool,
-  onLayout: PropTypes.func,
-  keyExtractor: PropTypes.func,
-  listKey: PropTypes.string,
-  invertedRow: PropTypes.bool,
-  maxItemsPerRow: PropTypes.number,
-  adjustGridToStyles: PropTypes.bool,
-  onItemsPerRowChange: PropTypes.func,
-  customFlatList: PropTypes.elementType,
-};
-
-FlatGrid.defaultProps = {
-  fixed: false,
-  itemDimension: 120,
-  spacing: 10,
-  style: {},
-  additionalRowStyle: undefined,
-  itemContainerStyle: undefined,
-  staticDimension: undefined,
-  horizontal: false,
-  onLayout: null,
-  keyExtractor: null,
-  listKey: undefined,
-  maxDimension: undefined,
-  invertedRow: false,
-  maxItemsPerRow: undefined,
-  adjustGridToStyles: false,
-  onItemsPerRowChange: undefined,
-  customFlatList: undefined,
-};
-
 
 export default FlatGrid;
