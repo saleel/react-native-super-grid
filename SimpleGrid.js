@@ -84,7 +84,6 @@ const SimpleGrid = memo(
       invertedRow,
     });
 
-
     return (
       <View
         style={[
@@ -114,7 +113,6 @@ const SimpleGrid = memo(
     );
   }),
 );
-
 
 SimpleGrid.displayName = 'SimpleGrid';
 

@@ -99,7 +99,6 @@ const FlatGrid = memo(
       invertedRow,
     });
 
-
     return (
       <FlatListComponent
         data={rows}
@@ -113,8 +112,7 @@ const FlatGrid = memo(
           rowStyle,
           containerStyle,
           containerFullWidthStyle,
-        })
-        }
+        })}
         style={[
           {
             ...(horizontal
@@ -131,7 +129,6 @@ const FlatGrid = memo(
     );
   }),
 );
-
 
 FlatGrid.displayName = 'FlatGrid';
 

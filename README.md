@@ -27,13 +27,10 @@ Internally, these components use the native [FlatList](https://facebook.github.i
 **Version 2.x and older, please refer [v2 branch](https://github.com/saleel/react-native-super-grid/tree/v2) for documentation**  
 
 
-### v3 to v4 Migration
+### Versions
 
-
-- Rename FlatList's `items` prop to `data`.
-- v4 is based on React hooks, and requires React Native version > `0.59`.
-- Methods called on SectionList/FlatList refs can be called directly now (because of forwardRef). i.e Instead of `ref.current.sectionList.scrollToLocation`, use `ref.current.scrollToLocation`.
-
+- Use version `6.0.0` for RN `0.74.0` and above
+- Use version `5.1.0` for older versions of RN
 
 
 ### Installing
@@ -336,6 +333,9 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 
 ## Changelog
+
+### [6.0.0] - 2024-06-12
+- Remove proptypes; Support for react native version 0.74.0 @saleel
 
 ### [5.1.0] - 2024-03-28
 - Add support for fullWidth items @devjeff

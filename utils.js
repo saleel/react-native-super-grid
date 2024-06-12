@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-function chunkArray(array = [], size) {
-  if (array.length === 0) return [];
+function chunkArray(array, size) {
+  if (!array || array.length === 0) return [];
 
   return array.reduce((acc, val) => {
     if (acc.length === 0) acc.push([]);

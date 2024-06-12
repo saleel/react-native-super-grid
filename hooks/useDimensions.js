@@ -5,7 +5,6 @@ import {
   calculateDimensions,
 } from '../utils';
 
-
 const useDimensions = (props) => {
   const {
     staticDimension,
@@ -57,7 +56,6 @@ const useDimensions = (props) => {
     [staticDimension, maxDimension, totalDimension, horizontal, onLayout, adjustGridToStyles],
   );
 
-
   const { containerDimension, itemsPerRow, fixedSpacing } = useMemo(
     () => calculateDimensions({
       itemDimension,
@@ -69,7 +67,6 @@ const useDimensions = (props) => {
     }),
     [itemDimension, staticDimension, totalDimension, spacing, fixed, maxItemsPerRow],
   );
-
 
   return {
     totalDimension,

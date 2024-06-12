@@ -4,6 +4,7 @@
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "max-len": ["error", { "code": 150 }],
         "import/no-unresolved": ["error", { "ignore": ["^react$", "^react-native$"] }],
-        "no-underscore-dangle": ["error", { "allow": ["_fullWidth"] }]
+        "no-underscore-dangle": ["error", { "allow": ["_fullWidth"] }],
+        "react/jsx-props-no-spreading": ["off"]
     }
 }

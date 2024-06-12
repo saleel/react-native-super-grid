@@ -114,7 +114,7 @@ const SectionGrid = memo(
           };
         }
 
-        const hasFullWidthItem = !!rowItems.find(i => i._fullWidth);
+        const hasFullWidthItem = !!rowItems.find((i) => i._fullWidth);
 
         return (
           <View style={[rowStyle, additionalRowStyle, externalRowStyle, hasFullWidthItem ? { flexDirection: 'column', paddingBottom: 0 } : {}]}>
@@ -175,7 +175,7 @@ const SectionGrid = memo(
         let chunkedData = chunkArray(section.data, itemsPerRow);
 
         if (invertedRow) {
-          chunkedData = chunkedData.map($0 => $0.reverse());
+          chunkedData = chunkedData.map(($0) => $0.reverse());
         }
 
         const renderItem = section.renderItem || originalRenderItem;
@@ -239,7 +239,6 @@ const SectionGrid = memo(
     );
   }),
 );
-
 
 SectionGrid.displayName = 'SectionGrid';
 
