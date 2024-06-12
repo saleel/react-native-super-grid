@@ -1,16 +1,21 @@
 import React, {
   forwardRef, memo, useCallback, useEffect, useMemo, useState,
 } from 'react';
-import {
-  View, Dimensions, SectionList,
-} from 'react-native';
-import PropTypes from 'prop-types';
+import { View, Dimensions, SectionList } from 'react-native';
 import {
   generateStyles, calculateDimensions, chunkArray, getAdjustedTotalDimensions,
 } from './utils';
 
 const SectionGrid = memo(
   forwardRef((props, ref) => {
+    const defaultProps = {
+      itemDimension: 120,
+      spacing: 10,
+      fixed: false,
+      invertedRow: false,
+      adjustGridToStyles: false,
+    };
+
     const {
       sections,
       style,
@@ -30,7 +35,7 @@ const SectionGrid = memo(
       customSectionList: SectionListComponent = SectionList,
       onItemsPerRowChange,
       ...restProps
-    } = props;
+    } = { ...defaultProps, ...props };
 
     const [totalDimension, setTotalDimension] = useState(() => {
       let defaultTotalDimension = staticDimension;
@@ -219,46 +224,6 @@ const SectionGrid = memo(
 
 
 SectionGrid.displayName = 'SectionGrid';
-
-SectionGrid.propTypes = {
-  renderItem: PropTypes.func.isRequired,
-  sections: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  itemDimension: PropTypes.number,
-  fixed: PropTypes.bool,
-  spacing: PropTypes.number,
-  style: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  additionalRowStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  itemContainerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]),
-  staticDimension: PropTypes.number,
-  onLayout: PropTypes.func,
-  maxDimension: PropTypes.number,
-  listKey: PropTypes.string,
-  keyExtractor: PropTypes.func,
-  invertedRow: PropTypes.bool,
-  maxItemsPerRow: PropTypes.number,
-  adjustGridToStyles: PropTypes.bool,
-  customSectionList: PropTypes.elementType,
-  onItemsPerRowChange: PropTypes.func,
-};
-
-SectionGrid.defaultProps = {
-  fixed: false,
-  itemDimension: 120,
-  spacing: 10,
-  style: {},
-  additionalRowStyle: undefined,
-  itemContainerStyle: undefined,
-  staticDimension: undefined,
-  onLayout: null,
-  listKey: undefined,
-  maxDimension: undefined,
-  invertedRow: false,
-  keyExtractor: null,
-  maxItemsPerRow: undefined,
-  adjustGridToStyles: false,
-  customSectionList: undefined,
-  onItemsPerRowChange: null,
-};
 
 
 export default SectionGrid;
