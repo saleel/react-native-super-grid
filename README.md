@@ -334,6 +334,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 
+### [6.0.1] - 2025-08-25
+- Move dependencies to devDependencies @cwooldridge1
+- Update package-lock.json to patch security vulnerabilities in deps @saleel
+
 ### [6.0.0] - 2024-06-12
 - Remove proptypes; Support for react native version 0.74.0 @saleel
 

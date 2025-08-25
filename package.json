@@ -1,6 +1,6 @@
 {
   "name": "react-native-super-grid",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Responsive Grid View for React Native",
   "main": "index.js",
   "types": "index.d.ts",
